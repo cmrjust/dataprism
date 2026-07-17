@@ -1,2 +1,3 @@
 # dataprism
-Data insights platfor
+Data insights platform
+
