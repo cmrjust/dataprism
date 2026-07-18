@@ -20,7 +20,6 @@
             position: relative;
             width: 100%;
             height: 100%;
-            perspective: 1200px;
             overflow: hidden;
         }
         
@@ -38,7 +37,7 @@
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transition: transform 0.9s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.8s ease, visibility 0.9s;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, visibility 0.6s;
             will-change: transform, opacity;
         }
         
@@ -46,59 +45,54 @@
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
-            transform: translate(0, 0) scale(1) rotate(0deg);
+            transform: translate(0, 0);
         }
         
-        .panel-scene.exit-next {
+        .panel-scene.exit-to-bottom-right {
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transform: translate(120%, 80%) scale(0.7) rotate(15deg);
+            transform: translate(15%, 15%);
         }
         
-        .panel-scene.exit-prev {
+        .panel-scene.exit-to-top-left {
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transform: translate(-120%, -80%) scale(0.7) rotate(-15deg);
+            transform: translate(-15%, -15%);
         }
         
         .geometric-shape {
             position: absolute;
-            width: 45vw;
-            height: 45vw;
+            width: 32vw;
+            height: 32vw;
             border-radius: 50%;
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(147, 51, 234, 0.03) 100%);
-            border: 1px solid rgba(79, 70, 229, 0.15);
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(147, 51, 234, 0.02) 100%);
+            border: 1px solid rgba(79, 70, 229, 0.1);
             pointer-events: none;
             z-index: 1;
-            transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1);
         }
         
-        .panel-scene:nth-child(odd) .geometric-shape {
-            right: -10vw;
-            top: 10vh;
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        .panel-scene.active .geometric-shape {
+            opacity: 0.5;
         }
         
-        .panel-scene:nth-child(even) .geometric-shape {
-            left: -10vw;
-            bottom: 10vh;
-            background: linear-gradient(135deg, rgba(147, 51, 234, 0.08) 0%, rgba(79, 70, 229, 0.03) 100%);
-            border: 1px solid rgba(147, 51, 234, 0.15);
-        }
+        .panel-scene:nth-child(1) .geometric-shape { right: -5vw; top: 15vh; }
+        .panel-scene:nth-child(2) .geometric-shape { left: -5vw; bottom: 15vh; }
+        .panel-scene:nth-child(3) .geometric-shape { right: -5vw; bottom: 15vh; }
+        .panel-scene:nth-child(4) .geometric-shape { left: -5vw; top: 15vh; }
+        .panel-scene:nth-child(5) .geometric-shape { right: -5vw; top: 20vh; }
         
         .content-card-layout {
             position: relative;
             z-index: 10;
             width: 100%;
-            max-w: 6xl;
-            background: rgba(255, 255, 255, 0.85);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            border-radius: 1.5rem;
-            padding: 2.5rem;
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04);
-            backdrop-filter: blur(8px);
+            max-w: 5xl;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.02);
         }
         
         .grid-mesh-overlay {
@@ -106,7 +100,7 @@
             inset: 0;
             background-image: linear-gradient(to right, rgba(99, 102, 241, 0.01) 1px, transparent 1px),
                               linear-gradient(to bottom, rgba(99, 102, 241, 0.01) 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-size: 24px 24px;
             pointer-events: none;
             z-index: 0;
         }
@@ -117,8 +111,8 @@
             border: 3px solid #f1f5f9;
             border-top: 3px solid #4f46e5;
             border-radius: 50%;
-            width: 2.25rem;
-            height: 2.25rem;
+            width: 2rem;
+            height: 2rem;
             animation: spin-anim 0.7s linear infinite;
         }
         @keyframes spin-anim {
@@ -149,19 +143,19 @@
                 </button>
                 
                 <div id="lang-dropdown" class="hidden-menu absolute right-0 mt-1.5 w-44 bg-white border border-slate-200 rounded-xl shadow-xl p-1 z-50">
-                    <button onclick="triggerLanguageSwitch('en', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg', 'English')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-slate-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
+                    <button onclick="triggerLanguageSwitch('en', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg', 'English')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
                         <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg" class="w-4 h-auto rounded-sm" alt="US"><span>English</span>
                     </button>
-                    <button onclick="triggerLanguageSwitch('zh', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/CN.svg', '简体中文')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-slate-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
+                    <button onclick="triggerLanguageSwitch('zh', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/CN.svg', '简体中文')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
                         <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/CN.svg" class="w-4 h-auto rounded-sm" alt="CN"><span>简体中文</span>
                     </button>
-                    <button onclick="triggerLanguageSwitch('ja', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/JP.svg', '日本語')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-slate-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
+                    <button onclick="triggerLanguageSwitch('ja', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/JP.svg', '日本語')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
                         <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/JP.svg" class="w-4 h-auto rounded-sm" alt="JP"><span>日本語</span>
                     </button>
-                    <button onclick="triggerLanguageSwitch('ko', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/KR.svg', '한국어')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-slate-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
+                    <button onclick="triggerLanguageSwitch('ko', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/KR.svg', '한국어')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
                         <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/KR.svg" class="w-4 h-auto rounded-sm" alt="KR"><span>한국어</span>
                     </button>
-                    <button onclick="triggerLanguageSwitch('de', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/DE.svg', 'Deutsch')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-slate-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
+                    <button onclick="triggerLanguageSwitch('de', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/DE.svg', 'Deutsch')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
                         <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/DE.svg" class="w-4 h-auto rounded-sm" alt="DE"><span>Deutsch</span>
                     </button>
                 </div>
@@ -174,16 +168,16 @@
 
         <section class="panel-scene active">
             <div class="geometric-shape"></div>
-            <div class="content-card-layout max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div class="content-card-layout grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                 <div class="space-y-4 lg:col-span-8 text-left">
-                    <div class="inline-flex items-center bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full text-[11px] text-indigo-600 font-semibold">
+                    <div class="inline-flex items-center bg-indigo-50 border border-indigo-100 px-3 py-0.5 rounded-full text-[11px] text-indigo-600 font-semibold">
                         <span class="data-lang" data-en="Global Consumer Research Platform" data-zh="全球消费者调研平台" data-ja="グローバル消費者リサーチプラットフォーム" data-ko="글로벌 소비자 리서치 플랫폼" data-de="Globale Marktforschungsplattform">Global Consumer Research Platform</span>
                     </div>
                     <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
                         <span class="data-lang" data-en="Provide Consumer Insights," data-zh="分享您的日常观点，" data-ja="消費者の意見を共有し、" data-ko="소비자 인사이트를 제공하고," data-de="Verbraucherinsights teilen,">Provide Consumer Insights,</span><br>
                         <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 data-lang" data-en="Earn Premium Rewards Daily" data-zh="每日获取相应的积分奖励" data-ja="毎日プレミアム報酬を獲得" data-ko="매일 프리미엄 보상 적립" data-de="Täglich Premium-Prämien verdienen">Earn Premium Rewards Daily</span>
                     </h1>
-                    <p class="text-slate-500 text-sm max-w-xl leading-relaxed data-lang"
+                    <p class="text-slate-500 text-sm leading-relaxed data-lang"
                        data-en="DataPrism connects individual participants with leading international market research campaigns. By answering structured questionnaires regarding products and corporate services, members accumulate distribution credits redeemable for verified institutional reward vouchers."
                        data-zh="DataPrism 致力于将个人受众与国际知名的市场调研项目进行连接。通过回答关于产品或商业服务的结构化调查问卷，会员能够稳定积累积分点数，并将其兑换为官方授权的各类礼品卡与现金奖励。"
                        data-ja="DataPrismは、個々の参加者を主要な国際市場調査キャンペーンと結びつけます。製品や企業サービスに関する構造化されたアンケートに回答することで、メンバーは検証済みの企業報酬バウチャーと交換可能な配信クレジットを蓄積します。"
@@ -192,24 +186,24 @@
                         DataPrism connects individual participants with leading international market research campaigns. By answering structured questionnaires regarding products and corporate services, members accumulate distribution credits redeemable for verified institutional reward vouchers.
                     </p>
                     <div class="pt-1">
-                        <button onclick="alert('Registration interface will be accessible in the upcoming phase.')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs tracking-wide px-6 py-3.5 rounded-xl transition-all shadow-sm text-center data-lang" data-en="Register Free Account" data-zh="免费注册参与通道" data-ja="無料アカウントを登録" data-ko="무료 계정 등록하기" data-de="Kostenloses Konto registrieren">Register Free Account</button>
+                        <button onclick="alert('Registration interface will be accessible in the upcoming phase.')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs tracking-wide px-5 py-3 rounded-xl transition-all shadow-sm text-center data-lang" data-en="Register Free Account" data-zh="免费注册参与通道" data-ja="無料アカウントを登録" data-ko="무료 계정 등록하기" data-de="Kostenloses Konto registrieren">Register Free Account</button>
                     </div>
                 </div>
 
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3.5 lg:col-span-4 w-full">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3 lg:col-span-4 w-full">
                     <div>
                         <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold data-lang" data-en="Active Allocations" data-zh="当前开放项目" data-ja="現在利用可能な案件" data-ko="현재 활성 프로젝트" data-de="Aktive Zuweisungen">Active Allocations</span>
                     </div>
                     <div class="space-y-2">
-                        <div class="bg-white p-3 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs">
+                        <div class="bg-white p-2.5 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs">
                             <span class="font-semibold text-slate-800 data-lang" data-en="Commercial Retail Habits" data-zh="商业零售习惯调查" data-ja="商業小売習慣の調査" data-ko="상업 소매 소비 습관 조사" data-de="Kommerzielle Einzelhandelsgewohnheiten">Commercial Retail Habits</span>
                             <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+$2.50</span>
                         </div>
-                        <div class="bg-white p-3 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs">
+                        <div class="bg-white p-2.5 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs">
                             <span class="font-semibold text-slate-800 data-lang" data-en="Digital Service Feedback" data-zh="数字化服务用户反馈" data-ja="デジタルサービス評価" data-ko="디지털 서비스 사용자 피드백" data-de="Digitaler Service-Feedback">Digital Service Feedback</span>
                             <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+$4.00</span>
                         </div>
-                        <div class="bg-white p-3 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs">
+                        <div class="bg-white p-2.5 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs">
                             <span class="font-semibold text-slate-800 data-lang" data-en="Consumer Electronics Study" data-zh="消费类电子产品研究" data-ja="家電製品に関する研究" data-ko="가전제품 소비자 심층 연구" data-de="Unterhaltungselektronik-Studie">Consumer Electronics Study</span>
                             <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+$1.20</span>
                         </div>
@@ -222,18 +216,18 @@
             </div>
         </section>
 
-        <section class="panel-scene exit-next">
+        <section class="panel-scene exit-to-bottom-right">
             <div class="geometric-shape"></div>
-            <div class="content-card-layout max-w-5xl mx-auto space-y-6">
-                <div class="text-left border-l-4 border-indigo-500 pl-4 space-y-1">
+            <div class="content-card-layout space-y-5">
+                <div class="text-left border-l-4 border-indigo-500 pl-4 space-y-0.5">
                     <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 data-lang" data-en="Operational Excellence" data-zh="平台核心架构" data-ja="オペレーショナル・エクセレンス" data-ko="플랫폼 핵심 인프라" data-de="Betriebliche Exzellenz">Operational Excellence</div>
-                    <h2 class="text-2xl font-extrabold text-slate-900 data-lang" data-en="Secure & Methodological Data Procurement" data-zh="严谨规范的样本数据合规采集" data-ja="安全かつ方法論的なデータ調達" data-ko="안전하고 체계적인 데이터 분석 인프라" data-de="Sichere & methodische Datenbeschaffung">Secure & Methodological Data Procurement</h2>
+                    <h2 class="text-xl font-extrabold text-slate-900 data-lang" data-en="Secure & Methodological Data Procurement" data-zh="严谨规范的样本数据合规采集" data-ja="安全かつ方法論的なデータ調達" data-ko="안전하고 체계적인 데이터 분석 인프라" data-de="Sichere & methodische Datenbeschaffung">Secure & Methodological Data Procurement</h2>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-                    <div class="bg-slate-50 border border-slate-200/60 rounded-xl p-6 space-y-3 shadow-sm">
-                        <div class="w-9 h-9 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-sm">01</div>
-                        <h3 class="text-base font-bold text-slate-900 data-lang" data-en="Privacy Compliance Framework" data-zh="数据隐私安全合规" data-ja="プライバシー・コンプライアンス" data-ko="개인정보 보호 컴플라이언스" data-de="Datenschutz-Compliance-Framework">Privacy Compliance Framework</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+                    <div class="bg-slate-50 border border-slate-200/60 rounded-xl p-5 space-y-2 shadow-sm">
+                        <div class="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">01</div>
+                        <h3 class="text-sm font-bold text-slate-900 data-lang" data-en="Privacy Compliance Framework" data-zh="数据隐私安全合规" data-ja="プライバシー・コンプライアンス" data-ko="개인정보 보호 컴플라이언스" data-de="Datenschutz-Compliance-Framework">Privacy Compliance Framework</h3>
                         <p class="text-slate-500 text-xs leading-relaxed data-lang"
                            data-en="Data integrity parameters are governed under active data protection models. User identity vectors are structurally isolated from subsequent research aggregates."
                            data-zh="所有收集的数据均受到现行数据保护条例的严密监管。用户的个人账户标识与后续研究的统计数据集在架构上完全隔离，确保匿名性。"
@@ -243,26 +237,26 @@
                             Data integrity parameters are governed under active data protection models. User identity vectors are structurally isolated from subsequent research aggregates.
                         </p>
                     </div>
-                    <div class="bg-slate-50 border border-slate-200/60 rounded-xl p-6 space-y-3 shadow-sm">
-                        <div class="w-9 h-9 rounded-lg bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 font-bold text-sm">02</div>
-                        <h3 class="text-base font-bold text-slate-900 data-lang" data-en="Algorithmic Target Matching" data-zh="统计学画像精准对齐" data-ja="アルゴリズムによる最適マッチ" data-ko="알고리즘 기반 타겟 매칭" data-de="Algorithmisches Target-Matching">Algorithmic Target Matching</h3>
+                    <div class="bg-slate-50 border border-slate-200/60 rounded-xl p-5 space-y-2 shadow-sm">
+                        <div class="w-7 h-7 rounded-lg bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs">02</div>
+                        <h3 class="text-sm font-bold text-slate-900 data-lang" data-en="Algorithmic Target Matching" data-zh="统计学画像精准对齐" data-ja="アルゴリズムによる最適マッチ" data-ko="알고리즘 기반 타겟 매칭" data-de="Algorithmisches Target-Matching">Algorithmic Target Matching</h3>
                         <p class="text-slate-500 text-xs leading-relaxed data-lang"
                            data-en="Minimizing questionnaire attrition through real-time quota verification. Members receive project invitations calibrated precisely to verified demographic attributes."
                            data-zh="系统通过实时的配额状态核验，能够有效降低答题中途被驳回的概率。会员收到的项目邀请均与其登记的受众特征高度契合。"
-                           data-ja="リアルタイムのクォータ検証により、アンケートの中断を最小限に抑えます。メンバーは、検証された属性情報に正確に適合する招待を受け取ります。"
+                           data-ja="オンライン枠のリアルタイム検証により、回答エラーを最小限に抑えます。メンバーは、検証された属性情報に正確に適合する招待を受け取ります。"
                            data-ko="실시간 할당량 검증을 통해 설문조사 중도 탈락을 최소화합니다. 회원은 검증된 인구통계학적 특성에 정확히 조정된 프로젝트 초대를 받습니다."
                            data-de="Minimierung von Umfrageabbrüchen durch Echtzeit-Quotenüberprüfung. Mitglieder erhalten Projekteinladungen, die genau auf verifizierte Attribute abgestimmt sind.">
                             Minimizing questionnaire attrition through real-time quota verification. Members receive project invitations calibrated precisely to verified demographic attributes.
                         </p>
                     </div>
-                    <div class="bg-slate-50 border border-slate-200/60 rounded-xl p-6 space-y-3 shadow-sm">
-                        <div class="w-9 h-9 rounded-lg bg-pink-50 border border-pink-100 flex items-center justify-center text-pink-600 font-bold text-sm">03</div>
-                        <h3 class="text-base font-bold text-slate-900 data-lang" data-en="Audited Financial Clearing" data-zh="合规数据结算与对账" data-ja="監査された財務精算" data-ko="투명한 보상 정산 시스템" data-de="Geprüfte Finanzabrechnung">Audited Financial Clearing</h3>
+                    <div class="bg-slate-50 border border-slate-200/60 rounded-xl p-5 space-y-2 shadow-sm">
+                        <div class="w-7 h-7 rounded-lg bg-pink-50 border border-pink-100 flex items-center justify-center text-pink-600 font-bold text-xs">03</div>
+                        <h3 class="text-sm font-bold text-slate-900 data-lang" data-en="Audited Financial Clearing" data-zh="合规数据结算与对账" data-ja="監査された財務精算" data-ko="투명한 보상 정산 시스템" data-de="Geprüfte Finanzabrechnung">Audited Financial Clearing</h3>
                         <p class="text-slate-500 text-xs leading-relaxed data-lang"
                            data-en="System rewards undergo verified digital bookkeeping clearing. Completed allocations translate to direct ledger entries, eliminating holding vulnerabilities."
                            data-zh="系统内产生的所有分配点数均经过数字记账处理的严格核销。通过审核的有效项目会直接转入账户余额，杜绝一切不透明的拖延处理。"
                            data-ja="システム報酬は、検証済みのデジタル簿記精算を受けます。完了した案件は直接元帳エントリに変換され、保留の脆弱性を排除します。"
-                           data-ko="시스템 보상은 검증된 디지털 회계 정산을 거칩니다. 완료된 할당량은 직접 장부 항목으로 변환되어 불투명한 대기 리스크를 배제합니다."
+                           data-ko="시스템 보상은 검증된 디지털 회계 정산을 거칩니다. 완료된 할당량은 장부 항목으로 변환되어 불투명한 대기 리스크를 배제합니다."
                            data-de="Systemprämien durchlaufen eine verifizierte Abrechnung. Abgeschlossene Zuweisungen führen zu direkten Buchungen, was Haltefristen eliminiert.">
                             System rewards undergo verified digital bookkeeping clearing. Completed allocations translate to direct ledger entries, eliminating holding vulnerabilities.
                         </p>
@@ -271,16 +265,16 @@
             </div>
         </section>
 
-        <section class="panel-scene exit-next">
+        <section class="panel-scene exit-to-bottom-right">
             <div class="geometric-shape"></div>
-            <div class="content-card-layout max-w-5xl mx-auto space-y-6">
-                <div class="text-center max-w-xl mx-auto space-y-1">
+            <div class="content-card-layout space-y-5">
+                <div class="text-center max-w-xl mx-auto">
                     <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 data-lang" data-en="Institutional Disbursal Options" data-zh="支持的安全结算网关" data-ja="機関向け決済オプション" data-ko="정식 보상 출금 옵션" data-de="Institutionelle Auszahlungsoptionen">Institutional Disbursal Options</span>
-                    <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight data-lang" data-en="Verified Rewards Disbursal Matrix" data-zh="官方授权的有限精选结算渠道" data-ja="公式に検証された交換オプション" data-ko="안전성이 검증된 공식 환전 채널" data-de="Verifiziertes Prämienmatrix">Verified Rewards Disbursal Matrix</h2>
+                    <h2 class="text-xl font-extrabold text-slate-900 tracking-tight data-lang" data-en="Verified Rewards Disbursal Matrix" data-zh="官方授权的有限精选结算渠道" data-ja="公式に検証された交換オプション" data-ko="안전성이 검증된 공식 환전 채널" data-de="Verifiziertes Prämienmatrix">Verified Rewards Disbursal Matrix</h2>
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
                         <div class="h-8 flex items-center justify-center">
                             <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazon.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Amazon">
                         </div>
@@ -289,7 +283,7 @@
                             <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Digital Payout</div>
                         </div>
                     </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
                         <div class="h-8 flex items-center justify-center">
                             <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="PayPal">
                         </div>
@@ -298,7 +292,7 @@
                             <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Direct Transfer</div>
                         </div>
                     </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
                         <div class="h-8 flex items-center justify-center">
                             <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Steam">
                         </div>
@@ -307,7 +301,7 @@
                             <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Wallet Credits</div>
                         </div>
                     </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
                         <div class="h-8 flex items-center justify-center">
                             <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/playstation.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="PlayStation">
                         </div>
@@ -316,7 +310,7 @@
                             <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Voucher Code</div>
                         </div>
                     </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
                         <div class="h-8 flex items-center justify-center">
                             <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/xbox.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Xbox">
                         </div>
@@ -325,7 +319,7 @@
                             <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Store Code</div>
                         </div>
                     </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
                         <div class="h-8 flex items-center justify-center">
                             <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/nintendoswitch.svg" class="h-5 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Nintendo">
                         </div>
@@ -334,7 +328,7 @@
                             <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Digital Code</div>
                         </div>
                     </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
                         <div class="h-8 flex items-center justify-center">
                             <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/roblox.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Roblox">
                         </div>
@@ -343,7 +337,7 @@
                             <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Direct Credit</div>
                         </div>
                     </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
                         <div class="h-8 flex items-center justify-center">
                             <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/bitcoin.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Bitcoin">
                         </div>
@@ -356,18 +350,18 @@
             </div>
         </section>
 
-        <section class="panel-scene exit-next">
+        <section class="panel-scene exit-to-bottom-right">
             <div class="geometric-shape"></div>
-            <div class="content-card-layout max-w-5xl mx-auto space-y-8">
-                <div class="text-left max-w-2xl border-l-4 border-indigo-500 pl-4 space-y-1">
+            <div class="content-card-layout space-y-6">
+                <div class="text-left max-w-2xl border-l-4 border-indigo-500 pl-4 space-y-0.5">
                     <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 data-lang" data-en="Operational Sequence" data-zh="标准集成与参与步骤" data-ja="標準的な参加手順" data-ko="기본 참여 및 연동 프로세스" data-de="Ablaufsequenz">Operational Sequence</span>
-                    <h2 class="text-2xl font-extrabold text-slate-900 data-lang" data-en="Methodology Framework in Three Steps" data-zh="简明清晰的三个参与步骤" data-ja="3つの簡単な参加ステップ" data-ko="간단한 3단계 참여 프로세스" data-de="Methoden-Framework in drei Schritten">Methodology Framework in Three Steps</h2>
+                    <h2 class="text-xl font-extrabold text-slate-900 data-lang" data-en="Methodology Framework in Three Steps" data-zh="简明清晰的三个参与步骤" data-ja="3つの簡単な参加ステップ" data-ko="간단한 3단계 참여 프로세스" data-de="Methoden-Framework in drei Schritten">Methodology Framework in Three Steps</h2>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                    <div class="relative bg-slate-50 border border-slate-100 p-5 rounded-xl space-y-2 shadow-sm">
-                        <div class="w-6 h-6 bg-indigo-600 rounded-md flex items-center justify-center text-white font-bold text-xs">1</div>
-                        <h4 class="text-base font-bold text-slate-900 pt-0.5 data-lang" data-en="Account Registration" data-zh="第一步：建立账户标识" data-ja="1. アカウントの登録" data-ko="1. 이메일 계정 등록" data-de="1. Registrierung">Account Registration</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+                    <div class="relative bg-slate-50 border border-slate-100 p-4 rounded-xl space-y-1 shadow-sm">
+                        <div class="w-5 h-5 bg-indigo-600 rounded-md flex items-center justify-center text-white font-bold text-xs">1</div>
+                        <h4 class="text-sm font-bold text-slate-900 pt-0.5 data-lang" data-en="Account Registration" data-zh="第一步：建立账户标识" data-ja="1. アカウントの登録" data-ko="1. 이메일 계정 등록" data-de="1. Registrierung">Account Registration</h4>
                         <p class="text-slate-500 text-xs leading-relaxed data-lang"
                            data-en="Establish unique panelist credentials via standard electronic authentication protocols to safely activate the matching interface."
                            data-zh="通过标准的电子身份验证建立唯一的会员凭证结构，以此激活专享的问卷匹配面板，流程安全合规。"
@@ -377,9 +371,9 @@
                             Establish unique panelist credentials via standard electronic authentication protocols to safely activate the matching interface.
                         </p>
                     </div>
-                    <div class="relative bg-slate-50 border border-slate-100 p-5 rounded-xl space-y-2 shadow-sm">
-                        <div class="w-6 h-6 bg-purple-600 rounded-md flex items-center justify-center text-white font-bold text-xs">2</div>
-                        <h4 class="text-base font-bold text-slate-900 pt-0.5 data-lang" data-en="Questionnaire Response" data-zh="第二步：参与结构问答" data-ja="2. アンケートへの回答" data-ko="2. 서베이 과제 응답" data-de="2. Beantwortung">Questionnaire Response</h4>
+                    <div class="relative bg-slate-50 border border-slate-100 p-4 rounded-xl space-y-1 shadow-sm">
+                        <div class="w-5 h-5 bg-purple-600 rounded-md flex items-center justify-center text-white font-bold text-xs">2</div>
+                        <h4 class="text-sm font-bold text-slate-900 pt-0.5 data-lang" data-en="Questionnaire Response" data-zh="第二步：参与结构问答" data-ja="2. アンケートへの回答" data-ko="2. 서베이 과제 응답" data-de="2. Beantwortung">Questionnaire Response</h4>
                         <p class="text-slate-500 text-xs leading-relaxed data-lang"
                            data-en="Access the dashboard to select assigned market research streams. Provide generic demographic responses based on actual daily consumption."
                            data-zh="登录个人主控面板并选择指派的市场研究项目。基于实际的日常消费习惯，提供客观真实的行业数据反馈。"
@@ -389,9 +383,9 @@
                             Access the dashboard to select assigned market research streams. Provide generic demographic responses based on actual daily consumption.
                         </p>
                     </div>
-                    <div class="relative bg-slate-50 border border-slate-100 p-5 rounded-xl space-y-2 shadow-sm">
-                        <div class="w-6 h-6 bg-pink-600 rounded-md flex items-center justify-center text-white font-bold text-xs">3</div>
-                        <h4 class="text-base font-bold text-slate-900 pt-0.5 data-lang" data-en="Ledger Disbursal" data-zh="第三步：清算价值回报" data-ja="3. 報酬の精算" data-ko="3. 보상 적립금 정산" data-de="3. Auszahlung">Ledger Disbursal</h4>
+                    <div class="relative bg-slate-50 border border-slate-100 p-4 rounded-xl space-y-1 shadow-sm">
+                        <div class="w-5 h-5 bg-pink-600 rounded-md flex items-center justify-center text-white font-bold text-xs">3</div>
+                        <h4 class="text-sm font-bold text-slate-900 pt-0.5 data-lang" data-en="Ledger Disbursal" data-zh="第三步：清算价值回报" data-ja="3. 報酬の精算" data-ko="3. 보상 적립금 정산" data-de="3. Auszahlung">Ledger Disbursal</h4>
                         <p class="text-slate-500 text-xs leading-relaxed data-lang"
                            data-en="Upon quantitative verification of completed quotas, submit a clearance action to disburse accrued assets into authorized partner media."
                            data-zh="在完成的问卷配额通过系统数量核验后，即可提交清算申请，将累计的积分点数无缝转移至授权的第三方结算通道。"
@@ -405,12 +399,12 @@
             </div>
         </section>
 
-        <section class="panel-scene exit-next">
+        <section class="panel-scene exit-to-bottom-right">
             <div class="geometric-shape"></div>
-            <div class="content-card-layout max-w-4xl mx-auto flex flex-col justify-between h-5/6 space-y-6">
-                <div class="border-b border-slate-200 pb-4 text-left">
-                    <h3 class="text-lg font-bold text-slate-900 data-lang" data-en="Regulatory Directives & Compliance Standards" data-zh="数据管辖权限与国际合规准则" data-ja="データ管轄権と国際コンプライアンス基準" data-ko="글로벌 컴플라이언스 및 개인정보 보호 규정" data-de="Regulatorische Richtlinien & Compliance-Standards">Regulatory Directives & Compliance Standards</h3>
-                    <p class="text-slate-500 text-xs mt-1.5 leading-relaxed max-w-2xl data-lang"
+            <div class="content-card-layout flex flex-col justify-between h-5/6 space-y-4">
+                <div class="border-b border-slate-200 pb-3 text-left">
+                    <h3 class="text-base font-bold text-slate-900 data-lang" data-en="Regulatory Directives & Compliance Standards" data-zh="数据管辖权限与国际合规准则" data-ja="データ管轄権と国際コンプライアンス基準" data-ko="글로벌 컴플라이언스 및 개인정보 보호 규정" data-de="Regulatorische Richtlinien & Compliance-Standards">Regulatory Directives & Compliance Standards</h3>
+                    <p class="text-slate-500 text-xs mt-1 leading-relaxed max-w-2xl data-lang"
                        data-en="DataPrism maintains verified node linkages with brand operators internationally. All internal procedures strictly conform to global consumer privacy acts and systemic data security protocols."
                        data-zh="DataPrism 与全球范围内的品牌受托方保持稳定合规的链路对接。平台所有内部流程均严密匹配国际主流消费者隐私法案与系统性网络安全规范。"
                        data-ja="DataPrismは国際的なブランド企業と検証済みの連携を維持しています。すべての内部手続きはグローバルなプライバシー法を順守しています。"
@@ -420,12 +414,12 @@
                     </p>
                 </div>
 
-                <div class="text-[10px] text-slate-500 space-y-2 leading-relaxed">
+                <div class="text-[10px] text-slate-500 space-y-1.5 leading-relaxed">
                     <p class="data-lang"
                        data-en="Corporate Disclaimer: DataPrism operates as a fully independent research aggregation interface. Registered trademarks including Amazon, PayPal, Steam, PlayStation, Xbox, Nintendo, and Roblox exhibited within this portal remain the exclusive asset of their corresponding corporate owners. Deployment of these logos is strictly limited to illustrative clearing functionality and implies no operational endorsement or official affiliation."
                        data-zh="免责声明：DataPrism 为独立运作的第三方市场调研集成面板。本门户内展示的 Amazon、PayPal, Steam、PlayStation、Xbox、Nintendo 以及 Roblox 等注册商标均属于其各自公司合法所有。此处标识的陈列仅限于指示结算路径打通，不代表本平台获得了对应品牌方的直接商业赞助、代言或官方行政背书。"
                        data-ja="免責事項：DataPrismは独立した市場調査インテグレーションインターフェースです。提示されているAmazon、PayPal、Steam、PlayStation、Xbox、Robloxなどの商標は、各所有者に帰属します。ロゴの使用は決済機能の案内に限定され、公式な支持を意味しません。"
-                       data-ko="법적 고지: DataPrism은 독자적으로 운영되는 마켓 리서치 통합 플랫폼입니다. 본 사이트에 명시된 Amazon, PayPal, Steam, PlayStation, Xbox, Nintendo, Roblox 등의 브랜드 상표권은 각 소유주에 귀盛되어 있습니다. 상표의 노출은 정산 수단 안내를 위한 기술적 연동일 뿐이며, 공식 제휴를 뜻하지 않습니다."
+                       data-ko="법적 고지: DataPrism은 독자적으로 운영되는 마켓 리서치 통합 플랫폼입니다. 본 사이트에 명시된 Amazon, PayPal, Steam, PlayStation, Xbox, Nintendo, Roblox 등의 브랜드 상표권은 각 소유주에 귀속되어 있습니다. 상표의 노출은 정산 수단 안내를 위한 기술적 연동일 뿐이며, 공식 제휴를 뜻하지 않습니다."
                        data-de="Haftungsausschluss: DataPrism arbeitet als unabhängige Schnittstelle. Registrierte Marken wie Amazon, PayPal, Steam, PlayStation, Xbox, Nintendo und Roblox gehören ihren Eigentümern. Die Nutzung der Logos dient der Veranschaulichung der Auszahlung.">
                         Corporate Disclaimer: DataPrism operates as a fully independent research aggregation interface. Registered trademarks including Amazon, PayPal, Steam, PlayStation, Xbox, Nintendo, and Roblox exhibited within this portal remain the exclusive asset of their corresponding corporate owners. Deployment of these logos is strictly limited to illustrative clearing functionality and implies no operational endorsement or official affiliation.
                     </p>
@@ -439,7 +433,7 @@
                     </p>
                 </div>
 
-                <div class="pt-3 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 gap-2">
+                <div class="pt-2 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 gap-1">
                     <div>
                         © 2026 DataPrism Research Network Platform. All Rights Reserved.
                     </div>
@@ -449,7 +443,7 @@
                 </div>
             </div>
         </section>
-    </main>
+    </div>
 
     <script>
         let currentSectionIndex = 0;
@@ -461,13 +455,25 @@
             if (index < 0 || index >= totalSections) return;
             
             scenes.forEach((scene, sIdx) => {
-                scene.classList.remove('active', 'exit-next', 'exit-prev');
+                scene.classList.remove('active', 'exit-to-bottom-right', 'exit-to-top-left');
                 if (sIdx === index) {
                     scene.classList.add('active');
+                    const shape = scene.querySelector('.geometric-shape');
+                    if(shape) {
+                        if(index % 2 === 0) {
+                            shape.style.transform = 'translate(0, 0)';
+                        } else {
+                            shape.style.transform = 'translate(0, 0)';
+                        }
+                    }
                 } else if (sIdx < index) {
-                    scene.classList.add('exit-prev');
+                    scene.classList.add('exit-to-top-left');
+                    const shape = scene.querySelector('.geometric-shape');
+                    if(shape) shape.style.transform = 'translate(-30px, -30px)';
                 } else {
-                    scene.classList.add('exit-next');
+                    scene.classList.add('exit-to-bottom-right');
+                    const shape = scene.querySelector('.geometric-shape');
+                    if(shape) shape.style.transform = 'translate(30px, 30px)';
                 }
             });
             
@@ -494,7 +500,7 @@
 
             setTimeout(() => {
                 isScrollingLocked = false;
-            }, 950);
+            }, 800);
         }
 
         window.addEventListener('wheel', handleWheelEvent, { passive: false });
@@ -526,11 +532,11 @@
         const loadingText = document.getElementById('loading-text');
 
         const loadingPhrases = {
-            en: "Loading Resource Pack...",
-            zh: "正在加载资源包...",
-            ja: "リソースパックを読み込み中...",
-            ko: "리소스 팩을 로드하는 중...",
-            de: "Ressourcenpaket wird geladen..."
+            en: "Loading...",
+            zh: "加载中...",
+            ja: "読み込み中...",
+            ko: "로드 중...",
+            de: "Laden..."
         };
 
         langBtn.addEventListener('click', (e) => {
