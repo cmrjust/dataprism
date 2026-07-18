@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DataPrism | Answer Surveys & Get Paid Daily</title>
-    <!-- 引入 Tailwind CSS 和 Supabase 官方库 -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         .hidden-menu { display: none; }
         
@@ -33,39 +31,34 @@
 
     <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-6 h-16 flex justify-between items-center">
-            <div class="flex items-center space-x-2.5 cursor-pointer" onclick="window.location.reload()">
+            <div class="flex items-center space-x-2.5 cursor-pointer">
                 <div class="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center font-bold text-white shadow-sm">D</div>
                 <span class="text-xl font-bold tracking-tight text-slate-900">DataPrism</span>
             </div>
             
-            <div class="flex items-center space-x-4">
-                <!-- 顶部导航栏用户状态显示区 -->
-                <div id="nav-user-status" class="text-xs font-medium text-slate-500 hidden"></div>
+            <div class="relative">
+                <button id="lang-btn" class="bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg transition-all flex items-center space-x-2 shadow-sm">
+                    <img id="current-flag-img" src="https://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg" class="w-4 h-auto rounded-sm" alt="US">
+                    <span id="current-lang-text">English</span>
+                    <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200" id="arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
                 
-                <div class="relative">
-                    <button id="lang-btn" class="bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg transition-all flex items-center space-x-2 shadow-sm">
-                        <img id="current-flag-img" src="https://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg" class="w-4 h-auto rounded-sm" alt="US">
-                        <span id="current-lang-text">English</span>
-                        <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200" id="arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                <div id="lang-dropdown" class="hidden-menu absolute right-0 mt-1.5 w-44 bg-white border border-slate-200 rounded-xl shadow-xl p-1 z-50">
+                    <button onclick="triggerLanguageSwitch('en', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg', 'English')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
+                        <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg" class="w-4 h-auto rounded-sm" alt="US"><span>English</span>
                     </button>
-                    
-                    <div id="lang-dropdown" class="hidden-menu absolute right-0 mt-1.5 w-44 bg-white border border-slate-200 rounded-xl shadow-xl p-1 z-50">
-                        <button onclick="triggerLanguageSwitch('en', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg', 'English')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
-                            <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg" class="w-4 h-auto rounded-sm" alt="US"><span>English</span>
-                        </button>
-                        <button onclick="triggerLanguageSwitch('zh', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/CN.svg', '简体中文')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
-                            <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/CN.svg" class="w-4 h-auto rounded-sm" alt="CN"><span>简体中文</span>
-                        </button>
-                        <button onclick="triggerLanguageSwitch('ja', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/JP.svg', '日本語')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
-                            <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/JP.svg" class="w-4 h-auto rounded-sm" alt="JP"><span>日本語</span>
-                        </button>
-                        <button onclick="triggerLanguageSwitch('ko', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/KR.svg', '한국어')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
-                            <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/KR.svg" class="w-4 h-auto rounded-sm" alt="KR"><span>한국어</span>
-                        </button>
-                        <button onclick="triggerLanguageSwitch('de', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/DE.svg', 'Deutsch')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
-                            <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/DE.svg" class="w-4 h-auto rounded-sm" alt="DE"><span>Deutsch</span>
-                        </button>
-                    </div>
+                    <button onclick="triggerLanguageSwitch('zh', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/CN.svg', '简体中文')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
+                        <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/CN.svg" class="w-4 h-auto rounded-sm" alt="CN"><span>简体中文</span>
+                    </button>
+                    <button onclick="triggerLanguageSwitch('ja', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/JP.svg', '日本語')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
+                        <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/JP.svg" class="w-4 h-auto rounded-sm" alt="JP"><span>日本語</span>
+                    </button>
+                    <button onclick="triggerLanguageSwitch('ko', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/KR.svg', '한국어')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
+                        <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/KR.svg" class="w-4 h-auto rounded-sm" alt="KR"><span>한국어</span>
+                    </button>
+                    <button onclick="triggerLanguageSwitch('de', 'https://purecatamphetamine.github.io/country-flag-icons/3x2/DE.svg', 'Deutsch')" class="w-full text-left px-3 py-2 text-xs rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-slate-700">
+                        <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/DE.svg" class="w-4 h-auto rounded-sm" alt="DE"><span>Deutsch</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -73,81 +66,53 @@
 
     <main class="flex-grow max-w-5xl w-full mx-auto px-6 py-12 space-y-16">
         
-        <!-- 顶部门面与登录控制区 -->
-        <section class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="welcome-grid">
-                
-                <!-- 左侧：宣传文案（永久保留） -->
-                <div class="space-y-4 lg:col-span-7 text-left">
-                    <div class="inline-flex items-center bg-indigo-50 border border-indigo-100 px-3 py-0.5 rounded-full text-[11px] text-indigo-600 font-semibold">
-                        <span class="data-lang" data-en="Paid Online Surveys" data-zh="在线有奖有偿调研" data-ja="オンライン有料アンケート" data-ko="온라인 유료 설문조사" data-de="Bezahlte Online-Umfragen">Paid Online Surveys</span>
-                    </div>
-                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
-                        <span class="data-lang" data-en="Share Your Opinions," data-zh="分享您的真实看法，" data-ja="あなたの意見を共有して、" data-ko="의견을 공유하고," data-de="Teilen Sie Ihre Meinung,">Share Your Opinions,</span><br>
-                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 data-lang" data-en="Get Paid Daily" data-zh="每天轻松赚取奖励" data-ja="毎日報酬を稼ごう" data-ko="매일 보상을 받으세요" data-de="Täglich Geld verdienen">Get Paid Daily</span>
-                    </h1>
-                    <p class="text-slate-500 text-sm leading-relaxed data-lang"
-                       data-en="Companies want to know what you think about their products and services. Spend a few minutes answering simple questionnaires, earn points, and exchange them for cash or gift cards."
-                       data-zh="很多大公司都想了解您对他们产品和服务的真实看法。花几分钟回答几个简单的问卷问题，赚取点数，然后直接换成现金或者礼品卡。"
-                       data-ja="企業は自社製品やサービスに対するあなたの意見を知りたがっています。数分で簡単な質問に答え、ポイントを貯めて現金やギフトカードに交換しましょう。"
-                       data-ko="많은 기업들이 브랜드와 서비스에 대한 유저의 생각을 궁금해합니다. 하루 몇 분만 투자해 간단한 질문에 답하고, 포인트를 모아 현금이나 기프트카드로 바꿔보세요."
-                       data-de="Unternehmen wollen wissen, was Sie über ihre Produkte und Dienstleistungen denken. Beantworten Sie einfache Fragen, sammeln Sie Punkte und tauschen Sie diese gegen Bargeld oder Gutscheine ein.">
-                        Companies want to know what you think about their products and services. Spend a few minutes answering simple questionnaires, earn points, and exchange them for cash or gift cards.
-                    </p>
-                    <div class="pt-1" id="join-btn-container">
-                        <button onclick="scrollToAuth()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs tracking-wide px-5 py-3 rounded-xl transition-all shadow-sm text-center data-lang" data-en="Join For Free" data-zh="免费注册加入" data-ja="無料で登録" data-ko="무료 회원가입" data-de="Kostenlos anmelden">Join For Free</button>
-                    </div>
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+            <div class="space-y-4 lg:col-span-8 text-left">
+                <div class="inline-flex items-center bg-indigo-50 border border-indigo-100 px-3 py-0.5 rounded-full text-[11px] text-indigo-600 font-semibold">
+                    <span class="data-lang" data-en="Paid Online Surveys" data-zh="在线有奖有偿调研" data-ja="オンライン有料アンケート" data-ko="온라인 유료 설문조사" data-de="Bezahlte Online-Umfragen">Paid Online Surveys</span>
                 </div>
-
-                <!-- 右侧栏：未登录时显示动态登录框，代替原本的静态任务列表 -->
-                <div class="lg:col-span-5 w-full" id="auth-box-wrapper">
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-6 space-y-4 shadow-inner" id="auth-section">
-                        <div class="text-center">
-                            <span class="text-xs uppercase tracking-wider text-slate-500 font-bold data-lang" data-en="Account Console" data-zh="会员控制台" data-ja="メンバーコンソール" data-ko="회원 콘솔" data-de="Mitglieder-Konsole">Account Console</span>
-                        </div>
-                        <div class="space-y-2.5">
-                            <input type="email" id="email" class="w-full px-3 py-2.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500 transition shadow-sm" placeholder="Email address">
-                            <input type="password" id="password" class="w-full px-3 py-2.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500 transition shadow-sm" placeholder="Password">
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 pt-1">
-                            <button onclick="signIn()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-2.5 rounded-lg transition shadow-sm data-lang" data-en="Sign In" data-zh="立即登录" data-ja="ログイン" data-ko="로그인" data-de="Einloggen">Sign In</button>
-                            <button onclick="signUp()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs py-2.5 rounded-lg transition shadow-sm data-lang" data-en="Register" data-zh="注册账户" data-ja="新規登録" data-ko="회원가입" data-de="Registrieren">Register</button>
-                        </div>
-                        <p id="auth-msg" class="text-[11px] font-semibold text-center mt-2 min-h-[16px]"></p>
-                    </div>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
+                    <span class="data-lang" data-en="Share Your Opinions," data-zh="分享您的真实看法，" data-ja="あなたの意見を共有して、" data-ko="의견을 공유하고," data-de="Teilen Sie Ihre Meinung,">Share Your Opinions,</span><br>
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 data-lang" data-en="Get Paid Daily" data-zh="每天轻松赚取奖励" data-ja="毎日報酬を稼ごう" data-ko="매일 보상을 받으세요" data-de="Täglich Geld verdienen">Get Paid Daily</span>
+                </h1>
+                <p class="text-slate-500 text-sm leading-relaxed data-lang"
+                   data-en="Companies want to know what you think about their products and services. Spend a few minutes answering simple questionnaires, earn points, and exchange them for cash or gift cards."
+                   data-zh="很多大公司都想了解您对他们产品和服务的真实看法。花几分钟回答几个简单的问卷问题，赚取点数，然后直接换成现金或者礼品卡。"
+                   data-ja="企業は自社製品やサービスに対するあなたの意見を知りたがっています。数分で簡単な質問に答え、ポイントを貯めて現金やギフトカードに交換しましょう。"
+                   data-ko="많은 기업들이 브랜드와 서비스에 대한 유저의 생각을 궁금해합니다. 하루 몇 분만 투자해 간단한 질문에 답하고, 포인트를 모아 현금이나 기프트카드로 바꿔보세요."
+                   data-de="Unternehmen wollen wissen, was Sie über ihre Produkte und Dienstleistungen denken. Beantworten Sie einfache Fragen, sammeln Sie Punkte und tauschen Sie diese gegen Bargeld oder Gutscheine ein.">
+                    Companies want to know what you think about their products and services. Spend a few minutes answering simple questionnaires, earn points, and exchange them for cash or gift cards.
+                </p>
+                <div class="pt-1">
+                    <button onclick="alert('Registration will open very soon!')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs tracking-wide px-5 py-3 rounded-xl transition-all shadow-sm text-center data-lang" data-en="Join For Free" data-zh="免费注册加入" data-ja="無料で登録" data-ko="무료 회원가입" data-de="Kostenlos anmelden">Join For Free</button>
                 </div>
             </div>
 
-            <!-- 核心升级：已登录状态的面板（默认隐藏，登录后在此处全宽展开） -->
-            <div id="user-section" class="hidden border-t border-slate-100 pt-8 mt-8 space-y-6">
-                <div class="bg-slate-50 rounded-xl p-5 flex flex-col sm:flex-row justify-between items-center border border-slate-200/60 gap-4">
-                    <div class="text-center sm:text-left">
-                        <h3 class="text-sm font-bold text-slate-800">
-                            <span class="data-lang" data-en="Welcome back," data-zh="欢迎回来，" data-ja="おかえりなさい、" data-ko="어서 오세요," data-de="Willkommen zurück,">Welcome back,</span> 
-                            <span id="user-email" class="text-indigo-600 font-mono"></span>
-                        </h3>
-                        <p class="text-xs text-slate-500 mt-1">
-                            <span class="data-lang" data-en="Your Balance:" data-zh="您的可用余额:" data-ja="現在の残高:" data-ko="현재 적립금:" data-de="Ihr Guthaben:">Your Balance:</span> 
-                            <span id="user-points" class="font-bold text-emerald-600 text-sm font-mono bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/50">0</span> 
-                            <span class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider ml-1">Points</span>
-                        </p>
-                    </div>
-                    <button onclick="signOut()" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200/60 font-bold text-xs px-4 py-2 rounded-lg transition shadow-sm data-lang" data-en="Secure Sign Out" data-zh="安全退出登录" data-ja="安全にログアウト" data-ko="안전하게 로그아웃" data-de="Sicher ausloggen">Secure Sign Out</button>
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3.5 lg:col-span-4 w-full">
+                <div>
+                    <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold data-lang" data-en="Available Surveys Today" data-zh="今日开放任务" data-ja="本日のタスク" data-ko="오늘의 활성 설문" data-de="Verfügbare Aufgaben">Available Surveys Today</span>
                 </div>
-
-                <div class="space-y-3">
-                    <div class="flex items-center space-x-2">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 data-lang" data-en="Live Survey Wall" data-zh="智能问卷大厅" data-ja="アンケートウォール" data-ko="실시간 서베이 월" data-de="Umfragen-Plattform">Live Survey Wall</h3>
+                <div class="space-y-2">
+                    <div class="bg-white p-3 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs">
+                        <span class="font-semibold text-slate-800 data-lang" data-en="Shopping Habits Poll" data-zh="日常购物习惯调查" data-ja="買い物習慣の調査" data-ko="소비 습관 설문조사" data-de="Einkaufsgewohnheiten">Shopping Habits Poll</span>
+                        <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+$2.50</span>
                     </div>
-                    <div id="iframe-container" class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-inner min-h-[600px] flex items-center justify-center">
-                        <p class="text-xs text-slate-400 font-medium data-lang" data-en="Connecting to secure research networks..." data-zh="正在安全连接全球问卷服务器..." data-ja="安全なサーバーに接続中..." data-ko="보안 서베이 서버에 연결 중..." data-de="Verbindung wird hergestellt...">Connecting to secure research networks...</p>
+                    <div class="bg-white p-3 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs">
+                        <span class="font-semibold text-slate-800 data-lang" data-en="Gaming Preferences" data-zh="游戏与娱乐偏好收集" data-ja="ゲームに関するフィードバック" data-ko="게임 선호도 피드백" data-de="Gaming-Präferenzen">Gaming Preferences</span>
+                        <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+$4.00</span>
                     </div>
+                    <div class="bg-white p-3 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs">
+                        <span class="font-semibold text-slate-800 data-lang" data-en="Beverage Brand Choices" data-zh="饮品品牌选择研究" data-ja="飲料の好みの調査" data-ko="음료 브랜드 선호도" data-de="Getränkemarken-Auswahl">Beverage Brand Choices</span>
+                        <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+$1.20</span>
+                    </div>
+                </div>
+                <div class="pt-2 border-t border-slate-200 flex justify-between text-[11px] text-slate-400 font-semibold">
+                    <span class="data-lang" data-en="Average Transfer Time" data-zh="平均打款到账周期" data-ja="平均支払い時間" data-ko="평균 정산 소요 시간" data-de="Durchschnittliche Auszahlung">Average Transfer Time</span>
+                    <span class="text-slate-700 font-bold font-mono">&lt; 24h</span>
                 </div>
             </div>
         </section>
 
-        <!-- 平台特色（完美保留） -->
         <section class="space-y-6">
             <div class="text-center max-w-2xl mx-auto space-y-1">
                 <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 data-lang" data-en="Our Features" data-zh="平台特色" data-ja="当サイトの特徴" data-ko="플랫폼 특징" data-de="Unsere Merkmale">Our Features</div>
@@ -155,119 +120,222 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- 隐私保护 -->
                 <div class="bg-white border border-slate-200 rounded-2xl p-6 space-y-3 shadow-sm">
                     <div class="w-9 h-9 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                     </div>
                     <h3 class="text-base font-bold text-slate-900 data-lang" data-en="Privacy Protection" data-zh="隐私保护说明" data-ja="プライバシーの保護" data-ko="개인정보 보호" data-de="Datenschutz">Privacy Protection</h3>
-                    <p class="text-slate-500 text-xs leading-relaxed data-lang" data-en="We protect your personal data. Your survey answers are completely anonymous and are only used combined with thousands of other users to create statistics reports." data-zh="我们认真保护您的个人信息。您的问卷回答完全是匿名的，只会与其他成千上万名用户的回答汇总在一起，作为统计数据使用。" data-ja="私たちは個人情報を厳重に管理します。アンケートの回答は完全に匿名であり、他のユーザーのデータと統計的にまとめて処理されます。" data-ko="유저의 소중한 개인정보를 안전하게 보호합니다. 답변 내용은 모두 익명으로 처리되며, 통계 데이터를 제작하는 용도로만 활용됩니다." data-de="Wir schützen Ihre persönlichen Daten. Ihre Antworten sind vollkommen anonym und werden nur für Statistiken zusammengefasst.">We protect your personal data. Your survey answers are completely anonymous and are only used combined with thousands of other users to create statistics reports.</p>
+                    <p class="text-slate-500 text-xs leading-relaxed data-lang"
+                       data-en="We protect your personal data. Your survey answers are completely anonymous and are only used combined with thousands of other users to create statistics reports."
+                       data-zh="我们认真保护您的个人信息。您的问卷回答完全是匿名的，只会与其他成千上万名用户的回答汇总在一起，作为统计数据使用。"
+                       data-ja="私たちは個人情報を厳重に管理します。アンケートの回答は完全に匿名であり、他のユーザーのデータと統計的にまとめて処理されます。"
+                       data-ko="유저의 소중한 개인정보를 안전하게 보호합니다. 답변 내용은 모두 익명으로 처리되며, 통계 데이터를 제작하는 용도로만 활용됩니다."
+                       data-de="Wir schützen Ihre persönlichen Daten. Ihre Antworten sind vollkommen anonym und werden nur für Statistiken zusammengefasst.">
+                        We protect your personal data. Your survey answers are completely anonymous and are only used combined with thousands of other users to create statistics reports.
+                    </p>
                 </div>
-                <!-- 适合您的问卷 -->
                 <div class="bg-white border border-slate-200 rounded-2xl p-6 space-y-3 shadow-sm">
                     <div class="w-9 h-9 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                     </div>
                     <h3 class="text-base font-bold text-slate-900 data-lang" data-en="Surveys for Everyone" data-zh="适合您的问卷" data-ja="あなたに合うアンケート" data-ko="맞춤형 설문 매칭" data-de="Passende Umfragen">Surveys for Everyone</h3>
-                    <p class="text-slate-500 text-xs leading-relaxed data-lang" data-en="We filter matching projects based on your basic profile. This minimizes errors and rejections while you are filling out the survey details." data-zh="我们系统会根据您登记的基本个人资料来分发合适的问卷，尽量减少因为条件不符而在答题中途被弹出来的情况。" data-ja="ユーザープロフィールに基づいて適切な案件を案内します。これにより、回答中のエラーや不適合による中断を最小限に抑えます。" data-ko="입력된 프로필을 분석하여 조건에 어울리는 설문조사를 연결합니다. 응답 도중에 자격 불일치로 탈락하는 현상을 최소화합니다." data-de="Wir wählen passende Projekte basierend auf Ihrem Profil. Dies minimiert Fehler und Ablehnungen während der Umfrage.">We filter matching projects based on your basic profile. This minimizes errors and rejections while you are filling out the survey details.</p>
+                    <p class="text-slate-500 text-xs leading-relaxed data-lang"
+                       data-en="We filter matching projects based on your basic profile. This minimizes errors and rejections while you are filling out the survey details."
+                       data-zh="我们系统会根据您登记的基本个人资料来分发合适的问卷，尽量减少因为条件不符而在答题中途被弹出来的情况。"
+                       data-ja="ユーザープロフィールに基づいて適切な案件を案内します。これにより、回答中のエラーや不適合による中断を最小限に抑えます。"
+                       data-ko="입력된 프로필을 분석하여 조건에 어울리는 설문조사를 연결합니다. 응답 도중에 자격 불일치로 탈락하는 현상을 최소화합니다."
+                       data-de="Wir wählen passende Projekte basierend auf Ihrem Profil. Dies minimiert Fehler und Ablehnungen während der Umfrage.">
+                        We filter matching projects based on your basic profile. This minimizes errors and rejections while you are filling out the survey details.
+                    </p>
                 </div>
-                <!-- 稳定的积分到账 -->
                 <div class="bg-white border border-slate-200 rounded-2xl p-6 space-y-3 shadow-sm">
                     <div class="w-9 h-9 rounded-lg bg-pink-100 flex items-center justify-center text-pink-600">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
                     <h3 class="text-base font-bold text-slate-900 data-lang" data-en="Reliable Point Clearings" data-zh="稳定的积分到账" data-ja="確実なポイント反映" data-ko="신속한 적립금 반영" data-de="Zuverlässige Freigabe">Reliable Point Clearings</h3>
-                    <p class="text-slate-500 text-xs leading-relaxed data-lang" data-en="No unexpected hold times. Once a survey is successfully finished and verified, the point value is directly added to your personal dashboard account." data-zh="平台不设置任何不透明的故意拖延处理。只要问卷认真做完并且通过基本验证，相应的积分就会很快出现在您的个人后台。" data-ja="不透明な保留期間はありません。アンケートが正常に完了し確認されると、ポイントはアカウント残高に直接反映されます。" data-ko="지루한 승인 대기 기간이 없습니다. 설문 과제가 정상적으로 완료되면 포인트가 유저의 대시보드 계정으로 지급됩니다." data-de="Keine unerwarteten Haltefristen. Sobald eine Umfrage abgeschlossen ist, werden die Punkte Ihrem Konto gutgeschrieben.">No unexpected hold times. Once a survey is successfully finished and verified, the point value is directly added to your personal dashboard account.</p>
+                    <p class="text-slate-500 text-xs leading-relaxed data-lang"
+                       data-en="No unexpected hold times. Once a survey is successfully finished and verified, the point value is directly added to your personal dashboard account."
+                       data-zh="平台不设置任何不透明的故意拖延处理。只要问卷认真做完并且通过基本验证，相应的积分就会很快出现在您的个人后台。"
+                       data-ja="不透明な保留期間はありません。アンケートが正常に完了し確認されると、ポイントはアカウント残高に直接反映されます。"
+                       data-ko="지루한 승인 대기 기간이 없습니다. 설문 과제가 정상적으로 완료되면 포인트가 유저의 대시보드 계정으로 지급됩니다."
+                       data-de="Keine unerwarteten Haltefristen. Sobald eine Umfrage abgeschlossen ist, werden die Punkte Ihrem Konto gutgeschrieben.">
+                        No unexpected hold times. Once a survey is successfully finished and verified, the point value is directly added to your personal dashboard account.
+                    </p>
                 </div>
             </div>
         </section>
 
-        <!-- 结算渠道（完美保留） -->
         <section class="space-y-6">
             <div class="text-center max-w-xl mx-auto space-y-1">
                 <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 data-lang" data-en="Payout Methods" data-zh="结算渠道" data-ja="交換オプション" data-ko="보상 출금 옵션" data-de="Auszahlungsoptionen">Payout Methods</div>
                 <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight data-lang" data-en="Supported Reward Options" data-zh="支持换取的常见礼品卡与现金" data-ja="選択できる報酬オプション" data-ko="지원되는 공식 환전 채널" data-de="Unterstützte Prämienoptionen">Supported Reward Options</h2>
             </div>
+
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-                <!-- 各种礼品卡卡片保持原样 -->
                 <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                    <div class="h-8 flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazon.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Amazon"></div>
-                    <div class="mt-2"><div class="text-xs font-bold text-slate-800">Amazon Gift Card</div><div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Digital Payout</div></div>
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazon.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Amazon">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">Amazon Gift Card</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Digital Payout</div>
+                    </div>
                 </div>
                 <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                    <div class="h-8 flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="PayPal"></div>
-                    <div class="mt-2"><div class="text-xs font-bold text-slate-800">PayPal Funds</div><div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Direct Transfer</div></div>
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="PayPal">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">PayPal Funds</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Direct Transfer</div>
+                    </div>
                 </div>
                 <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                    <div class="h-8 flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Steam"></div>
-                    <div class="mt-2"><div class="text-xs font-bold text-slate-800">Steam Wallet</div><div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Wallet Credits</div></div>
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Steam">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">Steam Wallet</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Wallet Credits</div>
+                    </div>
                 </div>
                 <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                    <div class="h-8 flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/playstation.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="PlayStation"></div>
-                    <div class="mt-2"><div class="text-xs font-bold text-slate-800">PSN Network</div><div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Voucher Code</div></div>
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/playstation.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="PlayStation">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">PSN Network</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Voucher Code</div>
+                    </div>
                 </div>
                 <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                    <div class="h-8 flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/xbox.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Xbox"></div>
-                    <div class="mt-2"><div class="text-xs font-bold text-slate-800">Xbox Live</div><div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Store Code</div></div>
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/xbox.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Xbox">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">Xbox Live</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Store Code</div>
+                    </div>
                 </div>
                 <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                    <div class="h-8 flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/nintendoswitch.svg" class="h-5 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Nintendo"></div>
-                    <div class="mt-2"><div class="text-xs font-bold text-slate-800">eShop Voucher</div><div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Digital Code</div></div>
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/nintendoswitch.svg" class="h-5 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Nintendo">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">eShop Voucher</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Digital Code</div>
+                    </div>
                 </div>
                 <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                    <div class="h-8 flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/roblox.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Roblox"></div>
-                    <div class="mt-2"><div class="text-xs font-bold text-slate-800">Robux Token</div><div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Direct Credit</div></div>
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/roblox.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Roblox">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">Robux Token</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Direct Credit</div>
+                    </div>
                 </div>
                 <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                    <div class="h-8 flex items-center justify-center"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/bitcoin.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Bitcoin"></div>
-                    <div class="mt-2"><div class="text-xs font-bold text-slate-800">Bitcoin Network</div><div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Wallet Transfer</div></div>
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/bitcoin.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Bitcoin">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">Bitcoin Network</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Wallet Transfer</div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- 参与流程（完美保留） -->
         <section class="space-y-6">
             <div class="text-center max-w-2xl mx-auto space-y-1">
                 <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 data-lang" data-en="How to Start" data-zh="参与流程" data-ja="ご利用の流れ" data-ko="시작 가이드" data-de="Schritte">How to Start</div>
                 <h2 class="text-2xl font-extrabold text-slate-900 data-lang" data-en="Earn Rewards in Three Simple Steps" data-zh="只需简单三步即可获得奖励" data-ja="3つのステップで報酬を獲得" data-ko="간단한 3단계로 시작하세요" data-de="In drei einfachen Schritten verdienen">Earn Rewards in Three Simple Steps</h2>
             </div>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                 <div class="relative bg-white border border-slate-200 p-5 rounded-xl space-y-2 shadow-sm">
                     <div class="w-6 h-6 bg-indigo-600 rounded-md flex items-center justify-center text-white font-bold text-xs">1</div>
                     <h4 class="text-base font-bold text-slate-900 pt-0.5 data-lang" data-en="Create Account" data-zh="1. 注册账号" data-ja="1. アカウント作成" data-ko="1. 회원가입" data-de="1. Registrierung">Create Account</h4>
-                    <p class="text-slate-500 text-xs leading-relaxed data-lang" data-en="Sign up with your email address using our secure register form to activate your dashboard." data-zh="通过我们安全的注册表格填写邮箱地址，即可开通激活您的个人主控后台。" data-ja="メールアドレスでアカウントを作成し、ダッシュボードを有効化します。" data-ko="이메일 주소로 계정을 생성하고 서베이 대시보드를 활성화합니다." data-de="Erstellen Sie ein Konto mit Ihrer E-Mail, um das Dashboard zu aktivieren.">Sign up with your email address using our secure register form to activate your dashboard.</p>
+                    <p class="text-slate-500 text-xs leading-relaxed data-lang"
+                       data-en="Sign up with your email address using our secure register form to activate your dashboard."
+                       data-zh="通过我们安全的注册表格填写邮箱地址，即可开通激活您的个人主控后台。"
+                       data-ja="メールアドレスでアカウントを作成し、ダッシュボードを有効化します。"
+                       data-ko="이메일 주소로 계정을 생성하고 서베이 대시보드를 활성화합니다."
+                       data-de="Erstellen Sie ein Konto mit Ihrer E-Mail, um das Dashboard zu aktivieren.">
+                        Sign up with your email address using our secure register form to activate your dashboard.
+                    </p>
                 </div>
                 <div class="relative bg-white border border-slate-200 p-5 rounded-xl space-y-2 shadow-sm">
                     <div class="w-6 h-6 bg-purple-600 rounded-md flex items-center justify-center text-white font-bold text-xs">2</div>
                     <h4 class="text-base font-bold text-slate-900 pt-0.5 data-lang" data-en="Complete Questionnaires" data-zh="2. 回答问卷调查" data-ja="2. アンケートへの回答" data-ko="2. 설문조사 응답" data-de="2. Beantwortung">Complete Questionnaires</h4>
-                    <p class="text-slate-500 text-xs leading-relaxed data-lang" data-en="Select any available project inside your user dashboard and share your honest feedback about daily consumption." data-zh="在个人后台中选择任意可用的调研项目，根据您日常真实的消费习惯回答问题即可。" data-ja="ダッシュボードから利用可能な案件を選択し、日常の消费に関する意见を入力します。" data-ko="대시보드에서 활성화된 프로젝트를 선택하고 일상 소비에 대한 의견을 솔직하게 작성합니다." data-de="Wählen Sie verfügbare Projekte aus und teilen Sie Ihre ehrliche Meinung zum Konsum.">Select any available project inside your user dashboard and share your honest feedback about daily consumption.</p>
+                    <p class="text-slate-500 text-xs leading-relaxed data-lang"
+                       data-en="Select any available project inside your user dashboard and share your honest feedback about daily consumption."
+                       data-zh="在个人后台中选择任意可用的调研项目，根据您日常真实的消费习惯回答问题即可。"
+                       data-ja="ダッシュボードから利用可能な案件を選択し、日常の消費に関する意見を入力します。"
+                       data-ko="대시보드에서 활성화된 프로젝트를 선택하고 일상 소비에 대한 의견을 솔직하게 작성합니다."
+                       data-de="Wählen Sie verfügbare Projekte aus und teilen Sie Ihre ehrliche Meinung zum Konsum.">
+                        Select any available project inside your user dashboard and share your honest feedback about daily consumption.
+                    </p>
                 </div>
                 <div class="relative bg-white border border-slate-200 p-5 rounded-xl space-y-2 shadow-sm">
                     <div class="w-6 h-6 bg-pink-600 rounded-md flex items-center justify-center text-white font-bold text-xs">3</div>
                     <h4 class="text-base font-bold text-slate-900 pt-0.5 data-lang" data-en="Redeem Vouchers" data-zh="3. 申请兑换提取" data-ja="3. 報酬の交換" data-ko="3. 보상 적립금 환전" data-de="3. Auszahlung">Redeem Vouchers</h4>
-                    <p class="text-slate-500 text-xs leading-relaxed data-lang" data-en="Once points hit the minimum requirement, submit a payout application to transfer assets to our approved partners." data-zh="当积分累积达到最低提取要求时，即可提交申请，将积攒的价值提现到支持的官方渠道。" data-ja="最低ポイントに達した後、交換を申請し、提携決済方法へ転送します。" data-ko="최소 정산 기준에 도달하면 보상 출금을 신청하여 제휴 채널로 환전받을 수 있습니다." data-de="Sobald die Mindestpunktzahl erreicht ist, fordern Sie die Auszahlung auf Partnerkanäle an.">Once points hit the minimum requirement, submit a payout application to transfer assets to our approved partners.</p>
+                    <p class="text-slate-500 text-xs leading-relaxed data-lang"
+                       data-en="Once points hit the minimum requirement, submit a payout application to transfer assets to our approved partners."
+                       data-zh="当积分累积达到最低提取要求时，即可提交申请，将积攒的价值提现到支持的官方渠道。"
+                       data-ja="最低ポイントに達した後、交換を申請し、提携決済方法へ転送します。"
+                       data-ko="최소 정산 기준에 도달하면 보상 출금을 신청하여 제휴 채널로 환전받을 수 있습니다."
+                       data-de="Sobald die Mindestpunktzahl erreicht ist, fordern Sie die Auszahlung auf Partnerkanäle an.">
+                        Once points hit the minimum requirement, submit a payout application to transfer assets to our approved partners.
+                    </p>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- 页脚部分完美保留 -->
     <footer class="bg-slate-900 text-slate-400 px-6 py-12 mt-16 border-t border-slate-800">
         <div class="max-w-5xl w-full mx-auto flex flex-col space-y-8">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center border-b border-slate-800 pb-8">
                 <div class="md:col-span-8 space-y-2 text-center md:text-left">
                     <h3 class="text-lg font-bold text-white data-lang" data-en="Valuable Consumer Voices, Trusted Data Network." data-zh="重视消费者的观点，打造值得信赖的调研网络。" data-ja="消費者の意見を大切にし、信頼されるネットワークへ。" data-ko="소비자의 소중한 한마디, 신뢰할 수 있는 데이터 네트워크." data-de="Wertvolle Stimmen, vertrauenswürdiges Netzwerk.">Valuable Consumer Voices, Trusted Data Network.</h3>
-                    <p class="text-slate-500 text-xs max-w-xl leading-relaxed mx-auto md:mx-0 data-lang" data-en="DataPrism connects regular people with brand operators globally. We comply with official internet legal guidelines to ensure a fair and reliable survey space." data-zh="DataPrism 致力于将普通大众与全球品牌拥有者紧密结合。我们严格遵守官方网络隐私保护法规，确保营造一个公正且值得信赖的调研答题空间。" data-ja="DataPrismはユーザーと世界のブランド企業を繋ぎます。各種法令を順守し、誰もが安心して利用できる環境を作ります。" data-ko="DataPrism은 일반 소비자와 글로벌 브랜드 파트너를 연결합니다. 관련 법적 규정을 성실히 준수하여 안심할 수 있는 설문조사 환경을 제공합니다." data-de="DataPrism verbindet Menschen weltweit mit Marken. Wir beachten rechtliche Richtlinien für ein sicheres Umfeld.">DataPrism connects regular people with brand operators globally. We comply with official internet legal guidelines to ensure a fair and reliable survey space.</p>
+                    <p class="text-slate-500 text-xs max-w-xl leading-relaxed mx-auto md:mx-0 data-lang"
+                       data-en="DataPrism connects regular people with brand operators globally. We comply with official internet legal guidelines to ensure a fair and reliable survey space."
+                       data-zh="DataPrism 致力于将普通大众与全球品牌拥有者紧密结合。我们严格遵守官方网络隐私保护法规，确保营造一个公正且值得信赖的调研答题空间。"
+                       data-ja="DataPrismはユーザーと世界のブランド企業を繋ぎます。各種法令を順守し、誰もが安心して利用できる環境を作ります。"
+                       data-ko="DataPrism은 일반 소비자와 글로벌 브랜드 파트너를 연결합니다. 관련 법적 규정을 성실히 준수하여 안심할 수 있는 설문조사 환경을 제공합니다."
+                       data-de="DataPrism verbindet Menschen weltweit mit Marken. Wir beachten rechtliche Richtlinien für ein sicheres Umfeld.">
+                        DataPrism connects regular people with brand operators globally. We comply with official internet legal guidelines to ensure a fair and reliable survey space.
+                    </p>
                 </div>
                 <div class="md:col-span-4 flex justify-center md:justify-end">
                     <button onclick="alert('All channels operating normally.')" class="bg-white hover:bg-gray-100 text-slate-900 font-bold text-xs px-5 py-3 rounded-xl transition shadow-md uppercase data-lang" data-en="Check Network Status" data-zh="检查网站运行状态" data-ja="サービス状態を確認" data-ko="네트워크 상태 체크" data-de="Status prüfen">Check Network Status</button>
                 </div>
             </div>
+
             <div class="text-[10px] text-slate-500 space-y-2 leading-relaxed">
-                <p class="data-lang" data-en="Legal Disclaimer: DataPrism is an independent online research platform..." data-zh="法律说明与免责条款：DataPrism 是一个独立的在线商业调研平台...页面上所展示的品牌商标图标均属于其各自合法所有人...">Legal Disclaimer: DataPrism is an independent online research platform...</p>
+                <p class="data-lang"
+                   data-en="Legal Disclaimer: DataPrism is an independent online research platform. The company logos shown here — including Amazon, PayPal, Steam, PlayStation, Xbox, Nintendo, and Roblox — belong to their own trademark companies. We use these logos strictly to show you what reward options you can choose from, which does not mean we are officially sponsored or backed by these brands."
+                   data-zh="法律说明与免责条款：DataPrism 是一个独立的在线商业调研平台。页面上所展示的 Amazon、PayPal、Steam、PlayStation、Xbox、Nintendo 以及 Roblox 等品牌商标图标，均属于其各自的合法所有人所有。这里展示它们的唯一目的仅仅是为了直观展示平台支持换取哪些奖励，并不直接构成品牌方的赞助、联合代言或官方背书。"
+                   data-ja="免責事項：DataPrismは独立したオンライン調査プラットフォームです。表示されているAmazon、PayPal、Steam、PlayStation、Xbox、Robloxなどのロゴは、各社の商標です。これらのロゴは交換可能なアイテムを紹介する目的でのみ使用しており、ブランド公式の協賛を意味するものではありません。"
+                   data-ko="법적 고지 및 면책 조항: DataPrism은 독자적으로 운영되는 온라인 마켓 서베이 플랫폼입니다. 본 사이트에 게재된 Amazon, PayPal, Steam, PlayStation, Xbox, Nintendo, Roblox 등의 로고와 상표권은 해당 기업에 있습니다. 브랜드 로고의 노출은 환전 가능한 보상을 직관적으로 안내하기 위한 것일 뿐이며, 해당 기업의 직접적인 후원이나 공식 제휴를 뜻하지 않습니다."
+                   data-de="Haftungsausschluss: DataPrism ist eine unabhängige Plattform. Die gezeigten Logos (Amazon, PayPal, Steam usw.) gehören den jeweiligen Eigentümern. Wir nutzen sie nur, um Auszahlungsoptionen zu zeigen. Dies bedeutet keine offizielle Unterstützung.">
+                    Legal Disclaimer: DataPrism is an independent online research platform. The company logos shown here — including Amazon, PayPal, Steam, PlayStation, Xbox, Nintendo, and Roblox — belong to their own trademark companies. We use these logos strictly to show you what reward options you can choose from, which does not mean we are officially sponsored or backed by these brands.
+                </p>
+                <p class="data-lang"
+                   data-en="Data processing aligns strictly with popular data security laws including the General Data Protection Regulation (GDPR) and California Consumer Privacy Act (CCPA) terms to safeguard your digital address privacy."
+                   data-zh="我们在日常信息处理与核对流转中，会严格遵循包括通用数据保护条例 (GDPR) 以及加州消费者隐私法案 (CCPA) 在内的国际主流网络隐私保护法规，切实保障每一位会员的线上合法权益。"
+                   data-ja="データ処理は、ユーザーの情報を保護するために、GDPRやCCPAなどの主要なデータ保護規則を厳密に遵守してサイトを運営しています。"
+                   data-ko="본 플랫폼의 데이터 처리 프로세스는 유럽 일반 데이터 보호 규정(GDPR) 및 미국 캘리포니아 소비자 개인정보 보호법(CCPA) 기준에 부합하도록 철저하게 관리됩니다."
+                   data-de="Die Datenverarbeitung steht in Übereinstimmung mit den Standards der Datenschutz-Grundverordnung (DSGVO) und des CCPA.">
+                    Data processing aligns strictly with popular data security laws including the General Data Protection Regulation (GDPR) and California Consumer Privacy Act (CCPA) terms to safeguard your digital address privacy.
+                </p>
             </div>
+
             <div class="pt-4 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600 gap-2">
-                <div>© 2026 DataPrism Research Network Platform. All Rights Reserved.</div>
+                <div>
+                    © 2026 DataPrism Research Network Platform. All Rights Reserved.
+                </div>
                 <div class="flex space-x-6 font-bold text-slate-500">
                     <a href="terms.html" target="_blank" class="hover:text-white transition-colors duration-200 data-lang" data-en="Terms of Service & Privacy Protocol" data-zh="服务条款与隐私保障协议" data-ja="利用規約とプライバシーポリシー" data-ko="서비스 이용 약관 및 정책" data-de="Nutzungsbedingungen & Datenschutz">Terms of Service & Privacy Protocol</a>
                 </div>
@@ -276,11 +344,6 @@
     </footer>
 
     <script>
-        // Supabase 高级配置参数
-        const SUPABASE_URL = "https://mbxemvfizvmeknfssgut.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_Ubs0kjjsXrLDVRauM_j1Ng_Q6OL-cYG";
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
         const langBtn = document.getElementById('lang-btn');
         const langDropdown = document.getElementById('lang-dropdown');
         const currentFlagImg = document.getElementById('current-flag-img');
@@ -289,102 +352,14 @@
         const loadingOverlay = document.getElementById('loading-overlay');
         const loadingText = document.getElementById('loading-text');
 
-        // 统一多语言通知系统
-        const localizedAlerts = {
-            en: { regSuccess: "Registration successful! Please check your email inbox to verify your account.", loginFail: "Login failed: ", regFail: "Registration failed: ", loading: "Loading...", netConnect: "Connecting to secure networks..." },
-            zh: { regSuccess: "注册成功！请前往您的邮箱查收激活验证邮件。", loginFail: "登录失败: ", regFail: "注册失败: ", loading: "加载中...", netConnect: "正在安全连接全球问卷服务器..." },
-            ja: { regSuccess: "登録成功！メールボックスを確認してアカウントを有効化してください。", loginFail: "ログイン失敗: ", regFail: "登録失敗: ", loading: "読み込み中...", netConnect: "安全なサーバーに接続中..." },
-            ko: { regSuccess: "회원가입 성공! 이메일함을 확인하여 계정을 활성화해주세요.", loginFail: "로그인 실패: ", regFail: "회원가입 실패: ", loading: "로드 중...", netConnect: "보안 서베이 서버에 연결 중..." },
-            de: { regSuccess: "Registrierung erfolgreich! Bitte prüfen Sie Ihre E-Mails zur Aktivierung.", loginFail: "Login fehlgeschlagen: ", regFail: "Registrierung fehlgeschlagen: ", loading: "Laden...", netConnect: "Verbindung wird hergestellt..." }
+        const loadingPhrases = {
+            en: "Loading...",
+            zh: "加载中...",
+            ja: "読み込み中...",
+            ko: "로드 중...",
+            de: "Laden..."
         };
 
-        let currentLang = 'en';
-
-        // 监听全局 Auth 状态变更
-        supabase.auth.onAuthStateChange((event, session) => {
-            if (session) {
-                renderUserDashboard(session.user);
-            } else {
-                renderGuestConsole();
-            }
-        });
-
-        // 账户登录
-        async function signIn() {
-            clearAuthMsg();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) setAuthMsg(localizedAlerts[currentLang].loginFail + error.message, "text-red-500");
-        }
-
-        // 账户注册
-        async function signUp() {
-            clearAuthMsg();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const { error } = await supabase.auth.signUp({ email, password });
-            if (error) {
-                setAuthMsg(localizedAlerts[currentLang].regFail + error.message, "text-red-500");
-            } else {
-                setAuthMsg(localizedAlerts[currentLang].regSuccess, "text-emerald-600");
-            }
-        }
-
-        // 账户安全登出
-        async function signOut() {
-            await supabase.auth.signOut();
-        }
-
-        // 核心渲染：登录状态（隐藏右侧栏小框，在下方全宽拉开问卷大厅）
-        async function renderUserDashboard(user) {
-            document.getElementById('auth-box-wrapper').classList.add('hidden', 'lg:hidden');
-            document.getElementById('welcome-grid').firstElementChild.className = "space-y-4 lg:col-span-12 text-left";
-            document.getElementById('join-btn-container').classList.add('hidden');
-            
-            const userSection = document.getElementById('user-section');
-            userSection.classList.remove('hidden');
-            document.getElementById('user-email').innerText = user.email;
-
-            const navStatus = document.getElementById('nav-user-status');
-            navStatus.innerText = `● ID: ${user.email.split('@')[0]}`;
-            navStatus.classList.remove('hidden');
-
-            // 联动之前写好的 profiles 表查积分钱包
-            const { data } = await supabase.from('profiles').select('points').eq('id', user.id).single();
-            if (data) document.getElementById('user-points').innerText = data.points;
-
-            // 动态注入积分墙 iframe，完美包含用户唯一 UID 参数 (ext_user_id)
-            const userId = user.id;
-            const wallUrl = `https://offers.cpx-research.com/index.php?app_id=你的积分墙ID&ext_user_id=${userId}`;
-            document.getElementById('iframe-container').innerHTML = `<iframe src="${wallUrl}" class="w-full h-[750px] border-none"></iframe>`;
-        }
-
-        // 核心渲染：游客/未登录状态
-        function renderGuestConsole() {
-            document.getElementById('auth-box-wrapper').classList.remove('hidden', 'lg:hidden');
-            document.getElementById('welcome-grid').firstElementChild.className = "space-y-4 lg:col-span-7 text-left";
-            document.getElementById('join-btn-container').classList.remove('hidden');
-            document.getElementById('user-section').classList.add('hidden');
-            document.getElementById('nav-user-status').classList.add('hidden');
-            document.getElementById('iframe-container').innerHTML = `<p class="text-xs text-slate-400 font-medium data-lang" data-en="Connecting to secure research networks..." data-zh="正在安全连接全球问卷服务器..." data-ja="安全なサーバーに接続中..." data-ko="보안 서베이 서버에 연결 중..." data-de="Verbindung wird hergestellt...">${localizedAlerts[currentLang].netConnect}</p>`;
-            clearAuthMsg();
-        }
-
-        function setAuthMsg(text, colorClass) {
-            const msg = document.getElementById('auth-msg');
-            msg.className = `text-[11px] font-semibold text-center mt-2 min-h-[16px] ${colorClass}`;
-            msg.innerText = text;
-        }
-        function clearAuthMsg() {
-            const msg = document.getElementById('auth-msg');
-            msg.innerText = "";
-        }
-        function scrollToAuth() {
-            document.getElementById('auth-section').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // 语言包下拉切换事件驱动
         langBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             const isHidden = langDropdown.classList.contains('hidden-menu');
@@ -403,10 +378,11 @@
         });
 
         function triggerLanguageSwitch(langCode, flagUrl, langName) {
-            currentLang = langCode;
-            loadingText.textContent = localizedAlerts[langCode]?.loading || localizedAlerts.en.loading;
+            loadingText.textContent = loadingPhrases[langCode] || loadingPhrases.en;
             loadingOverlay.classList.remove('hidden');
-            setTimeout(() => { loadingOverlay.style.opacity = "1"; }, 10);
+            setTimeout(() => {
+                loadingOverlay.style.opacity = "1";
+            }, 10);
 
             setTimeout(() => {
                 currentFlagImg.src = flagUrl;
@@ -419,7 +395,9 @@
                 });
 
                 loadingOverlay.style.opacity = "0";
-                setTimeout(() => { loadingOverlay.classList.add('hidden'); }, 300);
+                setTimeout(() => {
+                    loadingOverlay.classList.add('hidden');
+                }, 300);
             }, 650); 
         }
     </script>
