@@ -205,6 +205,10 @@
             // 甭管里面填了啥，只要想点注册，直接大红 Banner 送客
             showBanner("Invalid or expired invitation code. Registration denied.");
         }
+        // 别管是什么页面，只要后缀带 .html，直接强行擦掉
+if (location.pathname.endsWith('.html')) {
+    window.history.replaceState(null, '', location.pathname.replace(/\.html$/, '') + location.search);
+}
     </script>
 </body>
 </html>
