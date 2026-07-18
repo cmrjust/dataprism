@@ -6,362 +6,230 @@
     <title>DataPrism | Share Your Voice, Earn Rewards Everyday</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .cyber-bg {
-            background: linear-gradient(180deg, #050716 0%, #091032 50%, #020309 100%);
+        /* 纯正硅谷现代金融感底色：极浅灰色与淡蓝微弱渐变 */
+        .premium-bg {
+            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
         }
-        #matrix-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
+        /* CSS 无缝无限走马灯动画逻辑 */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
         }
-        .content-layer {
-            position: relative;
-            z-index: 10;
+        .marquee-track {
+            display: flex;
+            width: 200%;
+            animation: marquee 25s linear infinite;
         }
-        .glow-purple {
-            box-shadow: 0 0 25px rgba(147, 51, 234, 0.25);
+        /* 悬停时轮播减速，增加互动质感 */
+        .marquee-track:hover {
+            animation-play-state: paused;
         }
-        .blur-backdrop {
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-        .hidden-menu {
-            display: none;
-        }
+        .hidden-menu { display: none; }
     </style>
 </head>
-<body class="cyber-bg text-gray-200 min-h-screen font-sans overflow-x-hidden selection:bg-purple-500 selection:text-white">
+<body class="premium-bg text-gray-800 min-h-screen font-sans flex flex-col justify-between overflow-x-hidden antialiased">
 
-    <!-- 赛博光束矩阵背景画布 -->
-    <canvas id="matrix-canvas"></canvas>
+    <!-- 1. 现代化顶部导航栏 -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-gray-200/80 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center space-x-2.5">
+                <div class="w-9 h-9 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center font-bold text-white shadow-md shadow-indigo-500/20">D</div>
+                <span class="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+                    DataPrism
+                </span>
+            </div>
+            
+            <!-- 多语言国旗下拉单 -->
+            <div class="relative">
+                <button id="lang-btn" class="bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 text-xs sm:text-sm font-semibold px-3 py-2 rounded-xl transition-all flex items-center space-x-2 shadow-sm">
+                    <span id="current-flag">🇺🇸</span>
+                    <span id="current-lang-text">English</span>
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                
+                <div id="lang-dropdown" class="hidden-menu absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-xl shadow-xl p-1.5 z-50">
+                    <button onclick="changeLanguage('en', '🇺🇸', 'English')" class="w-full text-left px-3 py-2 text-xs sm:text-sm rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-gray-700">
+                        <span>🇺🇸</span><span>English</span>
+                    </button>
+                    <button onclick="changeLanguage('zh', '🇨🇳', '简体中文')" class="w-full text-left px-3 py-2 text-xs sm:text-sm rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-gray-700">
+                        <span>🇨🇳</span><span>简体中文</span>
+                    </button>
+                    <button onclick="changeLanguage('ja', '🇯🇵', '日本語')" class="w-full text-left px-3 py-2 text-xs sm:text-sm rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-gray-700">
+                        <span>🇯🇵</span><span>日本語</span>
+                    </button>
+                    <button onclick="changeLanguage('ko', '🇰🇷', '한국어')" class="w-full text-left px-3 py-2 text-xs sm:text-sm rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-gray-700">
+                        <span>🇰🇷</span><span>한국어</span>
+                    </button>
+                    <button onclick="changeLanguage('de', '🇩🇪', 'Deutsch')" class="w-full text-left px-3 py-2 text-xs sm:text-sm rounded-lg hover:bg-gray-50 transition flex items-center space-x-2.5 font-medium text-gray-700">
+                        <span>🇩🇪</span><span>Deutsch</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <div class="content-layer flex flex-col min-h-screen">
+    <!-- 主体长内容布局 -->
+    <div class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-20 sm:space-y-24">
         
-        <!-- 1. 响应式导航栏 -->
-        <header class="border-b border-gray-800/80 blur-backdrop sticky top-0 z-50 bg-gray-950/60">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-                <!-- Logo -->
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-purple-500/50">D</div>
-                    <span class="text-xl font-black tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-300">
-                        DataPrism
+        <!-- SECTION 1: HERO 首屏主视觉 -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <div class="space-y-6 text-center lg:text-left lg:col-span-7">
+                <div class="inline-flex items-center space-x-2 bg-indigo-50 border border-indigo-100 px-3 py-1.5 rounded-full text-xs text-indigo-600 font-semibold mx-auto lg:mx-0">
+                    <span class="flex h-2 w-2 relative">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-600"></span>
                     </span>
+                    <span class="data-lang" data-en="🎉 Verified Tasks Are Ready!" data-zh="🎉 高额问卷任务已就绪！" data-ja="🎉 高単価アンケートをご用意！" data-ko="🎉 맞춤형 설문조사 준비 완료!" data-de="🎉 Aufgaben sind bereit!">🎉 Verified Tasks Are Ready!</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl lg:text-6xl font-extrabold tracking-tight text-gray-900 leading-tight">
+                    <span class="data-lang" data-en="Share Opinions," data-zh="轻松分享观点" data-ja="意見を共有して" data-ko="의견을 공유하고" data-de="Meinung teilen,">Share Opinions,</span> <br>
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 data-lang" data-en="Get Paid Instantly" data-zh="立即提现奖励" data-ja="その場で報酬を獲得" data-ko="즉시 보상 받기" data-de="Sofort auszahlen lassen">Get Paid Instantly</span>
+                </h1>
+                <p class="text-gray-500 text-sm sm:text-base lg:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed data-lang" 
+                   data-en="Join DataPrism today. Complete simple global surveys, voice your thoughts, and instantly redeem your points for your favorite gift cards and cash rewards." 
+                   data-zh="立即加入 DataPrism。参与简单有趣的全球问卷调查，表达你的真实想法，赚取的积分可随时秒级兑换成你最爱的礼品卡与现金奖励。"
+                   data-ja="今すぐDataPrismに参加しましょう。簡単なグローバルアンケートに答え、あなたの意見を伝えるだけで、お気に入りのギフトカードや現金報酬に即時交換できます。"
+                   data-ko="지금 DataPrism에 가입하세요. 간단한 글로벌 설문조사를 완료하고 의견을 표현하면, 적립된 포인트를 원하는 기프트카드나 현금으로 즉시 교환할 수 있습니다."
+                   data-de="Treten Sie DataPrism bei. Füllen Sie einfache weltweite Umfragen aus, sagen Sie Ihre Meinung und tauschen Sie Punkte gegen Gutscheine oder Bargeld ein.">
+                    Join DataPrism today. Complete simple global surveys, voice your thoughts, and instantly redeem your points for your favorite gift cards and cash rewards.
+                </p>
+                <div class="pt-2 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+                    <button onclick="alert('Registration opening soon!')" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold text-sm tracking-wide px-8 py-4 rounded-xl transition-all shadow-md shadow-indigo-600/10 text-center uppercase border border-indigo-500/10 data-lang" data-en="Start Earning Now" data-zh="立即开始赚钱" data-ja="今すぐ稼ぎ始める" data-ko="지금 바로 시작하기" data-de="Jetzt Geld verdienen">Start Earning Now</button>
+                </div>
+            </div>
+
+            <!-- 右侧：现代高信任度状态展示 -->
+            <div class="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-md space-y-6 lg:col-span-5">
+                <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+                    <h3 class="text-xs uppercase tracking-wider text-gray-400 font-bold data-lang" data-en="Network Live Stats" data-zh="平台实时状态" data-ja="ライブステータス" data-ko="플랫폼 실시간 현황" data-de="Live-Status">Network Live Stats</h3>
+                    <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200 font-bold data-lang" data-en="ONLINE" data-zh="在线" data-ja="オンライン" data-ko="온라인" data-de="ONLINE">ONLINE</span>
                 </div>
                 
-                <!-- 右侧控制区：多语言下拉菜单 -->
-                <div class="relative">
-                    <button id="lang-btn" class="bg-gray-900/90 hover:bg-gray-800 text-gray-200 border border-gray-700/60 text-xs sm:text-sm font-medium px-3 py-2 rounded-xl transition-all flex items-center space-x-2 shadow-sm">
-                        <span id="current-flag">🇺🇸</span>
-                        <span id="current-lang-text">English</span>
-                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    
-                    <!-- 下拉选择浮窗 -->
-                    <div id="lang-dropdown" class="hidden-menu absolute right-0 mt-2 w-40 bg-gray-950/95 border border-gray-800 rounded-xl shadow-2xl blur-backdrop p-1.5 z-50 animate-fadeIn">
-                        <button onclick="changeLanguage('en', '🇺🇸', 'English')" class="w-full text-left px-3 py-2 text-xs sm:text-sm rounded-lg hover:bg-purple-900/40 transition flex items-center space-x-2">
-                            <span>🇺🇸</span><span>English</span>
-                        </button>
-                        <button onclick="changeLanguage('zh', '🇨🇳', '简体中文')" class="w-full text-left px-3 py-2 text-xs sm:text-sm rounded-lg hover:bg-purple-900/40 transition flex items-center space-x-2">
-                            <span>🇨🇳</span><span>简体中文</span>
-                        </button>
-                        <button onclick="changeLanguage('ja', '🇯🇵', '日本語')" class="w-full text-left px-3 py-2 text-xs sm:text-sm rounded-lg hover:bg-purple-900/40 transition flex items-center space-x-2">
-                            <span>🇯🇵</span><span>日本語</span>
-                        </button>
-                        <button onclick="changeLanguage('ko', '🇰🇷', '한국어')" class="w-full text-left px-3 py-2 text-xs sm:text-sm rounded-lg hover:bg-purple-900/40 transition flex items-center space-x-2">
-                            <span>🇰🇷</span><span>한국어</span>
-                        </button>
-                        <button onclick="changeLanguage('de', '🇩🇪', 'Deutsch')" class="w-full text-left px-3 py-2 text-xs sm:text-sm rounded-lg hover:bg-purple-900/40 transition flex items-center space-x-2">
-                            <span>🇩🇪</span><span>Deutsch</span>
-                        </button>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <div class="text-[10px] uppercase text-gray-400 font-bold data-lang" data-en="Active Members" data-zh="活跃会员总数" data-ja="アクティブ会員" data-ko="활성 회원 수" data-de="Aktive Mitglieder">Active Members</div>
+                        <div class="text-2xl font-black text-gray-900 mt-1 font-mono">342,800+</div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <div class="text-[10px] uppercase text-gray-400 font-bold data-lang" data-en="Total Redeemed" data-zh="已累计下发奖励" data-ja="総交換額" data-ko="누적 보상 지급액" data-de="Gesamte Auszahlungen">Total Redeemed</div>
+                        <div class="text-2xl font-black text-emerald-500 mt-1 font-mono">$1.24M+</div>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5 text-xs font-medium text-gray-500">
+                    <div class="flex justify-between">
+                        <span class="data-lang" data-en="Average Task Value" data-zh="平均问卷单价" data-ja="アンケート平均単価" data-ko="설문조사 평균 단가" data-de="Durchschnittlicher Wert">Average Task Value</span>
+                        <span class="text-gray-900 font-mono font-bold">$1.50 - $7.50</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="data-lang" data-en="Fastest Payout" data-zh="最快下款速度" data-ja="最短支払い時間" data-ko="최단 지급 소요 시간" data-de="Schnellste Auszahlung">Fastest Payout</span>
+                        <span class="text-gray-900 font-mono font-bold">&lt; 24 Hours</span>
                     </div>
                 </div>
             </div>
-        </header>
+        </section>
 
-        <!-- 主体布局 -->
-        <div class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 space-y-20 sm:space-y-28">
+        <!-- SECTION 2: 核心功能——无缝丝滑礼品卡素材轮播展示墙 -->
+        <section class="space-y-4">
+            <div class="text-center max-w-xl mx-auto">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-indigo-600 data-lang" data-en="Supported Reward Methods" data-zh="支持的多样化兑换渠道" data-ja="サポートされている交換方法" data-ko="지원되는 보상 환전 수단" data-de="Unterstützte Belohnungen">Supported Reward Methods</h3>
+            </div>
             
-            <!-- SECTION 1: HERO (首屏核心文案与加入平台) -->
-            <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-                <!-- 左侧文案 -->
-                <div class="space-y-6 text-center lg:text-left lg:col-span-7">
-                    <div class="inline-flex items-center space-x-2 bg-purple-950/50 border border-purple-500/30 px-3 py-1.5 rounded-full text-xs text-purple-300 font-mono tracking-wider mx-auto lg:mx-0">
-                        <span class="flex h-2 w-2 relative">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
-                        </span>
-                        <span class="data-lang" 
-                              data-en="⚡ New Tasks Available Today!" 
-                              data-zh="⚡ 今日全新问卷任务已更新！" 
-                              data-ja="⚡ 本日の新しいアンケートが更新されました！" 
-                              data-ko="⚡ 오늘 새로운 설문조사 임무가 업데이트되었습니다!" 
-                              data-de="⚡ Neue Aufgaben heute verfügbar!">⚡ New Tasks Available Today!</span>
-                    </div>
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight text-white uppercase">
-                        <span class="data-lang" data-en="Your Voice" data-zh="分享你的观点" data-ja="あなたの声を" data-ko="당신의 의견을" data-de="Ihre Meinung">Your Voice</span> <br>
-                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 data-lang" data-en="Earns Real Rewards" data-zh="赢取丰厚奖品" data-ja="リアルな報酬に変える" data-ko="실제 보상으로 환전" data-de="Bringt echte Belohnungen">Earns Real Rewards</span> <br>
-                        <span class="data-lang" data-en="Every Single Day." data-zh="就在每一天。" data-ja="毎日いつでも。" data-ko="매일 매 순간." data-de="Jeden einzelnen Tag.">Every Single Day.</span>
-                    </h1>
-                    <p class="text-gray-400 text-sm sm:text-base lg:text-lg max-w-xl mx-auto lg:mx-0 data-lang" 
-                       data-en="Join DataPrism, the next-generation GPT platform. Complete simple interesting surveys, help global top brands make decisions, and cash out your points instantly!" 
-                       data-zh="加入次世代 GPT 积分墙平台 DataPrism。完成简单有趣的问卷调查，帮助全球顶级品牌做决策，赚取积分并随时快速兑换你心仪的奖励！"
-                       data-ja="次世代のGPTプラットフォーム「DataPrism」に参加しましょう。簡単なアンケートに答えて、世界のトップブランドの意思決定をサポートし、ポイントをすぐに交換できます！"
-                       data-ko="차세대 GPT 플랫폼 DataPrism에 참여하세요. 간단하고 흥미로운 설문조사를 완료하고, 글로벌 최고 브랜드의 의사결정을 도우며, 포인트를 즉시 환전하세요!"
-                       data-de="Treten Sie DataPrism bei, der GPT-Plattform der nächsten Generation. Füllen Sie einfache Umfragen aus, helfen Sie Top-Marken und lassen Sie sich Ihre Punkte sofort auszahlen!">
-                        Join DataPrism, the next-generation GPT platform. Complete simple interesting surveys, help global top brands make decisions, and cash out your points instantly!
-                    </p>
-                    <div class="pt-2 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-                        <button onclick="alert('Registration opening soon!')" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-sm tracking-wider px-8 py-4 rounded-xl transition-all shadow-lg shadow-purple-500/10 text-center uppercase border border-purple-400/20 data-lang" data-en="Start Earning Now" data-zh="立即开始赚钱" data-ja="今すぐ報酬を稼ぐ" data-ko="지금 바로 시작하기" data-de="Jetzt Geld verdienen">Start Earning Now</button>
-                    </div>
-                </div>
+            <!-- 轮播外层隐藏溢出容器 -->
+            <div class="w-full overflow-hidden bg-white border border-gray-200/80 rounded-2xl py-6 shadow-sm relative">
+                <!-- 左右渐变掩膜，让两侧滑入滑出显得高端深邃 -->
+                <div class="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+                <div class="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
 
-                <!-- 右侧：简洁直观的平台数据面板 -->
-                <div class="bg-gray-950/85 border border-purple-500/20 rounded-2xl p-5 sm:p-6 shadow-2xl blur-backdrop space-y-5 lg:col-span-5 glow-purple">
-                    <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                        <h3 class="text-xs font-mono uppercase tracking-widest text-purple-400 data-lang" data-en="Platform Live Status" data-zh="平台实时运行状态" data-ja="プラットフォーム稼働状態" data-ko="플랫폼 실시간 현황" data-de="Plattform-Live-Status">Platform Live Status</h3>
-                        <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 font-bold data-lang" data-en="ONLINE" data-zh="在线" data-ja="オンライン" data-ko="온라인" data-de="ONLINE">ONLINE</span>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-gray-900/50 p-4 rounded-xl border border-gray-800/80">
-                            <div class="text-[10px] uppercase text-gray-500 font-medium data-lang" data-en="Total Members" data-zh="总注册会员数" data-ja="総会員数" data-ko="총 회원 수" data-de="Mitglieder gesamt">Total Members</div>
-                            <div class="text-2xl font-black text-white mt-1 font-mono">342,850+</div>
-                        </div>
-                        <div class="bg-gray-900/50 p-4 rounded-xl border border-gray-800/80">
-                            <div class="text-[10px] uppercase text-gray-500 font-medium data-lang" data-en="Total Paid Out" data-zh="已累计发放奖励" data-ja="総支払い額" data-ko="누적 보상 지급액" data-de="Gesamte Auszahlungen">Total Paid Out</div>
-                            <div class="text-2xl font-black text-emerald-400 mt-1 font-mono">$1.24M+</div>
-                        </div>
-                    </div>
+                <!-- 轮播双轨无缝运动体 -->
+                <div class="marquee-track flex items-center space-x-12 sm:space-x-16">
+                    <!-- 第一组素材 -->
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazon.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="Amazon" title="Amazon Gift Card">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="PayPal" title="PayPal Cash">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="Steam" title="Steam Wallet">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/playstation.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="PlayStation" title="PSN Code">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/xbox.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="Xbox" title="Xbox Live">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/nintendoswitch.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="Nintendo Switch" title="Nintendo eShop">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/roblox.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="Roblox" title="Robux Card">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/bitcoin.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="Bitcoin" title="Crypto Payout">
 
-                    <div class="space-y-3 text-xs">
-                        <div class="flex justify-between text-gray-400">
-                            <span class="data-lang" data-en="Average Survey Time" data-zh="平均问卷用时" data-ja="平均所要時間" data-ko="평균 설문 시간" data-de="Durchschn. Umfragezeit">Average Survey Time</span>
-                            <span class="text-purple-400 font-mono font-bold">5 - 15 Mins</span>
-                        </div>
-                        <div class="flex justify-between text-gray-400">
-                            <span class="data-lang" data-en="Min Cashout Threshold" data-zh="最低起付金额" data-ja="最低交換額" data-ko="최소 환전 금액" data-de="Mindestauszahlung">Min Cashout Threshold</span>
-                            <span class="text-indigo-400 font-mono font-bold">$5.00</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-purple-950/30 border border-purple-500/20 p-3.5 rounded-xl text-xs text-purple-300 leading-relaxed text-center font-medium data-lang" 
-                         data-en="🎁 100 Free Bonus Points credited upon email verification!"
-                         data-zh="🎁 验证邮箱即可免费获得 100 积分新人奖励！"
-                         data-ja="🎁 メール認証完了で100ボーナスポイントをプレゼント！"
-                         data-ko="🎁 이메일 인증 시 100 보너스 포인트 즉시 지급!"
-                         data-de="🎁 100 Gratis-Bonuspunkte nach E-Mail-Verifizierung!">
-                        🎁 100 Free Bonus Points credited upon email verification!
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 2: HOW IT WORKS (简单三步介绍) -->
-            <section class="space-y-8">
-                <div class="text-center max-w-2xl mx-auto space-y-2">
-                    <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase data-lang" data-en="How to earn in 3 simple steps" data-zh="只需简单三步，轻松赚取奖励" data-ja="簡単な3ステップで稼ぐ方法" data-ko="간단한 3단계로 수익 올리기" data-de="In 3 einfachen Schritten verdienen">How to earn in 3 simple steps</h2>
-                    <p class="text-sm text-gray-400 data-lang" data-en="No complicated rules. Clear, fast, and transparent." data-zh="没有任何复杂套路。规则清晰、下款快速、完全透明。" data-ja="面倒なルールは一切なし。明確、迅速、そして透明。" data-ko="복잡한 규칙은 없습니다. 명확하고 빠르며 투명합니다." data-de="Keine komplizierten Regeln. Klar, schnell und transparent.">No complicated rules. Clear, fast, and transparent.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-2">
-                    <!-- 步 1 -->
-                    <div class="bg-gray-950/40 p-6 rounded-2xl border border-gray-900 text-center space-y-3">
-                        <div class="w-12 h-12 rounded-full bg-purple-950/80 border border-purple-500/40 flex items-center justify-center text-purple-400 text-lg font-bold mx-auto">1</div>
-                        <h3 class="text-lg font-bold text-white data-lang" data-en="Create Free Account" data-zh="免费注册账号" data-ja="無料アカウント作成" data-ko="무료 계정 생성" data-de="Kostenloses Konto erstellen">Create Free Account</h3>
-                        <p class="text-xs sm:text-sm text-gray-400 leading-relaxed data-lang" 
-                           data-en="Sign up in 30 seconds with your email. No credit card required, 100% secure."
-                           data-zh="只需输入邮箱，30 秒即可完成注册。无需信用卡，安全有保障。"
-                           data-ja="メールアドレスで30秒登録。クレジットカード不要、100%安全。"
-                           data-ko="이메일로 30초 만에 가입하세요. 신용카드 불필요, 100% 안전 보장."
-                           data-de="In 30 Sekunden mit Ihrer E-Mail anmelden. Keine Kreditkarte erforderlich.">
-                            Sign up in 30 seconds with your email. No credit card required, 100% secure.
-                        </p>
-                    </div>
-
-                    <!-- 步 2 -->
-                    <div class="bg-gray-950/40 p-6 rounded-2xl border border-gray-900 text-center space-y-3">
-                        <div class="w-12 h-12 rounded-full bg-indigo-950/80 border border-indigo-500/40 flex items-center justify-center text-indigo-400 text-lg font-bold mx-auto">2</div>
-                        <h3 class="text-lg font-bold text-white data-lang" data-en="Complete Surveys" data-zh="参与问卷调查" data-ja="アンケートに答える" data-ko="설문조사 참여" data-de="Umfragen ausfüllen">Complete Surveys</h3>
-                        <p class="text-xs sm:text-sm text-gray-400 leading-relaxed data-lang" 
-                           data-en="Choose from matching tasks based on your hobbies. Express your real daily opinions."
-                           data-zh="根据你的兴趣爱好挑选合适的优质问卷。轻松表达你的真实日常想法。"
-                           data-ja="趣味に合わせてマッチする調査を選択。あなたの日常の意見を伝えるだけ。"
-                           data-ko="취향에 맞는 맞춤형 설문을 선택하세요. 일상 속 솔직한 의견을 표현하면 끝."
-                           data-de="Wählen Sie passende Aufgaben basierend auf Ihren Hobbies. Sagen Sie Ihre Meinung.">
-                            Choose from matching tasks based on your hobbies. Express your real daily opinions.
-                        </p>
-                    </div>
-
-                    <!-- 步 3 -->
-                    <div class="bg-gray-950/40 p-6 rounded-2xl border border-gray-900 text-center space-y-3">
-                        <div class="w-12 h-12 rounded-full bg-pink-950/80 border border-pink-500/40 flex items-center justify-center text-pink-400 text-lg font-bold mx-auto">3</div>
-                        <h3 class="text-lg font-bold text-white data-lang" data-en="Get Instant Cashout" data-zh="即时兑换提取" data-ja="即時ポイント交換" data-ko="즉시 보상 수령" data-de="Sofort auszahlen">Get Instant Cashout</h3>
-                        <p class="text-xs sm:text-sm text-gray-400 leading-relaxed data-lang" 
-                           data-en="Redeem earned points for PayPal cash, Amazon gift cards, and various local rewards."
-                           data-zh="将赚到的点数直接兑换为 PayPal 现金、亚马逊礼品卡或各类本地主流好礼。"
-                           data-ja="貯まったポイントはPayPal現金、Amazonギフトカード、その他ローカル報酬に交換可能。"
-                           data-ko="적립된 포인트를 PayPal 현금, 아마존 기프트카드 등 다양한 지역 상품권으로 환전하세요."
-                           data-de="Tauschen Sie Punkte gegen PayPal-Guthaben, Amazon-Gutscheine und mehr ein.">
-                            Redeem earned points for PayPal cash, Amazon gift cards, and various local rewards.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 3: REWARD PANEL (直观的积分换算表) -->
-            <section class="space-y-6">
-                <div class="border-l-4 border-purple-500 pl-4">
-                    <h2 class="text-xl sm:text-2xl font-bold text-white uppercase data-lang" data-en="Estimated Rewards Value" data-zh="预计任务奖励价值参考" data-ja="獲得できる報酬の目安" data-ko="예상 작업 보상 가치 안내" data-de="Geschätzter Wert der Belohnungen">Estimated Rewards Value</h2>
-                    <p class="text-xs sm:text-sm text-gray-400 font-mono mt-1 data-lang" data-en="Higher profile completeness unlocks premium higher paying channels." data-zh="个人画像填写越完整，越能解锁单价更高的高级问卷通道。" data-ja="プロファイルを詳しく入力するほど、高単価アンケートが解放されます。" data-ko="프로필을 상세히 작성할수록 단가가 높은 프리미엄 채널이 열립니다." data-de="Ein vollständigeres Profil schaltet höher bezahlte Umfragen frei.">Higher profile completeness unlocks premium higher paying channels.</p>
-                </div>
-
-                <div class="w-full overflow-x-auto rounded-2xl border border-gray-800 bg-gray-950/60 blur-backdrop">
-                    <table class="w-full text-left border-collapse min-w-[500px] sm:min-w-none text-xs sm:text-sm">
-                        <thead>
-                            <tr class="border-b border-gray-800 bg-gray-900/40 text-gray-400 uppercase font-mono text-[11px] tracking-wider">
-                                <th class="p-4 data-lang" data-en="Survey Type" data-zh="问卷类型" data-ja="調査ジャンル" data-ko="설문 유형" data-de="Umfragetyp">Survey Type</th>
-                                <th class="p-4 data-lang" data-en="Time Needed" data-zh="预计所需时间" data-ja="所要時間" data-ko="소요 시간" data-de="Zeitaufwand">Time Needed</th>
-                                <th class="p-4 data-lang" data-en="Points Earned" data-zh="可获积分点数" data-ja="獲得ポイント" data-ko="적립 포인트" data-de="Punkte">Points Earned</th>
-                                <th class="p-4 data-lang" data-en="Est. Cash Value" data-zh="等值现金价值" data-ja="現金換算" data-ko="현금 가치" data-de="Geldwert">Est. Cash Value</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-900 text-gray-300 font-medium">
-                            <tr class="hover:bg-purple-950/10 transition-colors">
-                                <td class="p-4 font-bold text-white data-lang" data-en="Quick Daily Poll" data-zh="每日快速投票" data-ja="デイリー投票" data-ko="일일 신속 투표" data-de="Schnelle tägliche Umfrage">Quick Daily Poll</td>
-                                <td class="p-4 font-mono">1 - 2 Mins</td>
-                                <td class="p-4 text-purple-400 font-mono font-bold">50 Pts</td>
-                                <td class="p-4 text-emerald-400 font-mono font-bold">$0.50</td>
-                            </tr>
-                            <tr class="hover:bg-purple-950/10 transition-colors">
-                                <td class="p-4 font-bold text-white data-lang" data-en="Consumer Shopping Habits" data-zh="日常消费购物习惯调研" data-ja="お買い物習慣に関する調査" data-ko="소비자 쇼핑 습관 설문" data-de="Einkaufsgewohnheiten">Consumer Shopping Habits</td>
-                                <td class="p-4 font-mono">8 - 10 Mins</td>
-                                <td class="p-4 text-purple-400 font-mono font-bold">250 Pts</td>
-                                <td class="p-4 text-emerald-400 font-mono font-bold">$2.50</td>
-                            </tr>
-                            <tr class="hover:bg-purple-950/10 transition-colors">
-                                <td class="p-4 font-bold text-white data-lang" data-en="Entertainment & Media Feedback" data-zh="泛娱乐与影音媒体反馈" data-ja="エンタメ・メディアの評価" data-ko="엔터테인먼트 및 미디어 피드백" data-de="Unterhaltung & Medien">Entertainment & Media Feedback</td>
-                                <td class="p-4 font-mono">12 - 15 Mins</td>
-                                <td class="p-4 text-purple-400 font-mono font-bold">400 Pts</td>
-                                <td class="p-4 text-emerald-400 font-mono font-bold">$4.00</td>
-                            </tr>
-                            <tr class="hover:bg-purple-950/10 transition-colors">
-                                <td class="p-4 font-bold text-white data-lang" data-en="Premium Tech Products Study" data-zh="数码科技前沿产品深度研究" data-ja="最新テック製品の深掘り調査" data-ko="프리미엄 IT 제품 심층 연구" data-de="Premium-Tech-Studie">Premium Tech Products Study</td>
-                                <td class="p-4 font-mono">20 Mins</td>
-                                <td class="p-4 text-purple-400 font-mono font-bold">750 Pts</td>
-                                <td class="p-4 text-emerald-400 font-mono font-bold">$7.50</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
-
-        <!-- 3. 页脚 -->
-        <footer class="border-t border-gray-900 bg-gray-950/80 py-8 text-[11px] font-mono text-gray-500 blur-backdrop">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-                <div class="text-center md:text-left">
-                    © 2026 DataPrism GPT System. All Rights Reserved. Safe & Transparent Data Practice.
-                </div>
-                <div class="flex flex-wrap justify-center gap-6">
-                    <a href="#privacy" class="hover:text-purple-400 cursor-pointer data-lang" data-en="Terms of Service" data-zh="服务条款" data-ja="利用規約" data-ko="이용 약관" data-de="Nutzungsbedingungen" onclick="alert('DataPrism protects user privacy strictly under standard regulations.')">Terms of Service</a>
+                    <!-- 第二组素材（完美首尾相接补位） -->
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazon.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="Amazon">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="PayPal">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="Steam">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/playstation.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="PlayStation">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/xbox.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="Xbox">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/nintendoswitch.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="Nintendo Switch">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/roblox.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="Roblox">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/bitcoin.svg" class="h-8 sm:h-9 w-auto opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" alt="Bitcoin">
                 </div>
             </div>
-        </footer>
+        </section>
+
+        <!-- SECTION 3: HOW IT WORKS 三步极简介绍 -->
+        <section class="space-y-8">
+            <div class="text-center max-w-xl mx-auto space-y-2">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 uppercase data-lang" data-en="Earn Rewards In 3 Steps" data-zh="只需简单三步，轻松坐享积分" data-ja="3ステップで報酬を獲得" data-ko="간단한 3단계로 보상 받기" data-de="Belohnungen in 3 Schritten">Earn Rewards In 3 Steps</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-2xl border border-gray-200/80 text-center space-y-2 shadow-sm">
+                    <div class="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold mx-auto">1</div>
+                    <h4 class="text-base font-bold text-gray-900 data-lang" data-en="1. Sign Up Free" data-zh="1. 免费开户" data-ja="1. 無料登録" data-ko="1. 무료 가입" data-de="1. Kostenlos anmelden">1. Sign Up Free</h4>
+                    <p class="text-xs sm:text-sm text-gray-500 leading-relaxed data-lang" data-en="Create an account with your email instantly. 100% secure setup." data-zh="只需邮箱即可在几秒内光速注册。安全可靠，毫无隐形门槛。" data-ja="メールアドレスで即座に登録。100%安全で簡単なセットアップ。" data-ko="이메일로 간편하게 가입하세요. 100% 안전한 보안 환경 보장." data-de="Konto sofort mit E-Mail erstellen. Sicherer Setup.">Create an account with your email instantly. 100% secure setup.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-gray-200/80 text-center space-y-2 shadow-sm">
+                    <div class="w-11 h-11 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 font-bold mx-auto">2</div>
+                    <h4 class="text-base font-bold text-gray-900 data-lang" data-en="2. Express Opinions" data-zh="2. 参与任务" data-ja="2. 調査に回答" data-ko="2. 의견 공유" data-de="2. Meinung sagen">2. Express Opinions</h4>
+                    <p class="text-xs sm:text-sm text-gray-500 leading-relaxed data-lang" data-en="Choose short and matching surveys tailored to your daily preferences." data-zh="自由挑选为你量身定制的趣味问答，轻松发表日常消费主张。" data-ja="ライフスタイルにマッチした短いアンケートを自由に選択して回答。" data-ko="개인 취향에 맞는 짧고 간편한 설문조사를 자유롭게 선택하세요." data-de="Wählen Sie kurze und passende Umfragen basierend auf Ihren Vorlieben.">Choose short and matching surveys tailored to your daily preferences.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-gray-200/80 text-center space-y-2 shadow-sm">
+                    <div class="w-11 h-11 rounded-xl bg-pink-50 border border-pink-100 flex items-center justify-center text-pink-600 font-bold mx-auto">3</div>
+                    <h4 class="text-base font-bold text-gray-900 data-lang" data-en="3. Get Paid Out" data-zh="3. 秒级提取" data-ja="3. 報酬と交換" data-ko="3. 즉시 환전" data-de="3. Auszahlung erhalten">3. Get Paid Out</h4>
+                    <p class="text-xs sm:text-sm text-gray-500 leading-relaxed data-lang" data-en="Redeem points for PayPal funds, gaming keys, or local cash gift vouchers." data-zh="将点数直接兑换为你急需的现金、游戏点数钱包或主流电商礼品卡。" data-ja="貯まったポイントはPayPal残高やゲームキー、各種ギフト券に交換。" data-ko="적립된 포인트를 PayPal 금액, 게임 키, 현물 기프트카드로 교환하세요." data-de="Punkte gegen PayPal-Guthaben oder Gutscheine einlösen.">Redeem points for PayPal funds, gaming keys, or local cash gift vouchers.</p>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <!-- 3D 动态背景与核心切换控制脚本 -->
+    <!-- 3. 页脚与合规条款链接 -->
+    <footer class="border-t border-gray-200 bg-white py-8 text-xs font-medium text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                © 2026 DataPrism GPT Panel Network. All Rights Reserved. Consumer Privacy Compliant.
+            </div>
+            <!-- 修改点：点击直接开辟新标签页，绝对不穿帮 -->
+            <div class="flex space-x-6 text-gray-500 font-bold">
+                <a href="terms.html" target="_blank" class="hover:text-indigo-600 transition data-lang" data-en="Terms of Service" data-zh="用户服务条款" data-ja="利用規約" data-ko="이용 약관" data-de="Nutzungsbedingungen">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 双语多语与弹窗交互核心控制引擎 -->
     <script>
-        // --- Canvas 粒子流曳光特效 ---
-        const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        const isMobile = window.innerWidth < 768;
-        const spacing = isMobile ? 35 : 25;
-        const columns = Math.floor(canvas.width / spacing); 
-        
-        const drops = [];
-        const speeds = [];
-        const colors = ['rgba(147, 51, 234, ', 'rgba(99, 102, 241, ', 'rgba(168, 85, 247, '];
-
-        for (let i = 0; i < columns; i++) {
-            drops[i] = Math.random() * -canvas.height; 
-            speeds[i] = Math.random() * 1.5 + 1.2; 
-        }
-
-        function draw() {
-            ctx.fillStyle = 'rgba(5, 7, 22, 0.18)'; 
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            for (let i = 0; i < columns; i++) {
-                const x = i * spacing + Math.sin(drops[i] / 40) * 4; 
-                const y = drops[i];
-
-                const baseColor = colors[i % colors.length];
-                ctx.fillStyle = baseColor + '0.14)';
-                ctx.fillRect(x, y, 1.8, isMobile ? 65 : 85);
-                
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(x, y + (isMobile ? 65 : 85), 1.8, 3);
-
-                drops[i] += speeds[i];
-
-                if (drops[i] > canvas.height) {
-                    drops[i] = Math.random() * -120;
-                    speeds[i] = Math.random() * 1.5 + 1.2;
-                }
-            }
-            requestAnimationFrame(draw);
-        }
-        requestAnimationFrame(draw);
-
-
-        // --- 多语言下拉菜单联动控制引擎 ---
         const langBtn = document.getElementById('lang-btn');
         const langDropdown = document.getElementById('lang-dropdown');
         const currentFlag = document.getElementById('current-flag');
         const currentLangText = document.getElementById('current-lang-text');
 
-        // 点击按钮展开/收起菜单
         langBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             langDropdown.classList.toggle('hidden-menu');
         });
 
-        // 点击页面其他任意地方自动关闭下拉单
         document.addEventListener('click', () => {
             langDropdown.classList.add('hidden-menu');
         });
 
-        // 核心切换函数
         function changeLanguage(langCode, flag, langName) {
-            // 1. 更新按钮显示的国旗和文字
             currentFlag.textContent = flag;
             currentLangText.textContent = langName;
             
-            // 2. 遍历翻译带有 data-lang 属性的节点
             document.querySelectorAll('.data-lang').forEach(el => {
                 const targetText = el.getAttribute(`data-${langCode}`);
-                if (targetText) {
-                    el.textContent = targetText;
-                }
+                if (targetText) el.textContent = targetText;
             });
-
-            // 3. 动态刷新系统公告通知栏
-            const systemNotice = document.getElementById('system-notice');
-            if (systemNotice) {
-                const targetNotice = systemNotice.getAttribute(`data-${langCode}`);
-                if (targetNotice) systemNotice.textContent = targetNotice;
-            }
         }
     </script>
 </body>
