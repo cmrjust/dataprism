@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataPrism Insights | Enterprise Global Research Infrastructure</title>
+    <title>DataPrism | Share Your Voice, Earn Rewards Everyday</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .cyber-bg {
-            background: linear-gradient(180deg, #040612 0%, #080d26 50%, #020308 100%);
+            background: linear-gradient(180deg, #050716 0%, #091032 50%, #020309 100%);
         }
         #matrix-canvas {
             position: fixed;
@@ -25,19 +25,12 @@
         .glow-purple {
             box-shadow: 0 0 25px rgba(147, 51, 234, 0.25);
         }
-        .glow-green {
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
-        }
         .blur-backdrop {
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
-        @keyframes pulse-fast {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-        .animate-pulse-fast {
-            animation: pulse-fast 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        .hidden-menu {
+            display: none;
         }
     </style>
 </head>
@@ -46,311 +39,219 @@
     <!-- 赛博光束矩阵背景画布 -->
     <canvas id="matrix-canvas"></canvas>
 
-    <!-- 顶层包裹器 -->
     <div class="content-layer flex flex-col min-h-screen">
         
         <!-- 1. 响应式导航栏 -->
-        <header class="border-b border-gray-800/80 blur-backdrop sticky top-0 z-50 bg-gray-950/60 transition-all duration-300">
+        <header class="border-b border-gray-800/80 blur-backdrop sticky top-0 z-50 bg-gray-950/60">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
                 <!-- Logo -->
                 <div class="flex items-center space-x-3">
                     <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-purple-500/50">D</div>
-                    <span class="text-lg sm:text-xl font-bold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-300">
-                        DataPrism <span class="text-white font-medium text-xs tracking-normal px-2 py-0.5 bg-purple-950/80 rounded border border-purple-800/50 ml-1">Insights</span>
+                    <span class="text-xl font-black tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-300">
+                        DataPrism
                     </span>
                 </div>
                 
-                <!-- 右侧控制区 -->
-                <div class="flex items-center space-x-3 sm:space-x-4">
-                    <!-- 桌面端导航（手机端隐藏） -->
-                    <nav class="hidden md:flex space-x-6 lg:space-x-8 text-xs lg:text-sm font-medium text-gray-400">
-                        <a href="#hero" class="hover:text-purple-400 transition data-lang" data-en="Terminal" data-zh="控制终端">Terminal</a>
-                        <a href="#telemetry" class="hover:text-purple-400 transition data-lang" data-en="Metrics" data-zh="数据矩阵">Metrics</a>
-                        <a href="#distribution" class="hover:text-purple-400 transition data-lang" data-en="Network" data-zh="全球网络">Network</a>
-                        <a href="#architecture" class="hover:text-purple-400 transition data-lang" data-en="Security" data-zh="合规生态">Security</a>
-                    </nav>
-                    
-                    <!-- 双语切换按钮 -->
-                    <button id="lang-toggle" class="bg-gray-900/90 hover:bg-purple-900/40 text-purple-300 border border-purple-500/30 text-xs font-mono px-2.5 py-1.5 rounded-lg transition-all duration-200">
-                        ZH / EN
+                <!-- 右侧控制区：多语言下拉菜单 -->
+                <div class="relative">
+                    <button id="lang-btn" class="bg-gray-900/90 hover:bg-gray-800 text-gray-200 border border-gray-700/60 text-xs sm:text-sm font-medium px-3 py-2 rounded-xl transition-all flex items-center space-x-2 shadow-sm">
+                        <span id="current-flag">🇺🇸</span>
+                        <span id="current-lang-text">English</span>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
+                    
+                    <!-- 下拉选择浮窗 -->
+                    <div id="lang-dropdown" class="hidden-menu absolute right-0 mt-2 w-40 bg-gray-950/95 border border-gray-800 rounded-xl shadow-2xl blur-backdrop p-1.5 z-50 animate-fadeIn">
+                        <button onclick="changeLanguage('en', '🇺🇸', 'English')" class="w-full text-left px-3 py-2 text-xs sm:text-sm rounded-lg hover:bg-purple-900/40 transition flex items-center space-x-2">
+                            <span>🇺🇸</span><span>English</span>
+                        </button>
+                        <button onclick="changeLanguage('zh', '🇨🇳', '简体中文')" class="w-full text-left px-3 py-2 text-xs sm:text-sm rounded-lg hover:bg-purple-900/40 transition flex items-center space-x-2">
+                            <span>🇨🇳</span><span>简体中文</span>
+                        </button>
+                        <button onclick="changeLanguage('ja', '🇯🇵', '日本語')" class="w-full text-left px-3 py-2 text-xs sm:text-sm rounded-lg hover:bg-purple-900/40 transition flex items-center space-x-2">
+                            <span>🇯🇵</span><span>日本語</span>
+                        </button>
+                        <button onclick="changeLanguage('ko', '🇰🇷', '한국어')" class="w-full text-left px-3 py-2 text-xs sm:text-sm rounded-lg hover:bg-purple-900/40 transition flex items-center space-x-2">
+                            <span>🇰🇷</span><span>한국어</span>
+                        </button>
+                        <button onclick="changeLanguage('de', '🇩🇪', 'Deutsch')" class="w-full text-left px-3 py-2 text-xs sm:text-sm rounded-lg hover:bg-purple-900/40 transition flex items-center space-x-2">
+                            <span>🇩🇪</span><span>Deutsch</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </header>
 
-        <!-- 主体多段式长布局容器 -->
-        <div class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16 sm:space-y-24">
+        <!-- 主体布局 -->
+        <div class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 space-y-20 sm:space-y-28">
             
-            <!-- SECTION 1: HERO TERMINAL (首屏主控台) -->
-            <section id="hero" class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center pt-4">
-                <!-- 左侧：核心概念宣发 -->
+            <!-- SECTION 1: HERO (首屏核心文案与加入平台) -->
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                <!-- 左侧文案 -->
                 <div class="space-y-6 text-center lg:text-left lg:col-span-7">
-                    <div class="inline-flex items-center space-x-2 bg-purple-950/50 border border-purple-500/30 px-3 py-1.5 rounded-full text-[11px] sm:text-xs text-purple-300 font-mono tracking-wider uppercase mx-auto lg:mx-0">
+                    <div class="inline-flex items-center space-x-2 bg-purple-950/50 border border-purple-500/30 px-3 py-1.5 rounded-full text-xs text-purple-300 font-mono tracking-wider mx-auto lg:mx-0">
                         <span class="flex h-2 w-2 relative">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
                         </span>
-                        <span class="data-lang" data-en="Proprietary Panel Cluster: Online" data-zh="专有样本集群状态: 在线">Proprietary Panel Cluster: Online</span>
+                        <span class="data-lang" 
+                              data-en="⚡ New Tasks Available Today!" 
+                              data-zh="⚡ 今日全新问卷任务已更新！" 
+                              data-ja="⚡ 本日の新しいアンケートが更新されました！" 
+                              data-ko="⚡ 오늘 새로운 설문조사 임무가 업데이트되었습니다!" 
+                              data-de="⚡ Neue Aufgaben heute verfügbar!">⚡ New Tasks Available Today!</span>
                     </div>
-                    <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black tracking-tight leading-none text-white uppercase">
-                        <span class="data-lang" data-en="High-Fidelity" data-zh="高保真">High-Fidelity</span> <br class="hidden sm:inline">
-                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 data-lang" data-en="Consumer Auditing" data-zh="消费级受众审计">Consumer Auditing</span> <br>
-                        <span class="data-lang" data-en="& Data Routing." data-zh="与数据路由分发">& Data Routing.</span>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight text-white uppercase">
+                        <span class="data-lang" data-en="Your Voice" data-zh="分享你的观点" data-ja="あなたの声を" data-ko="당신의 의견을" data-de="Ihre Meinung">Your Voice</span> <br>
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 data-lang" data-en="Earns Real Rewards" data-zh="赢取丰厚奖品" data-ja="リアルな報酬に変える" data-ko="실제 보상으로 환전" data-de="Bringt echte Belohnungen">Earns Real Rewards</span> <br>
+                        <span class="data-lang" data-en="Every Single Day." data-zh="就在每一天。" data-ja="毎日いつでも。" data-ko="매일 매 순간." data-de="Jeden einzelnen Tag.">Every Single Day.</span>
                     </h1>
                     <p class="text-gray-400 text-sm sm:text-base lg:text-lg max-w-xl mx-auto lg:mx-0 data-lang" 
-                       data-en="DataPrism Insights operates a fully decentralized, non-incentivized custom market research deployment matrix, pipeline filtering over 500k+ global daily active corporate responses." 
-                       data-zh="DataPrism Insights 运行着一个完全去中心化、非强激励型的定制化市场调研部署矩阵，每日在全球范围内管道化过滤并审计超过 50 万次活跃的企业级受众响应。">
-                        DataPrism Insights operates a fully decentralized, non-incentivized custom market research deployment matrix, pipeline filtering over 500k+ global daily active corporate responses.
+                       data-en="Join DataPrism, the next-generation GPT platform. Complete simple interesting surveys, help global top brands make decisions, and cash out your points instantly!" 
+                       data-zh="加入次世代 GPT 积分墙平台 DataPrism。完成简单有趣的问卷调查，帮助全球顶级品牌做决策，赚取积分并随时快速兑换你心仪的奖励！"
+                       data-ja="次世代のGPTプラットフォーム「DataPrism」に参加しましょう。簡単なアンケートに答えて、世界のトップブランドの意思決定をサポートし、ポイントをすぐに交換できます！"
+                       data-ko="차세대 GPT 플랫폼 DataPrism에 참여하세요. 간단하고 흥미로운 설문조사를 완료하고, 글로벌 최고 브랜드의 의사결정을 도우며, 포인트를 즉시 환전하세요!"
+                       data-de="Treten Sie DataPrism bei, der GPT-Plattform der nächsten Generation. Füllen Sie einfache Umfragen aus, helfen Sie Top-Marken und lassen Sie sich Ihre Punkte sofort auszahlen!">
+                        Join DataPrism, the next-generation GPT platform. Complete simple interesting surveys, help global top brands make decisions, and cash out your points instantly!
                     </p>
                     <div class="pt-2 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-                        <a href="#telemetry" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-mono text-xs sm:text-sm tracking-wider px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl transition-all shadow-lg shadow-purple-500/10 text-center uppercase border border-purple-400/20 data-lang" data-en="Explore Live Metrics" data-zh="探索实时指标">Explore Live Metrics</a>
+                        <button onclick="alert('Registration opening soon!')" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-sm tracking-wider px-8 py-4 rounded-xl transition-all shadow-lg shadow-purple-500/10 text-center uppercase border border-purple-400/20 data-lang" data-en="Start Earning Now" data-zh="立即开始赚钱" data-ja="今すぐ報酬を稼ぐ" data-ko="지금 바로 시작하기" data-de="Jetzt Geld verdienen">Start Earning Now</button>
                     </div>
                 </div>
 
-                <!-- 右侧：遥测网关面板（核心唬人模块） -->
+                <!-- 右侧：简洁直观的平台数据面板 -->
                 <div class="bg-gray-950/85 border border-purple-500/20 rounded-2xl p-5 sm:p-6 shadow-2xl blur-backdrop space-y-5 lg:col-span-5 glow-purple">
                     <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                        <h3 class="text-xs font-mono uppercase tracking-widest text-purple-400 data-lang" data-en="Gateway Node Sync" data-zh="网关节点同步状态">Gateway Node Sync</h3>
-                        <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 animate-pulse-fast data-lang" data-en="STREAMING" data-zh="实时流">STREAMING</span>
+                        <h3 class="text-xs font-mono uppercase tracking-widest text-purple-400 data-lang" data-en="Platform Live Status" data-zh="平台实时运行状态" data-ja="プラットフォーム稼働状態" data-ko="플랫폼 실시간 현황" data-de="Plattform-Live-Status">Platform Live Status</h3>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 font-bold data-lang" data-en="ONLINE" data-zh="在线" data-ja="オンライン" data-ko="온라인" data-de="ONLINE">ONLINE</span>
                     </div>
                     
-                    <!-- 顶层指标卡片 -->
-                    <div class="grid grid-cols-2 gap-3 sm:gap-4">
-                        <div class="bg-gray-900/50 p-3 sm:p-4 rounded-xl border border-gray-800/80">
-                            <div class="text-[10px] font-mono uppercase text-gray-500 data-lang" data-en="Total Node Capacity" data-zh="总集群节点承载力">Total Node Capacity</div>
-                            <div class="text-xl sm:text-2xl font-bold text-white mt-1 font-mono">1,420,850</div>
-                            <div class="text-[9px] sm:text-[10px] text-purple-400 mt-1 data-lang" data-en="Active API Listeners" data-zh="活跃 API 监听器">Active API Listeners</div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-900/50 p-4 rounded-xl border border-gray-800/80">
+                            <div class="text-[10px] uppercase text-gray-500 font-medium data-lang" data-en="Total Members" data-zh="总注册会员数" data-ja="総会員数" data-ko="총 회원 수" data-de="Mitglieder gesamt">Total Members</div>
+                            <div class="text-2xl font-black text-white mt-1 font-mono">342,850+</div>
                         </div>
-                        <div class="bg-gray-900/50 p-3 sm:p-4 rounded-xl border border-gray-800/80">
-                            <div class="text-[10px] font-mono uppercase text-gray-500 data-lang" data-en="Scrubbing Accuracy" data-zh="数据清洗准确率">Scrubbing Accuracy</div>
-                            <div class="text-xl sm:text-2xl font-bold text-white mt-1 font-mono">99.991%</div>
-                            <div class="text-[9px] sm:text-[10px] text-indigo-400 mt-1 data-lang" data-en="FP-Fingerprint Match" data-zh="数字指纹强力校验">FP-Fingerprint Match</div>
+                        <div class="bg-gray-900/50 p-4 rounded-xl border border-gray-800/80">
+                            <div class="text-[10px] uppercase text-gray-500 font-medium data-lang" data-en="Total Paid Out" data-zh="已累计发放奖励" data-ja="総支払い額" data-ko="누적 보상 지급액" data-de="Gesamte Auszahlungen">Total Paid Out</div>
+                            <div class="text-2xl font-black text-emerald-400 mt-1 font-mono">$1.24M+</div>
                         </div>
                     </div>
 
-                    <!-- 模拟技术明细 -->
-                    <div class="space-y-2 font-mono text-xs">
+                    <div class="space-y-3 text-xs">
                         <div class="flex justify-between text-gray-400">
-                            <span class="data-lang" data-en="Inbound Endpoint" data-zh="入站回调终结点">Inbound Endpoint</span>
-                            <span class="text-purple-400 text-right overflow-hidden text-ellipsis max-w-[180px] sm:max-w-none">/postback.html</span>
+                            <span class="data-lang" data-en="Average Survey Time" data-zh="平均问卷用时" data-ja="平均所要時間" data-ko="평균 설문 시간" data-de="Durchschn. Umfragezeit">Average Survey Time</span>
+                            <span class="text-purple-400 font-mono font-bold">5 - 15 Mins</span>
                         </div>
                         <div class="flex justify-between text-gray-400">
-                            <span>Encryption Standard</span>
-                            <span class="text-indigo-400">AES-256-GCM</span>
-                        </div>
-                        <div class="flex justify-between text-gray-400">
-                            <span class="data-lang" data-en="Payload Format" data-zh="数据负载格式">Payload Format</span>
-                            <span class="text-gray-300">JSON-Schema v7</span>
+                            <span class="data-lang" data-en="Min Cashout Threshold" data-zh="最低起付金额" data-ja="最低交換額" data-ko="최소 환전 금액" data-de="Mindestauszahlung">Min Cashout Threshold</span>
+                            <span class="text-indigo-400 font-mono font-bold">$5.00</span>
                         </div>
                     </div>
 
-                    <!-- 动态高亮横幅 -->
-                    <div id="system-notice" class="bg-purple-950/30 border border-purple-500/20 p-3.5 rounded-xl text-xs text-purple-300 font-mono leading-relaxed" 
-                         data-en="[METRICS]: Integration endpoint fully synchronized. Internal callback loops running asynchronously at 0.00ms degradation."
-                         data-zh="[系统指标]: 集成终结点已全面同步。内部数据回调拦截循环正以 0.00ms 的无损衰减异步运行中。">
-                        [METRICS]: Integration endpoint fully synchronized. Internal callback loops running asynchronously at 0.00ms degradation.
+                    <div class="bg-purple-950/30 border border-purple-500/20 p-3.5 rounded-xl text-xs text-purple-300 leading-relaxed text-center font-medium data-lang" 
+                         data-en="🎁 100 Free Bonus Points credited upon email verification!"
+                         data-zh="🎁 验证邮箱即可免费获得 100 积分新人奖励！"
+                         data-ja="🎁 メール認証完了で100ボーナスポイントをプレゼント！"
+                         data-ko="🎁 이메일 인증 시 100 보너스 포인트 즉시 지급!"
+                         data-de="🎁 100 Gratis-Bonuspunkte nach E-Mail-Verifizierung!">
+                        🎁 100 Free Bonus Points credited upon email verification!
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 2: LIVE TELEMETRY CHART (编造的可视化图表数据) -->
-            <section id="telemetry" class="space-y-6">
+            <!-- SECTION 2: HOW IT WORKS (简单三步介绍) -->
+            <section class="space-y-8">
+                <div class="text-center max-w-2xl mx-auto space-y-2">
+                    <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase data-lang" data-en="How to earn in 3 simple steps" data-zh="只需简单三步，轻松赚取奖励" data-ja="簡単な3ステップで稼ぐ方法" data-ko="간단한 3단계로 수익 올리기" data-de="In 3 einfachen Schritten verdienen">How to earn in 3 simple steps</h2>
+                    <p class="text-sm text-gray-400 data-lang" data-en="No complicated rules. Clear, fast, and transparent." data-zh="没有任何复杂套路。规则清晰、下款快速、完全透明。" data-ja="面倒なルールは一切なし。明確、迅速、そして透明。" data-ko="복잡한 규칙은 없습니다. 명확하고 빠르며 투명합니다." data-de="Keine komplizierten Regeln. Klar, schnell und transparent.">No complicated rules. Clear, fast, and transparent.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-2">
+                    <!-- 步 1 -->
+                    <div class="bg-gray-950/40 p-6 rounded-2xl border border-gray-900 text-center space-y-3">
+                        <div class="w-12 h-12 rounded-full bg-purple-950/80 border border-purple-500/40 flex items-center justify-center text-purple-400 text-lg font-bold mx-auto">1</div>
+                        <h3 class="text-lg font-bold text-white data-lang" data-en="Create Free Account" data-zh="免费注册账号" data-ja="無料アカウント作成" data-ko="무료 계정 생성" data-de="Kostenloses Konto erstellen">Create Free Account</h3>
+                        <p class="text-xs sm:text-sm text-gray-400 leading-relaxed data-lang" 
+                           data-en="Sign up in 30 seconds with your email. No credit card required, 100% secure."
+                           data-zh="只需输入邮箱，30 秒即可完成注册。无需信用卡，安全有保障。"
+                           data-ja="メールアドレスで30秒登録。クレジットカード不要、100%安全。"
+                           data-ko="이메일로 30초 만에 가입하세요. 신용카드 불필요, 100% 안전 보장."
+                           data-de="In 30 Sekunden mit Ihrer E-Mail anmelden. Keine Kreditkarte erforderlich.">
+                            Sign up in 30 seconds with your email. No credit card required, 100% secure.
+                        </p>
+                    </div>
+
+                    <!-- 步 2 -->
+                    <div class="bg-gray-950/40 p-6 rounded-2xl border border-gray-900 text-center space-y-3">
+                        <div class="w-12 h-12 rounded-full bg-indigo-950/80 border border-indigo-500/40 flex items-center justify-center text-indigo-400 text-lg font-bold mx-auto">2</div>
+                        <h3 class="text-lg font-bold text-white data-lang" data-en="Complete Surveys" data-zh="参与问卷调查" data-ja="アンケートに答える" data-ko="설문조사 참여" data-de="Umfragen ausfüllen">Complete Surveys</h3>
+                        <p class="text-xs sm:text-sm text-gray-400 leading-relaxed data-lang" 
+                           data-en="Choose from matching tasks based on your hobbies. Express your real daily opinions."
+                           data-zh="根据你的兴趣爱好挑选合适的优质问卷。轻松表达你的真实日常想法。"
+                           data-ja="趣味に合わせてマッチする調査を選択。あなたの日常の意見を伝えるだけ。"
+                           data-ko="취향에 맞는 맞춤형 설문을 선택하세요. 일상 속 솔직한 의견을 표현하면 끝."
+                           data-de="Wählen Sie passende Aufgaben basierend auf Ihren Hobbies. Sagen Sie Ihre Meinung.">
+                            Choose from matching tasks based on your hobbies. Express your real daily opinions.
+                        </p>
+                    </div>
+
+                    <!-- 步 3 -->
+                    <div class="bg-gray-950/40 p-6 rounded-2xl border border-gray-900 text-center space-y-3">
+                        <div class="w-12 h-12 rounded-full bg-pink-950/80 border border-pink-500/40 flex items-center justify-center text-pink-400 text-lg font-bold mx-auto">3</div>
+                        <h3 class="text-lg font-bold text-white data-lang" data-en="Get Instant Cashout" data-zh="即时兑换提取" data-ja="即時ポイント交換" data-ko="즉시 보상 수령" data-de="Sofort auszahlen">Get Instant Cashout</h3>
+                        <p class="text-xs sm:text-sm text-gray-400 leading-relaxed data-lang" 
+                           data-en="Redeem earned points for PayPal cash, Amazon gift cards, and various local rewards."
+                           data-zh="将赚到的点数直接兑换为 PayPal 现金、亚马逊礼品卡或各类本地主流好礼。"
+                           data-ja="貯まったポイントはPayPal現金、Amazonギフトカード、その他ローカル報酬に交換可能。"
+                           data-ko="적립된 포인트를 PayPal 현금, 아마존 기프트카드 등 다양한 지역 상품권으로 환전하세요."
+                           data-de="Tauschen Sie Punkte gegen PayPal-Guthaben, Amazon-Gutscheine und mehr ein.">
+                            Redeem earned points for PayPal cash, Amazon gift cards, and various local rewards.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: REWARD PANEL (直观的积分换算表) -->
+            <section class="space-y-6">
                 <div class="border-l-4 border-purple-500 pl-4">
-                    <h2 class="text-xl sm:text-2xl font-bold text-white tracking-wide uppercase data-lang" data-en="Proprietary Quality Performance Analytics" data-zh="专有通道质量与效能分析">Proprietary Quality Performance Analytics</h2>
-                    <p class="text-xs sm:text-sm text-gray-400 font-mono mt-1 data-lang" data-en="Real-time multi-dimensional data streams calculated dynamically." data-zh="实时多维数据流流向动态计算统计">Real-time multi-dimensional data streams calculated dynamically.</p>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white uppercase data-lang" data-en="Estimated Rewards Value" data-zh="预计任务奖励价值参考" data-ja="獲得できる報酬の目安" data-ko="예상 작업 보상 가치 안내" data-de="Geschätzter Wert der Belohnungen">Estimated Rewards Value</h2>
+                    <p class="text-xs sm:text-sm text-gray-400 font-mono mt-1 data-lang" data-en="Higher profile completeness unlocks premium higher paying channels." data-zh="个人画像填写越完整，越能解锁单价更高的高级问卷通道。" data-ja="プロファイルを詳しく入力するほど、高単価アンケートが解放されます。" data-ko="프로필을 상세히 작성할수록 단가가 높은 프리미엄 채널이 열립니다." data-de="Ein vollständigeres Profil schaltet höher bezahlte Umfragen frei.">Higher profile completeness unlocks premium higher paying channels.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- 图表卡片 1: 流量清洗占比（SVG环形图表现） -->
-                    <div class="bg-gray-950/70 border border-gray-800/80 rounded-2xl p-6 blur-backdrop flex flex-col justify-between">
-                        <div>
-                            <span class="text-[10px] font-mono text-purple-400 uppercase tracking-widest block mb-1 data-lang" data-en="Audit Pipeline Distribution" data-zh="审计管道流量分布">Audit Pipeline Distribution</span>
-                            <h4 class="text-base sm:text-lg font-bold text-white data-lang" data-en="Verified Demographics Profile" data-zh="通过画像的真实人口统计">Verified Demographics Profile</h4>
-                        </div>
-                        
-                        <!-- 环形图模拟 -->
-                        <div class="py-6 flex justify-center items-center relative">
-                            <svg class="w-32 h-32 transform -rotate-90">
-                                <circle cx="64" cy="64" r="50" stroke="#1f2937" stroke-width="12" fill="transparent"/>
-                                <circle cx="64" cy="64" r="50" stroke="#a855f7" stroke-width="12" fill="transparent" stroke-dasharray="314" stroke-dashoffset="45" stroke-linecap="round"/>
-                            </svg>
-                            <div class="absolute text-center">
-                                <span class="text-xl font-bold font-mono text-white">85.6%</span>
-                                <span class="text-[9px] font-mono text-gray-500 block uppercase data-lang" data-en="B2B Qualified" data-zh="核心高质流量">B2B Qualified</span>
-                            </div>
-                        </div>
-
-                        <div class="space-y-2 text-xs font-mono">
-                            <div class="flex justify-between items-center">
-                                <div class="flex items-center space-x-2"><span class="w-2 h-2 rounded-full bg-purple-500"></span><span class="text-gray-400 data-lang" data-en="Verified Profiles" data-zh="白名单深度画像">Verified Profiles</span></div>
-                                <span class="text-white">85.6%</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <div class="flex items-center space-x-2"><span class="w-2 h-2 rounded-full bg-gray-700"></span><span class="text-gray-500 data-lang" data-en="Soft Filtered Noise" data-zh="低敏感度噪声拦截">Soft Filtered Noise</span></div>
-                                <span class="text-gray-500">14.4%</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 图表卡片 2: 流量类型构成（条形占比图） -->
-                    <div class="bg-gray-950/70 border border-gray-800/80 rounded-2xl p-6 blur-backdrop flex flex-col justify-between space-y-6">
-                        <div>
-                            <span class="text-[10px] font-mono text-indigo-400 uppercase tracking-widest block mb-1 data-lang" data-en="Audience Niche Vectors" data-zh="受众细分垂直向量">Audience Niche Vectors</span>
-                            <h4 class="text-base sm:text-lg font-bold text-white data-lang" data-en="Global Traffic Architecture" data-zh="全球流量垂直构成占比">Global Traffic Architecture</h4>
-                        </div>
-
-                        <!-- 堆叠柱状进度条 -->
-                        <div class="space-y-4 font-mono text-xs">
-                            <div class="space-y-1">
-                                <div class="flex justify-between text-gray-400 text-[11px]">
-                                    <span class="data-lang" data-en="Enterprise Decision Makers" data-zh="企业决策级高管受众">Enterprise Decision Makers</span>
-                                    <span class="text-white">42%</span>
-                                </div>
-                                <div class="w-full bg-gray-900 h-2 rounded-full overflow-hidden border border-gray-800"><div class="bg-indigo-500 h-full rounded-full" style="width: 42%"></div></div>
-                            </div>
-                            <div class="space-y-1">
-                                <div class="flex justify-between text-gray-400 text-[11px]">
-                                    <span class="data-lang" data-en="Tech Specialists & Devs" data-zh="技术专家与开发者集群">Tech Specialists & Devs</span>
-                                    <span class="text-white">31%</span>
-                                </div>
-                                <div class="w-full bg-gray-900 h-2 rounded-full overflow-hidden border border-gray-800"><div class="bg-purple-500 h-full rounded-full" style="width: 31%"></div></div>
-                            </div>
-                            <div class="space-y-1">
-                                <div class="flex justify-between text-gray-400 text-[11px]">
-                                    <span class="data-lang" data-en="General Consumer Demographics" data-zh="普适性大众高净值群体">General Consumer Demographics</span>
-                                    <span class="text-white">27%</span>
-                                </div>
-                                <div class="w-full bg-gray-900 h-2 rounded-full overflow-hidden border border-gray-800"><div class="bg-pink-500 h-full rounded-full" style="width: 27%"></div></div>
-                            </div>
-                        </div>
-
-                        <div class="bg-indigo-950/20 border border-indigo-900/40 p-3 rounded-xl text-[11px] font-mono text-indigo-300 data-lang"
-                             data-en="* Proprietary router dynamically re-allocates bandwidth to higher tier vectors based on real-time consumer indexing data."
-                             data-zh="* 专有路由分配器会基于实时受众活跃度指数，将带宽动态倾斜至更高层级的垂直受众向量。">
-                            * Proprietary router dynamically re-allocates bandwidth to higher tier vectors based on real-time consumer indexing data.
-                        </div>
-                    </div>
-
-                    <!-- 图表卡片 3: 实时清洗流队列（滚动日志感） -->
-                    <div class="bg-gray-950/70 border border-gray-800/80 rounded-2xl p-6 blur-backdrop flex flex-col justify-between">
-                        <div class="border-b border-gray-900 pb-2">
-                            <span class="text-[10px] font-mono text-emerald-400 uppercase tracking-widest block mb-1 data-lang" data-en="Sanitization Engine" data-zh="实时清洗引擎队列">Sanitization Engine</span>
-                            <h4 class="text-base sm:text-lg font-bold text-white data-lang" data-en="Live Inbound Requests" data-zh="实时入站请求流阻断/通过">Live Inbound Requests</h4>
-                        </div>
-
-                        <!-- 滚动数据序列模拟 -->
-                        <div class="space-y-2 py-4 font-mono text-[11px]">
-                            <div class="flex items-center justify-between text-emerald-400 bg-emerald-950/10 px-2 py-1 rounded border border-emerald-900/20">
-                                <span>[REQ-8902] US-RES-NODE</span>
-                                <span>PASS (200)</span>
-                            </div>
-                            <div class="flex items-center justify-between text-emerald-400 bg-emerald-950/10 px-2 py-1 rounded border border-emerald-900/20">
-                                <span>[REQ-8903] DE-CORP-GW</span>
-                                <span>PASS (200)</span>
-                            </div>
-                            <div class="flex items-center justify-between text-red-400 bg-red-950/10 px-2 py-1 rounded border border-red-900/20">
-                                <span>[REQ-8904] DC-HOST-PROXY</span>
-                                <span>BLOCK (403)</span>
-                            </div>
-                            <div class="flex items-center justify-between text-emerald-400 bg-emerald-950/10 px-2 py-1 rounded border border-emerald-900/20">
-                                <span>[REQ-8905] UK-MOBILE-CELL</span>
-                                <span>PASS (200)</span>
-                            </div>
-                        </div>
-
-                        <div class="text-[10px] text-gray-500 font-mono flex justify-between items-center pt-2 border-t border-gray-950">
-                            <span class="data-lang" data-en="Refreshed: 0s ago" data-zh="刷新频率: 刚刚">Refreshed: 0s ago</span>
-                            <span class="text-purple-400 font-bold">128.4 Request/sec</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 3: CORE VALUE PROPOSITIONS (平台核心优势专栏) -->
-            <section id="architecture" class="space-y-8">
-                <div class="text-center max-w-2xl mx-auto space-y-3">
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight uppercase data-lang" data-en="Our Platform Architecture Advantages" data-zh="DataPrism 平台架构核心优势">Our Platform Architecture Advantages</h2>
-                    <p class="text-sm text-gray-400 data-lang" data-en="Why top tier enterprise market buyers anchor data retention inside our ecosystem." data-zh="为什么顶级企业级市场买家深度信赖并锚定我们的受众集群数据生态。">Why top tier enterprise market buyers anchor data retention inside our ecosystem.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-4">
-                    <!-- 优势 1 -->
-                    <div class="bg-gray-950/40 p-6 sm:p-8 rounded-2xl border border-gray-900 hover:border-purple-500/30 transition-all duration-300 space-y-4 group">
-                        <div class="w-12 h-12 rounded-xl bg-purple-950/80 border border-purple-500/40 flex items-center justify-center text-purple-400 text-xl font-bold font-mono group-hover:scale-105 transition-transform">01</div>
-                        <h3 class="text-lg font-bold text-white tracking-wide data-lang" data-en="Advanced Digital Fingerprinting" data-zh="深度数字行为指纹审计">Advanced Digital Fingerprinting</h3>
-                        <p class="text-xs sm:text-sm text-gray-400 leading-relaxed data-lang" 
-                           data-en="We completely ignore basic cookie-level checking. Our custom listener intercepts hardware canvas data, WebGL layers, and network latency anomalies to filter automated system script duplicates natively."
-                           data-zh="我们完全抛弃了基础的 Cookie 层级粗暴校验。专属监听器可深度截获底层硬件画布数据、WebGL 渲染层结构及网络延迟异动，从根源上原生过滤任何自动化脚本的二次刷量行为。">
-                            We completely ignore basic cookie-level checking. Our custom listener intercepts hardware canvas data, WebGL layers, and network latency anomalies to filter automated system script duplicates natively.
-                        </p>
-                    </div>
-
-                    <!-- 优势 2 -->
-                    <div class="bg-gray-950/40 p-6 sm:p-8 rounded-2xl border border-gray-900 hover:border-purple-500/30 transition-all duration-300 space-y-4 group">
-                        <div class="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/40 flex items-center justify-center text-indigo-400 text-xl font-bold font-mono group-hover:scale-105 transition-transform">02</div>
-                        <h3 class="text-lg font-bold text-white tracking-wide data-lang" data-en="Pure Non-Incentivized Flow" data-zh="100% 纯净非激励受众流">Pure Non-Incentivized Flow</h3>
-                        <p class="text-xs sm:text-sm text-gray-400 leading-relaxed data-lang" 
-                           data-en="Audience conversion is achieved via highly targeted context alignment and software utility exchange, guaranteeing that survey feedback represents authentic consumer sentiment, free from reward-bias contamination."
-                           data-zh="受众转化完全通过极高密度的场景对齐和软件实用价值交换达成，这从底层机制上保障了所有问卷回馈均代表最真实的消费者意图，彻底杜绝了积分奖励机制带来的主观数据污染。">
-                            Audience conversion is achieved via highly targeted context alignment and software utility exchange, guaranteeing that survey feedback represents authentic consumer sentiment, free from reward-bias contamination.
-                        </p>
-                    </div>
-
-                    <!-- 优势 3 -->
-                    <div class="bg-gray-950/40 p-6 sm:p-8 rounded-2xl border border-gray-900 hover:border-purple-500/30 transition-all duration-300 space-y-4 group">
-                        <div class="w-12 h-12 rounded-xl bg-pink-950/80 border border-pink-500/40 flex items-center justify-center text-pink-400 text-xl font-bold font-mono group-hover:scale-105 transition-transform">03</div>
-                        <h3 class="text-lg font-bold text-white tracking-wide data-lang" data-en="Zero-Trust Compliance Standard" data-zh="零信任架构数据合规生态">Zero-Trust Compliance Standard</h3>
-                        <p class="text-xs sm:text-sm text-gray-400 leading-relaxed data-lang" 
-                           data-en="Engineered from day one inside international compliance protocols. Fully decentralized data node hashing eliminates central point database vulnerabilities while matching strict global privacy framework controls."
-                           data-zh="系统自立项起即深度内嵌国际化合规通信协议。完全去中心化的数据节点哈希存储，在秒级对齐全球严格的隐私保护框架管控的同时，彻底根治了传统中央数据库被爆破的隐患。">
-                            Engineered from day one inside international compliance protocols. Fully decentralized data node hashing eliminates central point database vulnerabilities while matching strict global privacy framework controls.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 4: NETWORK DISTRIBUTION (全球节点矩阵明细) -->
-            <section id="distribution" class="space-y-6">
-                <div class="border-l-4 border-indigo-500 pl-4">
-                    <h2 class="text-xl sm:text-2xl font-bold text-white tracking-wide uppercase data-lang" data-en="Global Node Topography Allocation" data-zh="全球化数据节点拓扑分布明细">Global Node Topography Allocation</h2>
-                    <p class="text-xs sm:text-sm text-gray-400 font-mono mt-1 data-lang" data-en="Comprehensive cross-border routing footprint distribution breakdown." data-zh="全域跨境路由驻留覆盖体量与性能深度拆解">Comprehensive cross-border routing footprint distribution breakdown.</p>
-                </div>
-
-                <!-- 响应式表格：手机端横向滚动以防挤压，桌面端完美平铺 -->
                 <div class="w-full overflow-x-auto rounded-2xl border border-gray-800 bg-gray-950/60 blur-backdrop">
-                    <table class="w-full text-left border-collapse min-w-[600px] sm:min-w-none font-mono text-xs">
+                    <table class="w-full text-left border-collapse min-w-[500px] sm:min-w-none text-xs sm:text-sm">
                         <thead>
-                            <tr class="border-b border-gray-800 bg-gray-900/40 text-gray-400 uppercase tracking-wider text-[10px]">
-                                <th class="p-4 data-lang" data-en="Regional Core Cluster" data-zh="区域核心集群">Regional Core Cluster</th>
-                                <th class="p-4 data-lang" data-en="Daily Active Routers" data-zh="日均活跃路由终端">Daily Active Routers</th>
-                                <th class="p-4 data-lang" data-en="Peak Processing Load" data-zh="峰值处理吞吐带宽">Peak Processing Load</th>
-                                <th class="p-4 data-lang" data-en="Operational Health Status" data-zh="运维健康负载状态">Operational Health Status</th>
+                            <tr class="border-b border-gray-800 bg-gray-900/40 text-gray-400 uppercase font-mono text-[11px] tracking-wider">
+                                <th class="p-4 data-lang" data-en="Survey Type" data-zh="问卷类型" data-ja="調査ジャンル" data-ko="설문 유형" data-de="Umfragetyp">Survey Type</th>
+                                <th class="p-4 data-lang" data-en="Time Needed" data-zh="预计所需时间" data-ja="所要時間" data-ko="소요 시간" data-de="Zeitaufwand">Time Needed</th>
+                                <th class="p-4 data-lang" data-en="Points Earned" data-zh="可获积分点数" data-ja="獲得ポイント" data-ko="적립 포인트" data-de="Punkte">Points Earned</th>
+                                <th class="p-4 data-lang" data-en="Est. Cash Value" data-zh="等值现金价值" data-ja="現金換算" data-ko="현금 가치" data-de="Geldwert">Est. Cash Value</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-900 text-gray-300">
+                        <tbody class="divide-y divide-gray-900 text-gray-300 font-medium">
                             <tr class="hover:bg-purple-950/10 transition-colors">
-                                <td class="p-4 font-bold text-white">North America East (Virginia)</td>
-                                <td class="p-4">342,900/day</td>
-                                <td class="p-4">18.4k req/sec</td>
-                                <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 font-bold uppercase data-lang" data-en="Optimal" data-zh="最佳就绪">Optimal</span></td>
+                                <td class="p-4 font-bold text-white data-lang" data-en="Quick Daily Poll" data-zh="每日快速投票" data-ja="デイリー投票" data-ko="일일 신속 투표" data-de="Schnelle tägliche Umfrage">Quick Daily Poll</td>
+                                <td class="p-4 font-mono">1 - 2 Mins</td>
+                                <td class="p-4 text-purple-400 font-mono font-bold">50 Pts</td>
+                                <td class="p-4 text-emerald-400 font-mono font-bold">$0.50</td>
                             </tr>
                             <tr class="hover:bg-purple-950/10 transition-colors">
-                                <td class="p-4 font-bold text-white">Western Europe Backbone (Frankfurt)</td>
-                                <td class="p-4">289,450/day</td>
-                                <td class="p-4">14.1k req/sec</td>
-                                <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 font-bold uppercase data-lang" data-en="Optimal" data-zh="最佳就绪">Optimal</span></td>
+                                <td class="p-4 font-bold text-white data-lang" data-en="Consumer Shopping Habits" data-zh="日常消费购物习惯调研" data-ja="お買い物習慣に関する調査" data-ko="소비자 쇼핑 습관 설문" data-de="Einkaufsgewohnheiten">Consumer Shopping Habits</td>
+                                <td class="p-4 font-mono">8 - 10 Mins</td>
+                                <td class="p-4 text-purple-400 font-mono font-bold">250 Pts</td>
+                                <td class="p-4 text-emerald-400 font-mono font-bold">$2.50</td>
                             </tr>
                             <tr class="hover:bg-purple-950/10 transition-colors">
-                                <td class="p-4 font-bold text-white">Asia Pacific South (Singapore)</td>
-                                <td class="p-4">198,120/day</td>
-                                <td class="p-4">9.8k req/sec</td>
-                                <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 font-bold uppercase data-lang" data-en="Optimal" data-zh="最佳就绪">Optimal</span></td>
+                                <td class="p-4 font-bold text-white data-lang" data-en="Entertainment & Media Feedback" data-zh="泛娱乐与影音媒体反馈" data-ja="エンタメ・メディアの評価" data-ko="엔터테인먼트 및 미디어 피드백" data-de="Unterhaltung & Medien">Entertainment & Media Feedback</td>
+                                <td class="p-4 font-mono">12 - 15 Mins</td>
+                                <td class="p-4 text-purple-400 font-mono font-bold">400 Pts</td>
+                                <td class="p-4 text-emerald-400 font-mono font-bold">$4.00</td>
                             </tr>
                             <tr class="hover:bg-purple-950/10 transition-colors">
-                                <td class="p-4 font-bold text-white">Latin America Core (São Paulo)</td>
-                                <td class="p-4">120,440/day</td>
-                                <td class="p-4">5.2k req/sec</td>
-                                <td class="p-4"><span class="px-2 py-0.5 rounded text-[10px] bg-amber-950/80 text-amber-400 border border-amber-500/30 font-bold uppercase data-lang" data-en="High Load" data-zh="高位负载">High Load</span></td>
+                                <td class="p-4 font-bold text-white data-lang" data-en="Premium Tech Products Study" data-zh="数码科技前沿产品深度研究" data-ja="最新テック製品の深掘り調査" data-ko="프리미엄 IT 제품 심층 연구" data-de="Premium-Tech-Studie">Premium Tech Products Study</td>
+                                <td class="p-4 font-mono">20 Mins</td>
+                                <td class="p-4 text-purple-400 font-mono font-bold">750 Pts</td>
+                                <td class="p-4 text-emerald-400 font-mono font-bold">$7.50</td>
                             </tr>
                         </tbody>
                     </table>
@@ -358,23 +259,22 @@
             </section>
         </div>
 
-        <!-- 5. 沉浸式系统页脚 -->
-        <footer class="border-t border-gray-900 bg-gray-950/80 py-8 text-[10px] font-mono text-gray-500 blur-backdrop">
+        <!-- 3. 页脚 -->
+        <footer class="border-t border-gray-900 bg-gray-950/80 py-8 text-[11px] font-mono text-gray-500 blur-backdrop">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-                <div id="footer-core" class="text-center md:text-left">
-                    CORE ID: DATAPRISM-INTEGRATION-NODE-2026 // SYSTEM TELEMETRY NOMINAL // ALL CHANNELS ENCRYPTED
+                <div class="text-center md:text-left">
+                    © 2026 DataPrism GPT System. All Rights Reserved. Safe & Transparent Data Practice.
                 </div>
-                <div class="flex flex-wrap justify-center gap-6 text-[11px]">
-                    <a href="#privacy" class="hover:text-purple-400 cursor-pointer data-lang" data-en="Privacy Framework" data-zh="数据隐私合规框架" onclick="handlePrivacyAlert()">Privacy Framework</a>
-                    <a href="#terms" class="hover:text-purple-400 cursor-pointer data-lang" data-en="Anti-Fraud Protocol" data-zh="反欺诈阻断协议" onclick="handleTermsAlert()">Anti-Fraud Protocol</a>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="#privacy" class="hover:text-purple-400 cursor-pointer data-lang" data-en="Terms of Service" data-zh="服务条款" data-ja="利用規約" data-ko="이용 약관" data-de="Nutzungsbedingungen" onclick="alert('DataPrism protects user privacy strictly under standard regulations.')">Terms of Service</a>
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- 3D 赛博光束矩阵动画及响应式核心控制引擎 -->
+    <!-- 3D 动态背景与核心切换控制脚本 -->
     <script>
-        // --- Canvas 赛博矩阵动态渲染器 ---
+        // --- Canvas 粒子流曳光特效 ---
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
 
@@ -385,10 +285,9 @@
         window.addEventListener('resize', resize);
         resize();
 
-        // 手机端减少密度以优化渲染性能，桌面端全马力拉满
         const isMobile = window.innerWidth < 768;
-        const columnSpacing = isMobile ? 35 : 25;
-        const columns = Math.floor(canvas.width / columnSpacing); 
+        const spacing = isMobile ? 35 : 25;
+        const columns = Math.floor(canvas.width / spacing); 
         
         const drops = [];
         const speeds = [];
@@ -396,31 +295,29 @@
 
         for (let i = 0; i < columns; i++) {
             drops[i] = Math.random() * -canvas.height; 
-            speeds[i] = Math.random() * 1.8 + 1.2; 
+            speeds[i] = Math.random() * 1.5 + 1.2; 
         }
 
         function draw() {
-            ctx.fillStyle = 'rgba(4, 6, 18, 0.18)'; 
+            ctx.fillStyle = 'rgba(5, 7, 22, 0.18)'; 
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             for (let i = 0; i < columns; i++) {
-                const x = i * columnSpacing + Math.sin(drops[i] / 40) * 4; 
+                const x = i * spacing + Math.sin(drops[i] / 40) * 4; 
                 const y = drops[i];
 
                 const baseColor = colors[i % colors.length];
-                // 渲染科技线条曳光轨迹
                 ctx.fillStyle = baseColor + '0.14)';
-                ctx.fillRect(x, y, 1.8, isMobile ? 60 : 85);
+                ctx.fillRect(x, y, 1.8, isMobile ? 65 : 85);
                 
-                // 渲染轨迹最亮端核心亮点
                 ctx.fillStyle = '#ffffff';
-                ctx.fillRect(x, y + (isMobile ? 60 : 85), 1.8, 3);
+                ctx.fillRect(x, y + (isMobile ? 65 : 85), 1.8, 3);
 
                 drops[i] += speeds[i];
 
                 if (drops[i] > canvas.height) {
                     drops[i] = Math.random() * -120;
-                    speeds[i] = Math.random() * 1.8 + 1.2;
+                    speeds[i] = Math.random() * 1.5 + 1.2;
                 }
             }
             requestAnimationFrame(draw);
@@ -428,48 +325,42 @@
         requestAnimationFrame(draw);
 
 
-        // --- 核心无缝多语切换控制引擎 ---
-        let currentLang = 'en';
-        const langToggleBtn = document.getElementById('lang-toggle');
+        // --- 多语言下拉菜单联动控制引擎 ---
+        const langBtn = document.getElementById('lang-btn');
+        const langDropdown = document.getElementById('lang-dropdown');
+        const currentFlag = document.getElementById('current-flag');
+        const currentLangText = document.getElementById('current-lang-text');
 
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'zh' : 'en';
+        // 点击按钮展开/收起菜单
+        langBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            langDropdown.classList.toggle('hidden-menu');
+        });
+
+        // 点击页面其他任意地方自动关闭下拉单
+        document.addEventListener('click', () => {
+            langDropdown.classList.add('hidden-menu');
+        });
+
+        // 核心切换函数
+        function changeLanguage(langCode, flag, langName) {
+            // 1. 更新按钮显示的国旗和文字
+            currentFlag.textContent = flag;
+            currentLangText.textContent = langName;
             
-            // 全局遍历节点渲染
+            // 2. 遍历翻译带有 data-lang 属性的节点
             document.querySelectorAll('.data-lang').forEach(el => {
-                if (currentLang === 'zh') {
-                    el.textContent = el.getAttribute('data-zh');
-                } else {
-                    el.textContent = el.getAttribute('data-en');
+                const targetText = el.getAttribute(`data-${langCode}`);
+                if (targetText) {
+                    el.textContent = targetText;
                 }
             });
 
-            // 动态处理状态检测面板
+            // 3. 动态刷新系统公告通知栏
             const systemNotice = document.getElementById('system-notice');
-            if (currentLang === 'zh') {
-                systemNotice.textContent = systemNotice.getAttribute('data-zh');
-            } else {
-                systemNotice.textContent = systemNotice.getAttribute('data-en');
-            }
-        }
-
-        langToggleBtn.addEventListener('click', toggleLanguage);
-
-
-        // --- 安全合规弹窗机制 ---
-        function handlePrivacyAlert() {
-            if (currentLang === 'zh') {
-                alert('DataPrism Insights 隐私合规声明：\n平台数据管道严格在行业最高数据标准下运行。任何入站受众特征指纹都将进行非对称哈希化处理，拒绝明文落地，确保最终审计链条绝对合规。');
-            } else {
-                alert('DataPrism Insights Privacy Framework:\nPlatform metrics operations comply fully with high-tier data protection algorithms. All incoming user fingerprints are structured via asymmetric hashing protocols, strictly rejecting plaintext retention.');
-            }
-        }
-
-        function handleTermsAlert() {
-            if (currentLang === 'zh') {
-                alert('DataPrism Insights 反欺诈实时拦截说明：\n系统反欺诈阻断引擎（Sanitization Engine）会对每一笔请求进行多维度测算。一旦捕获非对齐设备特征、模拟地理越权，平台将执行零信任熔断，自动返回 403 阻断信号。');
-            } else {
-                alert('DataPrism Insights Anti-Fraud Protocol:\nThe internal sanitization engine calculates inbound signals across multi-dimensional footprints. Any detection of spoofed hardware identifiers or cross-border network masking triggers zero-trust circuit breaking, rendering an automatic 403 response.');
+            if (systemNotice) {
+                const targetNotice = systemNotice.getAttribute(`data-${langCode}`);
+                if (targetNotice) systemNotice.textContent = targetNotice;
             }
         }
     </script>
