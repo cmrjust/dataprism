@@ -2,56 +2,162 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Minimal Login</title>
-    <!-- 引入 Supabase 官方 SDK -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication | DataPrism</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body>
+<body class="antialiased text-slate-700 bg-slate-50 min-h-screen flex flex-col justify-between">
 
-    <h2>DataPrism 极简登录</h2>
-    <hr>
-
-    <!-- 纯净登录表单，没有任何复杂的 UI 干扰 -->
-    <form id="loginForm">
-        <div>
-            <label>账号 (Account ID): </label>
-            <input type="text" id="accountId" required placeholder="请输入您的账号">
+    <!-- 顶部导航 -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex justify-between items-center">
+            <div class="flex items-center space-x-2.5 cursor-pointer" onclick="window.location.href='./index.html'">
+                <div class="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center font-bold text-white shadow-sm">D</div>
+                <span class="text-xl font-bold tracking-tight text-slate-900">DataPrism</span>
+            </div>
+            <a href="./index.html" class="text-xs font-semibold text-slate-500 hover:text-indigo-600 transition-colors">Home</a>
         </div>
-        <br>
-        <div>
-            <label>密码 (Password): </label>
-            <input type="password" id="password" required placeholder="请输入您的密码">
-        </div>
-        <br>
-        <button type="submit">登 录</button>
-    </form>
+    </header>
 
-    <!-- 错误信息展示区域 -->
-    <p id="errorBox" style="color: red; font-weight: bold;"></p>
+    <!-- 主体认证卡片 -->
+    <main class="flex-grow flex flex-col items-center justify-center px-4 py-12">
+        
+        <!-- 【核心改动 1】自定义错误 Banner（默认隐藏 hidden） -->
+        <div id="error-banner" class="max-w-md w-full mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm hidden flex items-start space-x-2 shadow-sm transition-all animate-fade-in">
+            <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <span id="error-message">User does not exist.</span>
+        </div>
+
+        <div class="max-w-md w-full bg-white border border-slate-200 rounded-2xl p-8 shadow-xl space-y-6">
+            
+            <!-- 【核心改动 2】极其简单的选项卡切换 -->
+            <div class="flex border-b border-slate-100 pb-2">
+                <button id="tab-login" onclick="switchTab('login')" class="flex-1 pb-2 text-center text-sm font-bold border-b-2 border-indigo-600 text-indigo-600 transition-all">
+                    Sign In
+                </button>
+                <button id="tab-register" onclick="switchTab('register')" class="flex-1 pb-2 text-center text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all">
+                    Sign Up
+                </button>
+            </div>
+
+            <!-- 登录表单 -->
+            <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
+                <!-- 这里已严格修改：Email 改为 ID -->
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Account ID</label>
+                    <input type="text" id="login-account-id" required placeholder="Enter your ID" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Password</label>
+                    <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+
+                <div class="py-2">
+                    <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="light"></div>
+                </div>
+
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl text-sm shadow-md shadow-indigo-200 transition-all transform active:scale-[0.98]">
+                    Sign In
+                </button>
+            </form>
+
+            <!-- 注册表单 -->
+            <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4 hidden">
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Invitation Code</label>
+                    <input type="text" id="reg-token" required placeholder="Enter code" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Email</label>
+                    <input type="email" required placeholder="your@email.com" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Password</label>
+                    <input type="password" required placeholder="At least 8 characters" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+
+                <!-- 条款同意勾选 -->
+                <div class="flex items-start space-x-2 pt-1">
+                    <input type="checkbox" required id="reg-agree" class="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                    <label for="reg-agree" class="text-xs text-slate-400 leading-tight">
+                        I agree to the <a href="./terms.html" target="_blank" class="text-indigo-500 hover:underline font-semibold">Terms of Service</a>.
+                    </label>
+                </div>
+
+                <div class="py-2">
+                    <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="light"></div>
+                </div>
+
+                <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-xl text-sm shadow-md transition-all transform active:scale-[0.98]">
+                    Sign Up
+                </button>
+            </form>
+
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+        <p>© 2026 DataPrism Network. All rights reserved.</p>
+    </footer>
 
     <script>
-        // 初始化你的 Supabase 配置
+        // 初始化 Supabase 客户端配置
         const SUPABASE_URL = 'https://mbxemvfizvmeknfssgut.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_Ubs0kjjsXrLDVRauM_j1Ng_Q6OL-cYG';
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // 监听表单提交
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        // 显式弹窗 Banner 控制函数
+        function showBanner(message) {
+            const banner = document.getElementById('error-banner');
+            const msgSpan = document.getElementById('error-message');
+            msgSpan.textContent = message;
+            banner.classList.remove('hidden');
+        }
+
+        function hideBanner() {
+            document.getElementById('error-banner').classList.add('hidden');
+        }
+
+        // 选项卡切换逻辑
+        function switchTab(type) {
+            hideBanner(); // 切换时顺手把上一页的报错清掉
+            const btnLogin = document.getElementById('tab-login');
+            const btnRegister = document.getElementById('tab-register');
+            const formLogin = document.getElementById('form-login');
+            const formRegister = document.getElementById('form-register');
+
+            if (type === 'login') {
+                btnLogin.className = "flex-1 pb-2 text-center text-sm font-bold border-b-2 border-indigo-600 text-indigo-600 transition-all";
+                btnRegister.className = "flex-1 pb-2 text-center text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all";
+                formLogin.classList.remove('hidden');
+                formRegister.classList.add('hidden');
+            } else {
+                btnRegister.className = "flex-1 pb-2 text-center text-sm font-bold border-b-2 border-slate-900 text-slate-900 transition-all";
+                btnLogin.className = "flex-1 pb-2 text-center text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all";
+                formRegister.classList.remove('hidden');
+                formLogin.classList.add('hidden');
+            }
+        }
+
+        // 【核心改动 1】处理登录拦截并对接真正的 Supabase 业务逻辑
+        async function handleLogin(e) {
             e.preventDefault();
-            
-            // 清空上一次的错误提示
-            const errorBox = document.getElementById('errorBox');
-            errorBox.textContent = "";
+            hideBanner();
 
-            // 获取输入的值
-            const rawId = document.getElementById('accountId').value.trim();
-            const inputPassword = document.getElementById('password').value.trim();
+            const rawId = document.getElementById('login-account-id').value.trim();
+            const inputPassword = document.getElementById('login-password').value.trim();
 
-            // 自动识别：如果是纯数字则转为数字类型，否则保持字符串
+            // 智能识别类型：如果是数字则转为 Number，否则保持 String
             const queryId = isNaN(rawId) ? rawId : Number(rawId);
 
             try {
-                // 第一步：直接去比对 account_id 和 password
+                // 第一步：尝试直接查询匹配
                 let { data, error } = await _supabase
                     .from('profiles')
                     .select('account_id, balance, password')
@@ -61,7 +167,7 @@
 
                 if (error) throw error;
 
-                // 第二步：如果在数字/字符串类型上数据库比较严格没匹配到，用原始文本再兜底查一次
+                // 第二步：兜底策略，若是数字未匹配到，转为文本类型再查一次
                 if (!data && typeof queryId === 'number') {
                     const retry = await _supabase
                         .from('profiles')
@@ -72,22 +178,242 @@
                     if (retry.data) data = retry.data;
                 }
 
-                // 第三步：验证最终结果
+                // 第三步：验证并跳转
                 if (data) {
-                    alert('登录成功！点击确定跳转。');
-                    sessionStorage.setItem('current_user_id', data.account_id);
-                    sessionStorage.setItem('current_user_balance', data.balance);
+                    // 保存登录状态和数据
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('current_user_id', data.account_id);
+                    localStorage.setItem('current_user_balance', data.balance);
+                    
+                    // 页面跳转
                     window.location.href = 'dashboard.html';
                 } else {
-                    errorBox.textContent = "登录失败：账号或密码不正确。";
+                    showBanner("Invalid login credentials. User or password incorrect.");
                 }
 
             } catch (err) {
-                console.error("报错详情:", err);
-                errorBox.textContent = "网络或数据库请求错误，请按 F12 并在 Console 查看错误日志。";
+                console.error("数据库请求失败:", err);
+                showBanner("Database request failed. Please check your network or credentials.");
             }
-        });
-    </script>
+        }
 
+        // 【核心改动 3】处理注册强行拦截
+        function handleRegister(e) {
+            e.preventDefault();
+            hideBanner();
+            
+            // 甭管里面填了啥，只要想点注册，直接大红 Banner 送客
+            showBanner("Invalid or expired invitation code. Registration denied.");
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication | DataPrism</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="antialiased text-slate-700 bg-slate-50 min-h-screen flex flex-col justify-between">
+
+    <!-- 顶部导航 -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex justify-between items-center">
+            <div class="flex items-center space-x-2.5 cursor-pointer" onclick="window.location.href='./index.html'">
+                <div class="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center font-bold text-white shadow-sm">D</div>
+                <span class="text-xl font-bold tracking-tight text-slate-900">DataPrism</span>
+            </div>
+            <a href="./index.html" class="text-xs font-semibold text-slate-500 hover:text-indigo-600 transition-colors">Home</a>
+        </div>
+    </header>
+
+    <!-- 主体认证卡片 -->
+    <main class="flex-grow flex flex-col items-center justify-center px-4 py-12">
+        
+        <!-- 【核心改动 1】自定义错误 Banner（默认隐藏 hidden） -->
+        <div id="error-banner" class="max-w-md w-full mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm hidden flex items-start space-x-2 shadow-sm transition-all animate-fade-in">
+            <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <span id="error-message">User does not exist.</span>
+        </div>
+
+        <div class="max-w-md w-full bg-white border border-slate-200 rounded-2xl p-8 shadow-xl space-y-6">
+            
+            <!-- 【核心改动 2】极其简单的选项卡切换 -->
+            <div class="flex border-b border-slate-100 pb-2">
+                <button id="tab-login" onclick="switchTab('login')" class="flex-1 pb-2 text-center text-sm font-bold border-b-2 border-indigo-600 text-indigo-600 transition-all">
+                    Sign In
+                </button>
+                <button id="tab-register" onclick="switchTab('register')" class="flex-1 pb-2 text-center text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all">
+                    Sign Up
+                </button>
+            </div>
+
+            <!-- 登录表单 -->
+            <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
+                <!-- 这里已严格修改：Email 改为 ID -->
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Account ID</label>
+                    <input type="text" id="login-account-id" required placeholder="Enter your ID" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Password</label>
+                    <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+
+                <div class="py-2">
+                    <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="light"></div>
+                </div>
+
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl text-sm shadow-md shadow-indigo-200 transition-all transform active:scale-[0.98]">
+                    Sign In
+                </button>
+            </form>
+
+            <!-- 注册表单 -->
+            <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4 hidden">
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Invitation Code</label>
+                    <input type="text" id="reg-token" required placeholder="Enter code" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Email</label>
+                    <input type="email" required placeholder="your@email.com" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Password</label>
+                    <input type="password" required placeholder="At least 8 characters" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+
+                <!-- 条款同意勾选 -->
+                <div class="flex items-start space-x-2 pt-1">
+                    <input type="checkbox" required id="reg-agree" class="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                    <label for="reg-agree" class="text-xs text-slate-400 leading-tight">
+                        I agree to the <a href="./terms.html" target="_blank" class="text-indigo-500 hover:underline font-semibold">Terms of Service</a>.
+                    </label>
+                </div>
+
+                <div class="py-2">
+                    <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="light"></div>
+                </div>
+
+                <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-xl text-sm shadow-md transition-all transform active:scale-[0.98]">
+                    Sign Up
+                </button>
+            </form>
+
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+        <p>© 2026 DataPrism Network. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // 初始化 Supabase 客户端配置
+        const SUPABASE_URL = 'https://mbxemvfizvmeknfssgut.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_Ubs0kjjsXrLDVRauM_j1Ng_Q6OL-cYG';
+        const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // 显式弹窗 Banner 控制函数
+        function showBanner(message) {
+            const banner = document.getElementById('error-banner');
+            const msgSpan = document.getElementById('error-message');
+            msgSpan.textContent = message;
+            banner.classList.remove('hidden');
+        }
+
+        function hideBanner() {
+            document.getElementById('error-banner').classList.add('hidden');
+        }
+
+        // 选项卡切换逻辑
+        function switchTab(type) {
+            hideBanner(); // 切换时顺手把上一页的报错清掉
+            const btnLogin = document.getElementById('tab-login');
+            const btnRegister = document.getElementById('tab-register');
+            const formLogin = document.getElementById('form-login');
+            const formRegister = document.getElementById('form-register');
+
+            if (type === 'login') {
+                btnLogin.className = "flex-1 pb-2 text-center text-sm font-bold border-b-2 border-indigo-600 text-indigo-600 transition-all";
+                btnRegister.className = "flex-1 pb-2 text-center text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all";
+                formLogin.classList.remove('hidden');
+                formRegister.classList.add('hidden');
+            } else {
+                btnRegister.className = "flex-1 pb-2 text-center text-sm font-bold border-b-2 border-slate-900 text-slate-900 transition-all";
+                btnLogin.className = "flex-1 pb-2 text-center text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all";
+                formRegister.classList.remove('hidden');
+                formLogin.classList.add('hidden');
+            }
+        }
+
+        // 【核心改动 1】处理登录拦截并对接真正的 Supabase 业务逻辑
+        async function handleLogin(e) {
+            e.preventDefault();
+            hideBanner();
+
+            const rawId = document.getElementById('login-account-id').value.trim();
+            const inputPassword = document.getElementById('login-password').value.trim();
+
+            // 智能识别类型：如果是数字则转为 Number，否则保持 String
+            const queryId = isNaN(rawId) ? rawId : Number(rawId);
+
+            try {
+                // 第一步：尝试直接查询匹配
+                let { data, error } = await _supabase
+                    .from('profiles')
+                    .select('account_id, balance, password')
+                    .eq('account_id', queryId)
+                    .eq('password', inputPassword)
+                    .maybeSingle();
+
+                if (error) throw error;
+
+                // 第二步：兜底策略，若是数字未匹配到，转为文本类型再查一次
+                if (!data && typeof queryId === 'number') {
+                    const retry = await _supabase
+                        .from('profiles')
+                        .select('account_id, balance, password')
+                        .eq('account_id', rawId)
+                        .eq('password', inputPassword)
+                        .maybeSingle();
+                    if (retry.data) data = retry.data;
+                }
+
+                // 第三步：验证并跳转
+                if (data) {
+                    // 保存登录状态和数据
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('current_user_id', data.account_id);
+                    localStorage.setItem('current_user_balance', data.balance);
+                    
+                    // 页面跳转
+                    window.location.href = 'dashboard.html';
+                } else {
+                    showBanner("Invalid login credentials. User or password incorrect.");
+                }
+
+            } catch (err) {
+                console.error("数据库请求失败:", err);
+                showBanner("Database request failed. Please check your network or credentials.");
+            }
+        }
+
+        // 【核心改动 3】处理注册强行拦截
+        function handleRegister(e) {
+            e.preventDefault();
+            hideBanner();
+            
+            // 甭管里面填了啥，只要想点注册，直接大红 Banner 送客
+            showBanner("Invalid or expired invitation code. Registration denied.");
+        }
+    </script>
 </body>
 </html>
