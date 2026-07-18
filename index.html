@@ -3,108 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataPrism | Market Research & Consumer Rewards Network</title>
+    <title>DataPrism | Answer Surveys & Get Paid Daily</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #f8fafc;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-        
-        .stage-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-        
-        .panel-scene {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-sizing: border-box;
-            padding: 5rem 2rem 2rem 2rem;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, visibility 0.6s;
-            will-change: transform, opacity;
-        }
-        
-        .panel-scene.active {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-            transform: translate(0, 0);
-        }
-        
-        .panel-scene.exit-to-bottom-right {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transform: translate(15%, 15%);
-        }
-        
-        .panel-scene.exit-to-top-left {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transform: translate(-15%, -15%);
-        }
-        
-        .geometric-shape {
-            position: absolute;
-            width: 32vw;
-            height: 32vw;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(147, 51, 234, 0.02) 100%);
-            border: 1px solid rgba(79, 70, 229, 0.1);
-            pointer-events: none;
-            z-index: 1;
-        }
-        
-        .panel-scene.active .geometric-shape {
-            opacity: 0.5;
-        }
-        
-        .panel-scene:nth-child(1) .geometric-shape { right: -5vw; top: 15vh; }
-        .panel-scene:nth-child(2) .geometric-shape { left: -5vw; bottom: 15vh; }
-        .panel-scene:nth-child(3) .geometric-shape { right: -5vw; bottom: 15vh; }
-        .panel-scene:nth-child(4) .geometric-shape { left: -5vw; top: 15vh; }
-        .panel-scene:nth-child(5) .geometric-shape { right: -5vw; top: 20vh; }
-        
-        .content-card-layout {
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            max-w: 5xl;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 1rem;
-            padding: 2rem;
-            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.02);
-        }
-        
-        .grid-mesh-overlay {
-            position: absolute;
-            inset: 0;
-            background-image: linear-gradient(to right, rgba(99, 102, 241, 0.01) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(99, 102, 241, 0.01) 1px, transparent 1px);
-            background-size: 24px 24px;
-            pointer-events: none;
-            z-index: 0;
-        }
-
         .hidden-menu { display: none; }
         
         .loader-spin-widget {
@@ -121,16 +22,16 @@
         }
     </style>
 </head>
-<body class="antialiased text-slate-700 bg-slate-50">
+<body class="antialiased text-slate-700 bg-slate-50 min-h-screen flex flex-col justify-between">
 
     <div id="loading-overlay" class="fixed inset-0 bg-white/95 backdrop-blur-sm z-[9999] flex flex-col justify-center items-center space-y-3 transition-opacity duration-300 pointer-events-none opacity-0 hidden">
         <div class="loader-spin-widget"></div>
         <p class="text-xs font-semibold tracking-wider text-slate-400 uppercase font-mono" id="loading-text">Loading...</p>
     </div>
 
-    <header class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 z-50">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
-            <div class="flex items-center space-x-2.5 cursor-pointer" onclick="navigateToSection(0)">
+    <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex justify-between items-center">
+            <div class="flex items-center space-x-2.5 cursor-pointer">
                 <div class="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center font-bold text-white shadow-sm">D</div>
                 <span class="text-xl font-bold tracking-tight text-slate-900">DataPrism</span>
             </div>
@@ -163,366 +64,286 @@
         </div>
     </header>
 
-    <div class="stage-container">
-        <div class="grid-mesh-overlay"></div>
+    <main class="flex-grow max-w-5xl w-full mx-auto px-6 py-12 space-y-16">
+        
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+            <div class="space-y-4 lg:col-span-8 text-left">
+                <div class="inline-flex items-center bg-indigo-50 border border-indigo-100 px-3 py-0.5 rounded-full text-[11px] text-indigo-600 font-semibold">
+                    <span class="data-lang" data-en="Paid Online Surveys" data-zh="在线有奖有偿调研" data-ja="オンライン有料アンケート" data-ko="온라인 유료 설문조사" data-de="Bezahlte Online-Umfragen">Paid Online Surveys</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
+                    <span class="data-lang" data-en="Share Your Opinions," data-zh="分享您的真实看法，" data-ja="あなたの意見を共有して、" data-ko="의견을 공유하고," data-de="Teilen Sie Ihre Meinung,">Share Your Opinions,</span><br>
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 data-lang" data-en="Get Paid Daily" data-zh="每天轻松赚取奖励" data-ja="毎日報酬を稼ごう" data-ko="매일 보상을 받으세요" data-de="Täglich Geld verdienen">Get Paid Daily</span>
+                </h1>
+                <p class="text-slate-500 text-sm leading-relaxed data-lang"
+                   data-en="Companies want to know what you think about their products and services. Spend a few minutes answering simple questionnaires, earn points, and exchange them for cash or gift cards."
+                   data-zh="很多大公司都想了解您对他们产品和服务的真实看法。花几分钟回答几个简单的问卷问题，赚取点数，然后直接换成现金或者礼品卡。"
+                   data-ja="企業は自社製品やサービスに対するあなたの意見を知りたがっています。数分で簡単な質問に答え、ポイントを貯めて現金やギフトカードに交換しましょう。"
+                   data-ko="많은 기업들이 브랜드와 서비스에 대한 유저의 생각을 궁금해합니다. 하루 몇 분만 투자해 간단한 질문에 답하고, 포인트를 모아 현금이나 기프트카드로 바꿔보세요."
+                   data-de="Unternehmen wollen wissen, was Sie über ihre Produkte und Dienstleistungen denken. Beantworten Sie einfache Fragen, sammeln Sie Punkte und tauschen Sie diese gegen Bargeld oder Gutscheine ein.">
+                    Companies want to know what you think about their products and services. Spend a few minutes answering simple questionnaires, earn points, and exchange them for cash or gift cards.
+                </p>
+                <div class="pt-1">
+                    <button onclick="alert('Registration will open very soon!')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs tracking-wide px-5 py-3 rounded-xl transition-all shadow-sm text-center data-lang" data-en="Join For Free" data-zh="免费注册加入" data-ja="無料で登録" data-ko="무료 회원가입" data-de="Kostenlos anmelden">Join For Free</button>
+                </div>
+            </div>
 
-        <section class="panel-scene active">
-            <div class="geometric-shape"></div>
-            <div class="content-card-layout grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-                <div class="space-y-4 lg:col-span-8 text-left">
-                    <div class="inline-flex items-center bg-indigo-50 border border-indigo-100 px-3 py-0.5 rounded-full text-[11px] text-indigo-600 font-semibold">
-                        <span class="data-lang" data-en="Global Consumer Research Platform" data-zh="全球消费者调研平台" data-ja="グローバル消費者リサーチプラットフォーム" data-ko="글로벌 소비자 리서치 플랫폼" data-de="Globale Marktforschungsplattform">Global Consumer Research Platform</span>
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3.5 lg:col-span-4 w-full">
+                <div>
+                    <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold data-lang" data-en="Available Surveys Today" data-zh="今日开放任务" data-ja="本日のタスク" data-ko="오늘의 활성 설문" data-de="Verfügbare Aufgaben">Available Surveys Today</span>
+                </div>
+                <div class="space-y-2">
+                    <div class="bg-white p-3 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs">
+                        <span class="font-semibold text-slate-800 data-lang" data-en="Shopping Habits Poll" data-zh="日常购物习惯调查" data-ja="買い物習慣の調査" data-ko="소비 습관 설문조사" data-de="Einkaufsgewohnheiten">Shopping Habits Poll</span>
+                        <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+$2.50</span>
                     </div>
-                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
-                        <span class="data-lang" data-en="Provide Consumer Insights," data-zh="分享您的日常观点，" data-ja="消費者の意見を共有し、" data-ko="소비자 인사이트를 제공하고," data-de="Verbraucherinsights teilen,">Provide Consumer Insights,</span><br>
-                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 data-lang" data-en="Earn Premium Rewards Daily" data-zh="每日获取相应的积分奖励" data-ja="毎日プレミアム報酬を獲得" data-ko="매일 프리미엄 보상 적립" data-de="Täglich Premium-Prämien verdienen">Earn Premium Rewards Daily</span>
-                    </h1>
-                    <p class="text-slate-500 text-sm leading-relaxed data-lang"
-                       data-en="DataPrism connects individual participants with leading international market research campaigns. By answering structured questionnaires regarding products and corporate services, members accumulate distribution credits redeemable for verified institutional reward vouchers."
-                       data-zh="DataPrism 致力于将个人受众与国际知名的市场调研项目进行连接。通过回答关于产品或商业服务的结构化调查问卷，会员能够稳定积累积分点数，并将其兑换为官方授权的各类礼品卡与现金奖励。"
-                       data-ja="DataPrismは、個々の参加者を主要な国際市場調査キャンペーンと結びつけます。製品や企業サービスに関する構造化されたアンケートに回答することで、メンバーは検証済みの企業報酬バウチャーと交換可能な配信クレジットを蓄積します。"
-                       data-ko="DataPrism은 개인 참가자들을 선도적인 글로벌 시장 조사 캠페인과 연결합니다. 제품 및 기업 서비스에 대한 구조화된 설문조사에 응답함으로써 회원은 공인된 보상 바우처로 교환할 수 있는 포인트를 적립합니다."
-                       data-de="DataPrism verbindet Teilnehmer mit internationalen Marktforschungskampagnen. Durch das Beantworten strukturierter Fragebögen zu Produkten und Dienstleistungen sammeln Mitglieder Guthaben, das gegen verifizierte Prämiengutscheine eingetauscht werden kann.">
-                        DataPrism connects individual participants with leading international market research campaigns. By answering structured questionnaires regarding products and corporate services, members accumulate distribution credits redeemable for verified institutional reward vouchers.
-                    </p>
-                    <div class="pt-1">
-                        <button onclick="alert('Registration interface will be accessible in the upcoming phase.')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs tracking-wide px-5 py-3 rounded-xl transition-all shadow-sm text-center data-lang" data-en="Register Free Account" data-zh="免费注册参与通道" data-ja="無料アカウントを登録" data-ko="무료 계정 등록하기" data-de="Kostenloses Konto registrieren">Register Free Account</button>
+                    <div class="bg-white p-3 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs">
+                        <span class="font-semibold text-slate-800 data-lang" data-en="Gaming Preferences" data-zh="游戏与娱乐偏好收集" data-ja="ゲームに関するフィードバック" data-ko="게임 선호도 피드백" data-de="Gaming-Präferenzen">Gaming Preferences</span>
+                        <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+$4.00</span>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs">
+                        <span class="font-semibold text-slate-800 data-lang" data-en="Beverage Brand Choices" data-zh="饮品品牌选择研究" data-ja="飲料の好みの調査" data-ko="음료 브랜드 선호도" data-de="Getränkemarken-Auswahl">Beverage Brand Choices</span>
+                        <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+$1.20</span>
                     </div>
                 </div>
-
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3 lg:col-span-4 w-full">
-                    <div>
-                        <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold data-lang" data-en="Active Allocations" data-zh="当前开放项目" data-ja="現在利用可能な案件" data-ko="현재 활성 프로젝트" data-de="Aktive Zuweisungen">Active Allocations</span>
-                    </div>
-                    <div class="space-y-2">
-                        <div class="bg-white p-2.5 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs">
-                            <span class="font-semibold text-slate-800 data-lang" data-en="Commercial Retail Habits" data-zh="商业零售习惯调查" data-ja="商業小売習慣の調査" data-ko="상업 소매 소비 습관 조사" data-de="Kommerzielle Einzelhandelsgewohnheiten">Commercial Retail Habits</span>
-                            <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+$2.50</span>
-                        </div>
-                        <div class="bg-white p-2.5 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs">
-                            <span class="font-semibold text-slate-800 data-lang" data-en="Digital Service Feedback" data-zh="数字化服务用户反馈" data-ja="デジタルサービス評価" data-ko="디지털 서비스 사용자 피드백" data-de="Digitaler Service-Feedback">Digital Service Feedback</span>
-                            <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+$4.00</span>
-                        </div>
-                        <div class="bg-white p-2.5 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs">
-                            <span class="font-semibold text-slate-800 data-lang" data-en="Consumer Electronics Study" data-zh="消费类电子产品研究" data-ja="家電製品に関する研究" data-ko="가전제품 소비자 심층 연구" data-de="Unterhaltungselektronik-Studie">Consumer Electronics Study</span>
-                            <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+$1.20</span>
-                        </div>
-                    </div>
-                    <div class="pt-2 border-t border-slate-200 flex justify-between text-[11px] text-slate-400 font-semibold">
-                        <span class="data-lang" data-en="Standard Settlement Cycle" data-zh="标准清算处理周期" data-ja="標準精算処理サイクル" data-ko="표준 정산 처리 주기" data-de="Standard-Auszahlungszyklus">Standard Settlement Cycle</span>
-                        <span class="text-slate-700 font-bold font-mono">&lt; 24h</span>
-                    </div>
+                <div class="pt-2 border-t border-slate-200 flex justify-between text-[11px] text-slate-400 font-semibold">
+                    <span class="data-lang" data-en="Average Transfer Time" data-zh="平均打款到账周期" data-ja="平均支払い時間" data-ko="평균 정산 소요 시간" data-de="Durchschnittliche Auszahlung">Average Transfer Time</span>
+                    <span class="text-slate-700 font-bold font-mono">&lt; 24h</span>
                 </div>
             </div>
         </section>
 
-        <section class="panel-scene exit-to-bottom-right">
-            <div class="geometric-shape"></div>
-            <div class="content-card-layout space-y-5">
-                <div class="text-left border-l-4 border-indigo-500 pl-4 space-y-0.5">
-                    <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 data-lang" data-en="Operational Excellence" data-zh="平台核心架构" data-ja="オペレーショナル・エクセレンス" data-ko="플랫폼 핵심 인프라" data-de="Betriebliche Exzellenz">Operational Excellence</div>
-                    <h2 class="text-xl font-extrabold text-slate-900 data-lang" data-en="Secure & Methodological Data Procurement" data-zh="严谨规范的样本数据合规采集" data-ja="安全かつ方法論的なデータ調達" data-ko="안전하고 체계적인 데이터 분석 인프라" data-de="Sichere & methodische Datenbeschaffung">Secure & Methodological Data Procurement</h2>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
-                    <div class="bg-slate-50 border border-slate-200/60 rounded-xl p-5 space-y-2 shadow-sm">
-                        <div class="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">01</div>
-                        <h3 class="text-sm font-bold text-slate-900 data-lang" data-en="Privacy Compliance Framework" data-zh="数据隐私安全合规" data-ja="プライバシー・コンプライアンス" data-ko="개인정보 보호 컴플라이언스" data-de="Datenschutz-Compliance-Framework">Privacy Compliance Framework</h3>
-                        <p class="text-slate-500 text-xs leading-relaxed data-lang"
-                           data-en="Data integrity parameters are governed under active data protection models. User identity vectors are structurally isolated from subsequent research aggregates."
-                           data-zh="所有收集的数据均受到现行数据保护条例的严密监管。用户的个人账户标识与后续研究的统计数据集在架构上完全隔离，确保匿名性。"
-                           data-ja="データ整合性パラメータは、アクティブなデータ保護モデルの下で管理されています。ユーザー識別ベクトルは、その後の調査集計から構造的に分離されます。"
-                           data-ko="데이터 무결성 매개변수는 활성화된 데이터 보호 모델에 따라 관리됩니다. 사용자 식별 벡터는 후속 리서치 집계 데이터와 구조적으로 격리됩니다."
-                           data-de="Datenintegritätsparameter werden unter aktiven Datenschutzmodellen verwaltet. Benutzeridentitätsvektoren sind strukturell von Forschungsaggregaten isoliert.">
-                            Data integrity parameters are governed under active data protection models. User identity vectors are structurally isolated from subsequent research aggregates.
-                        </p>
-                    </div>
-                    <div class="bg-slate-50 border border-slate-200/60 rounded-xl p-5 space-y-2 shadow-sm">
-                        <div class="w-7 h-7 rounded-lg bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs">02</div>
-                        <h3 class="text-sm font-bold text-slate-900 data-lang" data-en="Algorithmic Target Matching" data-zh="统计学画像精准对齐" data-ja="アルゴリズムによる最適マッチ" data-ko="알고리즘 기반 타겟 매칭" data-de="Algorithmisches Target-Matching">Algorithmic Target Matching</h3>
-                        <p class="text-slate-500 text-xs leading-relaxed data-lang"
-                           data-en="Minimizing questionnaire attrition through real-time quota verification. Members receive project invitations calibrated precisely to verified demographic attributes."
-                           data-zh="系统通过实时的配额状态核验，能够有效降低答题中途被驳回的概率。会员收到的项目邀请均与其登记的受众特征高度契合。"
-                           data-ja="オンライン枠のリアルタイム検証により、回答エラーを最小限に抑えます。メンバーは、検証された属性情報に正確に適合する招待を受け取ります。"
-                           data-ko="실시간 할당량 검증을 통해 설문조사 중도 탈락을 최소화합니다. 회원은 검증된 인구통계학적 특성에 정확히 조정된 프로젝트 초대를 받습니다."
-                           data-de="Minimierung von Umfrageabbrüchen durch Echtzeit-Quotenüberprüfung. Mitglieder erhalten Projekteinladungen, die genau auf verifizierte Attribute abgestimmt sind.">
-                            Minimizing questionnaire attrition through real-time quota verification. Members receive project invitations calibrated precisely to verified demographic attributes.
-                        </p>
-                    </div>
-                    <div class="bg-slate-50 border border-slate-200/60 rounded-xl p-5 space-y-2 shadow-sm">
-                        <div class="w-7 h-7 rounded-lg bg-pink-50 border border-pink-100 flex items-center justify-center text-pink-600 font-bold text-xs">03</div>
-                        <h3 class="text-sm font-bold text-slate-900 data-lang" data-en="Audited Financial Clearing" data-zh="合规数据结算与对账" data-ja="監査された財務精算" data-ko="투명한 보상 정산 시스템" data-de="Geprüfte Finanzabrechnung">Audited Financial Clearing</h3>
-                        <p class="text-slate-500 text-xs leading-relaxed data-lang"
-                           data-en="System rewards undergo verified digital bookkeeping clearing. Completed allocations translate to direct ledger entries, eliminating holding vulnerabilities."
-                           data-zh="系统内产生的所有分配点数均经过数字记账处理的严格核销。通过审核的有效项目会直接转入账户余额，杜绝一切不透明的拖延处理。"
-                           data-ja="システム報酬は、検証済みのデジタル簿記精算を受けます。完了した案件は直接元帳エントリに変換され、保留の脆弱性を排除します。"
-                           data-ko="시스템 보상은 검증된 디지털 회계 정산을 거칩니다. 완료된 할당량은 장부 항목으로 변환되어 불투명한 대기 리스크를 배제합니다."
-                           data-de="Systemprämien durchlaufen eine verifizierte Abrechnung. Abgeschlossene Zuweisungen führen zu direkten Buchungen, was Haltefristen eliminiert.">
-                            System rewards undergo verified digital bookkeeping clearing. Completed allocations translate to direct ledger entries, eliminating holding vulnerabilities.
-                        </p>
-                    </div>
-                </div>
+        <section class="space-y-6">
+            <div class="text-center max-w-2xl mx-auto space-y-1">
+                <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 data-lang" data-en="Our Features" data-zh="平台特色" data-ja="当サイトの特徴" data-ko="플랫폼 특징" data-de="Unsere Merkmale">Our Features</div>
+                <h2 class="text-2xl font-extrabold text-slate-900 data-lang" data-en="A Safe Way to Earn Extra Cash" data-zh="一个安全赚取额外零花钱的渠道" data-ja="安心してお小遣いを稼げる方法" data-ko="안전하게 보상을 받는 방법" data-de="Ein sicherer Weg, Geld zu verdienen">A Safe Way to Earn Extra Cash</h2>
             </div>
-        </section>
 
-        <section class="panel-scene exit-to-bottom-right">
-            <div class="geometric-shape"></div>
-            <div class="content-card-layout space-y-5">
-                <div class="text-center max-w-xl mx-auto">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 data-lang" data-en="Institutional Disbursal Options" data-zh="支持的安全结算网关" data-ja="機関向け決済オプション" data-ko="정식 보상 출금 옵션" data-de="Institutionelle Auszahlungsoptionen">Institutional Disbursal Options</span>
-                    <h2 class="text-xl font-extrabold text-slate-900 tracking-tight data-lang" data-en="Verified Rewards Disbursal Matrix" data-zh="官方授权的有限精选结算渠道" data-ja="公式に検証された交換オプション" data-ko="안전성이 검증된 공식 환전 채널" data-de="Verifiziertes Prämienmatrix">Verified Rewards Disbursal Matrix</h2>
-                </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                        <div class="h-8 flex items-center justify-center">
-                            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazon.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Amazon">
-                        </div>
-                        <div class="mt-2">
-                            <div class="text-xs font-bold text-slate-800">Amazon Gift Card</div>
-                            <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Digital Payout</div>
-                        </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 space-y-3 shadow-sm">
+                    <div class="w-9 h-9 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                     </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                        <div class="h-8 flex items-center justify-center">
-                            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="PayPal">
-                        </div>
-                        <div class="mt-2">
-                            <div class="text-xs font-bold text-slate-800">PayPal Funds</div>
-                            <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Direct Transfer</div>
-                        </div>
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                        <div class="h-8 flex items-center justify-center">
-                            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Steam">
-                        </div>
-                        <div class="mt-2">
-                            <div class="text-xs font-bold text-slate-800">Steam Wallet</div>
-                            <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Wallet Credits</div>
-                        </div>
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                        <div class="h-8 flex items-center justify-center">
-                            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/playstation.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="PlayStation">
-                        </div>
-                        <div class="mt-2">
-                            <div class="text-xs font-bold text-slate-800">PSN Network</div>
-                            <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Voucher Code</div>
-                        </div>
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                        <div class="h-8 flex items-center justify-center">
-                            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/xbox.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Xbox">
-                        </div>
-                        <div class="mt-2">
-                            <div class="text-xs font-bold text-slate-800">Xbox Live</div>
-                            <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Store Code</div>
-                        </div>
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                        <div class="h-8 flex items-center justify-center">
-                            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/nintendoswitch.svg" class="h-5 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Nintendo">
-                        </div>
-                        <div class="mt-2">
-                            <div class="text-xs font-bold text-slate-800">eShop Voucher</div>
-                            <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Digital Code</div>
-                        </div>
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                        <div class="h-8 flex items-center justify-center">
-                            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/roblox.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Roblox">
-                        </div>
-                        <div class="mt-2">
-                            <div class="text-xs font-bold text-slate-800">Robux Token</div>
-                            <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Direct Credit</div>
-                        </div>
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
-                        <div class="h-8 flex items-center justify-center">
-                            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/bitcoin.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Bitcoin">
-                        </div>
-                        <div class="mt-2">
-                            <div class="text-xs font-bold text-slate-800">Bitcoin Network</div>
-                            <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Wallet Transfer</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="panel-scene exit-to-bottom-right">
-            <div class="geometric-shape"></div>
-            <div class="content-card-layout space-y-6">
-                <div class="text-left max-w-2xl border-l-4 border-indigo-500 pl-4 space-y-0.5">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 data-lang" data-en="Operational Sequence" data-zh="标准集成与参与步骤" data-ja="標準的な参加手順" data-ko="기본 참여 및 연동 프로세스" data-de="Ablaufsequenz">Operational Sequence</span>
-                    <h2 class="text-xl font-extrabold text-slate-900 data-lang" data-en="Methodology Framework in Three Steps" data-zh="简明清晰的三个参与步骤" data-ja="3つの簡単な参加ステップ" data-ko="간단한 3단계 참여 프로세스" data-de="Methoden-Framework in drei Schritten">Methodology Framework in Three Steps</h2>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
-                    <div class="relative bg-slate-50 border border-slate-100 p-4 rounded-xl space-y-1 shadow-sm">
-                        <div class="w-5 h-5 bg-indigo-600 rounded-md flex items-center justify-center text-white font-bold text-xs">1</div>
-                        <h4 class="text-sm font-bold text-slate-900 pt-0.5 data-lang" data-en="Account Registration" data-zh="第一步：建立账户标识" data-ja="1. アカウントの登録" data-ko="1. 이메일 계정 등록" data-de="1. Registrierung">Account Registration</h4>
-                        <p class="text-slate-500 text-xs leading-relaxed data-lang"
-                           data-en="Establish unique panelist credentials via standard electronic authentication protocols to safely activate the matching interface."
-                           data-zh="通过标准的电子身份验证建立唯一的会员凭证结构，以此激活专享的问卷匹配面板，流程安全合规。"
-                           data-ja="安全な認証プロトコルを介して独自のパネル資格情報を確立し、マッチングインターフェースを有効化します。"
-                           data-ko="표준 인증 프로토콜을 통해 고유 패널 계정을 생성하고 맞춤형 서베이 인터페이스를 활성화합니다."
-                           data-de="Erstellen Sie Kontodaten über Standard-Authentifizierungsprotokolle, um die Schnittstelle zu aktivieren.">
-                            Establish unique panelist credentials via standard electronic authentication protocols to safely activate the matching interface.
-                        </p>
-                    </div>
-                    <div class="relative bg-slate-50 border border-slate-100 p-4 rounded-xl space-y-1 shadow-sm">
-                        <div class="w-5 h-5 bg-purple-600 rounded-md flex items-center justify-center text-white font-bold text-xs">2</div>
-                        <h4 class="text-sm font-bold text-slate-900 pt-0.5 data-lang" data-en="Questionnaire Response" data-zh="第二步：参与结构问答" data-ja="2. アンケートへの回答" data-ko="2. 서베이 과제 응답" data-de="2. Beantwortung">Questionnaire Response</h4>
-                        <p class="text-slate-500 text-xs leading-relaxed data-lang"
-                           data-en="Access the dashboard to select assigned market research streams. Provide generic demographic responses based on actual daily consumption."
-                           data-zh="登录个人主控面板并选择指派的市场研究项目。基于实际的日常消费习惯，提供客观真实的行业数据反馈。"
-                           data-ja="ダッシュボードから割り当てられた市場調査プロジェクトを選択します。実際の消費活動に基づき回答を提供します。"
-                           data-ko="대시보드에 접속하여 배정된 리서치 프로젝트를 수행합니다. 실제 소비 성향에 기반하여 객관적으로 응답합니다."
-                           data-de="Wählen Sie zugewiesene Marktforschungsprojekte im Dashboard aus. Antworten Sie basierend auf täglichem Konsum.">
-                            Access the dashboard to select assigned market research streams. Provide generic demographic responses based on actual daily consumption.
-                        </p>
-                    </div>
-                    <div class="relative bg-slate-50 border border-slate-100 p-4 rounded-xl space-y-1 shadow-sm">
-                        <div class="w-5 h-5 bg-pink-600 rounded-md flex items-center justify-center text-white font-bold text-xs">3</div>
-                        <h4 class="text-sm font-bold text-slate-900 pt-0.5 data-lang" data-en="Ledger Disbursal" data-zh="第三步：清算价值回报" data-ja="3. 報酬の精算" data-ko="3. 보상 적립금 정산" data-de="3. Auszahlung">Ledger Disbursal</h4>
-                        <p class="text-slate-500 text-xs leading-relaxed data-lang"
-                           data-en="Upon quantitative verification of completed quotas, submit a clearance action to disburse accrued assets into authorized partner media."
-                           data-zh="在完成的问卷配额通过系统数量核验后，即可提交清算申请，将累计的积分点数无缝转移至授权的第三方结算通道。"
-                           data-ja="完了した案件のクォータ検証後、精算を申請し、蓄積されたポイントを提携決済方法へ転送します。"
-                           data-ko="완료된 할당량에 대한 검증이 완료되면 정산을 신청하여 적립된 포인트를 제휴 채널로 환전합니다."
-                           data-de="Nach der Quotenüberprüfung fordern Sie die Abrechnung an, um Guthaben auf Partnerkanäle zu übertragen.">
-                            Upon quantitative verification of completed quotas, submit a clearance action to disburse accrued assets into authorized partner media.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="panel-scene exit-to-bottom-right">
-            <div class="geometric-shape"></div>
-            <div class="content-card-layout flex flex-col justify-between h-5/6 space-y-4">
-                <div class="border-b border-slate-200 pb-3 text-left">
-                    <h3 class="text-base font-bold text-slate-900 data-lang" data-en="Regulatory Directives & Compliance Standards" data-zh="数据管辖权限与国际合规准则" data-ja="データ管轄権と国際コンプライアンス基準" data-ko="글로벌 컴플라이언스 및 개인정보 보호 규정" data-de="Regulatorische Richtlinien & Compliance-Standards">Regulatory Directives & Compliance Standards</h3>
-                    <p class="text-slate-500 text-xs mt-1 leading-relaxed max-w-2xl data-lang"
-                       data-en="DataPrism maintains verified node linkages with brand operators internationally. All internal procedures strictly conform to global consumer privacy acts and systemic data security protocols."
-                       data-zh="DataPrism 与全球范围内的品牌受托方保持稳定合规的链路对接。平台所有内部流程均严密匹配国际主流消费者隐私法案与系统性网络安全规范。"
-                       data-ja="DataPrismは国際的なブランド企業と検証済みの連携を維持しています。すべての内部手続きはグローバルなプライバシー法を順守しています。"
-                       data-ko="DataPrism은 글로벌 브랜드 기업들과 안전한 연동 관계를 유지합니다. 모든 내부 운영 프로세스는 글로벌 개인정보 보호법을 엄격히 준수합니다."
-                       data-de="DataPrism unterhält Verbindungen zu internationalen Markenbetreibern. Alle internen Abläufe entsprechen den globalen Datenschutzgesetzen.">
-                        DataPrism maintains verified node linkages with brand operators internationally. All internal procedures strictly conform to global consumer privacy acts and systemic data security protocols.
+                    <h3 class="text-base font-bold text-slate-900 data-lang" data-en="Privacy Protection" data-zh="隐私保护说明" data-ja="プライバシーの保護" data-ko="개인정보 보호" data-de="Datenschutz">Privacy Protection</h3>
+                    <p class="text-slate-500 text-xs leading-relaxed data-lang"
+                       data-en="We protect your personal data. Your survey answers are completely anonymous and are only used combined with thousands of other users to create statistics reports."
+                       data-zh="我们认真保护您的个人信息。您的问卷回答完全是匿名的，只会与其他成千上万名用户的回答汇总在一起，作为统计数据使用。"
+                       data-ja="私たちは個人情報を厳重に管理します。アンケートの回答は完全に匿名であり、他のユーザーのデータと統計的にまとめて処理されます。"
+                       data-ko="유저의 소중한 개인정보를 안전하게 보호합니다. 답변 내용은 모두 익명으로 처리되며, 통계 데이터를 제작하는 용도로만 활용됩니다."
+                       data-de="Wir schützen Ihre persönlichen Daten. Ihre Antworten sind vollkommen anonym und werden nur für Statistiken zusammengefasst.">
+                        We protect your personal data. Your survey answers are completely anonymous and are only used combined with thousands of other users to create statistics reports.
                     </p>
                 </div>
-
-                <div class="text-[10px] text-slate-500 space-y-1.5 leading-relaxed">
-                    <p class="data-lang"
-                       data-en="Corporate Disclaimer: DataPrism operates as a fully independent research aggregation interface. Registered trademarks including Amazon, PayPal, Steam, PlayStation, Xbox, Nintendo, and Roblox exhibited within this portal remain the exclusive asset of their corresponding corporate owners. Deployment of these logos is strictly limited to illustrative clearing functionality and implies no operational endorsement or official affiliation."
-                       data-zh="免责声明：DataPrism 为独立运作的第三方市场调研集成面板。本门户内展示的 Amazon、PayPal, Steam、PlayStation、Xbox、Nintendo 以及 Roblox 等注册商标均属于其各自公司合法所有。此处标识的陈列仅限于指示结算路径打通，不代表本平台获得了对应品牌方的直接商业赞助、代言或官方行政背书。"
-                       data-ja="免責事項：DataPrismは独立した市場調査インテグレーションインターフェースです。提示されているAmazon、PayPal、Steam、PlayStation、Xbox、Robloxなどの商標は、各所有者に帰属します。ロゴの使用は決済機能の案内に限定され、公式な支持を意味しません。"
-                       data-ko="법적 고지: DataPrism은 독자적으로 운영되는 마켓 리서치 통합 플랫폼입니다. 본 사이트에 명시된 Amazon, PayPal, Steam, PlayStation, Xbox, Nintendo, Roblox 등의 브랜드 상표권은 각 소유주에 귀속되어 있습니다. 상표의 노출은 정산 수단 안내를 위한 기술적 연동일 뿐이며, 공식 제휴를 뜻하지 않습니다."
-                       data-de="Haftungsausschluss: DataPrism arbeitet als unabhängige Schnittstelle. Registrierte Marken wie Amazon, PayPal, Steam, PlayStation, Xbox, Nintendo und Roblox gehören ihren Eigentümern. Die Nutzung der Logos dient der Veranschaulichung der Auszahlung.">
-                        Corporate Disclaimer: DataPrism operates as a fully independent research aggregation interface. Registered trademarks including Amazon, PayPal, Steam, PlayStation, Xbox, Nintendo, and Roblox exhibited within this portal remain the exclusive asset of their corresponding corporate owners. Deployment of these logos is strictly limited to illustrative clearing functionality and implies no operational endorsement or official affiliation.
-                    </p>
-                    <p class="data-lang"
-                       data-en="Information processing protocols conform thoroughly to the General Data Protection Regulation (GDPR), California Consumer Privacy Act (CCPA) standards, and associated localized digital asset protection directives."
-                       data-zh="平台内部的各项数据清洗、脱敏与信息处理流程均严格契合欧盟通用数据保护条例 (GDPR)、加州消费者隐私法案 (CCPA) 以及相关地域的网络空间资产与隐私保护法律法规。"
-                       data-ja="情報処理プロトコルは、GDPR、CCPA、および関連する現地のデジタル資産保護ディレクティブに完全に準拠しています。"
-                       data-ko="본 플랫폼의 데이터 처리 프로세스는 유럽 일반 데이터 보호 규정(GDPR) 및 미국 캘리포니아 소비자 개인정보 보호법(CCPA) 기준에 부합하도록 스마트하게 관리됩니다."
-                       data-de="Die Verarbeitungsprozesse entsprechen der Datenschutz-Grundverordnung (DSGVO), den CCPA-Standards und den geltenden Richtlinien zum Schutz digitaler Assets.">
-                        Information processing protocols conform thoroughly to the General Data Protection Regulation (GDPR), California Consumer Privacy Act (CCPA) standards, and associated localized digital asset protection directives.
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 space-y-3 shadow-sm">
+                    <div class="w-9 h-9 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900 data-lang" data-en="Surveys for Everyone" data-zh="适合您的问卷" data-ja="あなたに合うアンケート" data-ko="맞춤형 설문 매칭" data-de="Passende Umfragen">Surveys for Everyone</h3>
+                    <p class="text-slate-500 text-xs leading-relaxed data-lang"
+                       data-en="We filter matching projects based on your basic profile. This minimizes errors and rejections while you are filling out the survey details."
+                       data-zh="我们系统会根据您登记的基本个人资料来分发合适的问卷，尽量减少因为条件不符而在答题中途被弹出来的情况。"
+                       data-ja="ユーザープロフィールに基づいて適切な案件を案内します。これにより、回答中のエラーや不適合による中断を最小限に抑えます。"
+                       data-ko="입력된 프로필을 분석하여 조건에 어울리는 설문조사를 연결합니다. 응답 도중에 자격 불일치로 탈락하는 현상을 최소화합니다."
+                       data-de="Wir wählen passende Projekte basierend auf Ihrem Profil. Dies minimiert Fehler und Ablehnungen während der Umfrage.">
+                        We filter matching projects based on your basic profile. This minimizes errors and rejections while you are filling out the survey details.
                     </p>
                 </div>
-
-                <div class="pt-2 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 gap-1">
-                    <div>
-                        © 2026 DataPrism Research Network Platform. All Rights Reserved.
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 space-y-3 shadow-sm">
+                    <div class="w-9 h-9 rounded-lg bg-pink-100 flex items-center justify-center text-pink-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
-                    <div class="flex space-x-6 font-bold text-slate-600">
-                        <a href="terms.html" target="_blank" class="hover:text-indigo-600 transition-colors duration-200 data-lang" data-en="Terms of Service & Privacy Protocol" data-zh="服务条款与隐私保障协议" data-ja="利用規約およびプライバシー協定" data-ko="서비스 이용 약관 및 개인정보 처리방침" data-de="Nutzungsbedingungen & Datenschutz">Terms of Service & Privacy Protocol</a>
+                    <h3 class="text-base font-bold text-slate-900 data-lang" data-en="Reliable Point Clearings" data-zh="稳定的积分到账" data-ja="確実なポイント反映" data-ko="신속한 적립금 반영" data-de="Zuverlässige Freigabe">Reliable Point Clearings</h3>
+                    <p class="text-slate-500 text-xs leading-relaxed data-lang"
+                       data-en="No unexpected hold times. Once a survey is successfully finished and verified, the point value is directly added to your personal dashboard account."
+                       data-zh="平台不设置任何不透明的故意拖延处理。只要问卷认真做完并且通过基本验证，相应的积分就会很快出现在您的个人后台。"
+                       data-ja="不透明な保留期間はありません。アンケートが正常に完了し確認されると、ポイントはアカウント残高に直接反映されます。"
+                       data-ko="지루한 승인 대기 기간이 없습니다. 설문 과제가 정상적으로 완료되면 포인트가 유저의 대시보드 계정으로 지급됩니다."
+                       data-de="Keine unerwarteten Haltefristen. Sobald eine Umfrage abgeschlossen ist, werden die Punkte Ihrem Konto gutgeschrieben.">
+                        No unexpected hold times. Once a survey is successfully finished and verified, the point value is directly added to your personal dashboard account.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-y-6">
+            <div class="text-center max-w-xl mx-auto space-y-1">
+                <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 data-lang" data-en="Payout Methods" data-zh="结算渠道" data-ja="交換オプション" data-ko="보상 출금 옵션" data-de="Auszahlungsoptionen">Payout Methods</div>
+                <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight data-lang" data-en="Supported Reward Options" data-zh="支持换取的常见礼品卡与现金" data-ja="選択できる報酬オプション" data-ko="지원되는 공식 환전 채널" data-de="Unterstützte Prämienoptionen">Supported Reward Options</h2>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+                <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazon.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Amazon">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">Amazon Gift Card</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Digital Payout</div>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="PayPal">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">PayPal Funds</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Direct Transfer</div>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Steam">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">Steam Wallet</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Wallet Credits</div>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/playstation.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="PlayStation">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">PSN Network</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Voucher Code</div>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/xbox.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Xbox">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">Xbox Live</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Store Code</div>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/nintendoswitch.svg" class="h-5 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Nintendo">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">eShop Voucher</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Digital Code</div>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/roblox.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Roblox">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">Robux Token</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Direct Credit</div>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center justify-between text-center group hover:border-indigo-500 transition-all shadow-sm">
+                    <div class="h-8 flex items-center justify-center">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/bitcoin.svg" class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all" alt="Bitcoin">
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-xs font-bold text-slate-800">Bitcoin Network</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider mt-0.5">Wallet Transfer</div>
                     </div>
                 </div>
             </div>
         </section>
-    </div>
+
+        <section class="space-y-6">
+            <div class="text-center max-w-2xl mx-auto space-y-1">
+                <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 data-lang" data-en="How to Start" data-zh="参与流程" data-ja="ご利用の流れ" data-ko="시작 가이드" data-de="Schritte">How to Start</div>
+                <h2 class="text-2xl font-extrabold text-slate-900 data-lang" data-en="Earn Rewards in Three Simple Steps" data-zh="只需简单三步即可获得奖励" data-ja="3つのステップで報酬を獲得" data-ko="간단한 3단계로 시작하세요" data-de="In drei einfachen Schritten verdienen">Earn Rewards in Three Simple Steps</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="relative bg-white border border-slate-200 p-5 rounded-xl space-y-2 shadow-sm">
+                    <div class="w-6 h-6 bg-indigo-600 rounded-md flex items-center justify-center text-white font-bold text-xs">1</div>
+                    <h4 class="text-base font-bold text-slate-900 pt-0.5 data-lang" data-en="Create Account" data-zh="1. 注册账号" data-ja="1. アカウント作成" data-ko="1. 회원가입" data-de="1. Registrierung">Create Account</h4>
+                    <p class="text-slate-500 text-xs leading-relaxed data-lang"
+                       data-en="Sign up with your email address using our secure register form to activate your dashboard."
+                       data-zh="通过我们安全的注册表格填写邮箱地址，即可开通激活您的个人主控后台。"
+                       data-ja="メールアドレスでアカウントを作成し、ダッシュボードを有効化します。"
+                       data-ko="이메일 주소로 계정을 생성하고 서베이 대시보드를 활성화합니다."
+                       data-de="Erstellen Sie ein Konto mit Ihrer E-Mail, um das Dashboard zu aktivieren.">
+                        Sign up with your email address using our secure register form to activate your dashboard.
+                    </p>
+                </div>
+                <div class="relative bg-white border border-slate-200 p-5 rounded-xl space-y-2 shadow-sm">
+                    <div class="w-6 h-6 bg-purple-600 rounded-md flex items-center justify-center text-white font-bold text-xs">2</div>
+                    <h4 class="text-base font-bold text-slate-900 pt-0.5 data-lang" data-en="Complete Questionnaires" data-zh="2. 回答问卷调查" data-ja="2. アンケートへの回答" data-ko="2. 설문조사 응답" data-de="2. Beantwortung">Complete Questionnaires</h4>
+                    <p class="text-slate-500 text-xs leading-relaxed data-lang"
+                       data-en="Select any available project inside your user dashboard and share your honest feedback about daily consumption."
+                       data-zh="在个人后台中选择任意可用的调研项目，根据您日常真实的消费习惯回答问题即可。"
+                       data-ja="ダッシュボードから利用可能な案件を選択し、日常の消費に関する意見を入力します。"
+                       data-ko="대시보드에서 활성화된 프로젝트를 선택하고 일상 소비에 대한 의견을 솔직하게 작성합니다."
+                       data-de="Wählen Sie verfügbare Projekte aus und teilen Sie Ihre ehrliche Meinung zum Konsum.">
+                        Select any available project inside your user dashboard and share your honest feedback about daily consumption.
+                    </p>
+                </div>
+                <div class="relative bg-white border border-slate-200 p-5 rounded-xl space-y-2 shadow-sm">
+                    <div class="w-6 h-6 bg-pink-600 rounded-md flex items-center justify-center text-white font-bold text-xs">3</div>
+                    <h4 class="text-base font-bold text-slate-900 pt-0.5 data-lang" data-en="Redeem Vouchers" data-zh="3. 申请兑换提取" data-ja="3. 報酬の交換" data-ko="3. 보상 적립금 환전" data-de="3. Auszahlung">Redeem Vouchers</h4>
+                    <p class="text-slate-500 text-xs leading-relaxed data-lang"
+                       data-en="Once points hit the minimum requirement, submit a payout application to transfer assets to our approved partners."
+                       data-zh="当积分累积达到最低提取要求时，即可提交申请，将积攒的价值提现到支持的官方渠道。"
+                       data-ja="最低ポイントに達した後、交換を申請し、提携決済方法へ転送します。"
+                       data-ko="최소 정산 기준에 도달하면 보상 출금을 신청하여 제휴 채널로 환전받을 수 있습니다."
+                       data-de="Sobald die Mindestpunktzahl erreicht ist, fordern Sie die Auszahlung auf Partnerkanäle an.">
+                        Once points hit the minimum requirement, submit a payout application to transfer assets to our approved partners.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 px-6 py-12 mt-16 border-t border-slate-800">
+        <div class="max-w-5xl w-full mx-auto flex flex-col space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center border-b border-slate-800 pb-8">
+                <div class="md:col-span-8 space-y-2 text-center md:text-left">
+                    <h3 class="text-lg font-bold text-white data-lang" data-en="Valuable Consumer Voices, Trusted Data Network." data-zh="重视消费者的观点，打造值得信赖的调研网络。" data-ja="消費者の意見を大切にし、信頼されるネットワークへ。" data-ko="소비자의 소중한 한마디, 신뢰할 수 있는 데이터 네트워크." data-de="Wertvolle Stimmen, vertrauenswürdiges Netzwerk.">Valuable Consumer Voices, Trusted Data Network.</h3>
+                    <p class="text-slate-500 text-xs max-w-xl leading-relaxed mx-auto md:mx-0 data-lang"
+                       data-en="DataPrism connects regular people with brand operators globally. We comply with official internet legal guidelines to ensure a fair and reliable survey space."
+                       data-zh="DataPrism 致力于将普通大众与全球品牌拥有者紧密结合。我们严格遵守官方网络隐私保护法规，确保营造一个公正且值得信赖的调研答题空间。"
+                       data-ja="DataPrismはユーザーと世界のブランド企業を繋ぎます。各種法令を順守し、誰もが安心して利用できる環境を作ります。"
+                       data-ko="DataPrism은 일반 소비자와 글로벌 브랜드 파트너를 연결합니다. 관련 법적 규정을 성실히 준수하여 안심할 수 있는 설문조사 환경을 제공합니다."
+                       data-de="DataPrism verbindet Menschen weltweit mit Marken. Wir beachten rechtliche Richtlinien für ein sicheres Umfeld.">
+                        DataPrism connects regular people with brand operators globally. We comply with official internet legal guidelines to ensure a fair and reliable survey space.
+                    </p>
+                </div>
+                <div class="md:col-span-4 flex justify-center md:justify-end">
+                    <button onclick="alert('All channels operating normally.')" class="bg-white hover:bg-gray-100 text-slate-900 font-bold text-xs px-5 py-3 rounded-xl transition shadow-md uppercase data-lang" data-en="Check Network Status" data-zh="检查网站运行状态" data-ja="サービス状態を確認" data-ko="네트워크 상태 체크" data-de="Status prüfen">Check Network Status</button>
+                </div>
+            </div>
+
+            <div class="text-[10px] text-slate-500 space-y-2 leading-relaxed">
+                <p class="data-lang"
+                   data-en="Legal Disclaimer: DataPrism is an independent online research platform. The company logos shown here — including Amazon, PayPal, Steam, PlayStation, Xbox, Nintendo, and Roblox — belong to their own trademark companies. We use these logos strictly to show you what reward options you can choose from, which does not mean we are officially sponsored or backed by these brands."
+                   data-zh="法律说明与免责条款：DataPrism 是一个独立的在线商业调研平台。页面上所展示的 Amazon、PayPal、Steam、PlayStation、Xbox、Nintendo 以及 Roblox 等品牌商标图标，均属于其各自的合法所有人所有。这里展示它们的唯一目的仅仅是为了直观展示平台支持换取哪些奖励，并不直接构成品牌方的赞助、联合代言或官方背书。"
+                   data-ja="免責事項：DataPrismは独立したオンライン調査プラットフォームです。表示されているAmazon、PayPal、Steam、PlayStation、Xbox、Robloxなどのロゴは、各社の商標です。これらのロゴは交換可能なアイテムを紹介する目的でのみ使用しており、ブランド公式の協賛を意味するものではありません。"
+                   data-ko="법적 고지 및 면책 조항: DataPrism은 독자적으로 운영되는 온라인 마켓 서베이 플랫폼입니다. 본 사이트에 게재된 Amazon, PayPal, Steam, PlayStation, Xbox, Nintendo, Roblox 등의 로고와 상표권은 해당 기업에 있습니다. 브랜드 로고의 노출은 환전 가능한 보상을 직관적으로 안내하기 위한 것일 뿐이며, 해당 기업의 직접적인 후원이나 공식 제휴를 뜻하지 않습니다."
+                   data-de="Haftungsausschluss: DataPrism ist eine unabhängige Plattform. Die gezeigten Logos (Amazon, PayPal, Steam usw.) gehören den jeweiligen Eigentümern. Wir nutzen sie nur, um Auszahlungsoptionen zu zeigen. Dies bedeutet keine offizielle Unterstützung.">
+                    Legal Disclaimer: DataPrism is an independent online research platform. The company logos shown here — including Amazon, PayPal, Steam, PlayStation, Xbox, Nintendo, and Roblox — belong to their own trademark companies. We use these logos strictly to show you what reward options you can choose from, which does not mean we are officially sponsored or backed by these brands.
+                </p>
+                <p class="data-lang"
+                   data-en="Data processing aligns strictly with popular data security laws including the General Data Protection Regulation (GDPR) and California Consumer Privacy Act (CCPA) terms to safeguard your digital address privacy."
+                   data-zh="我们在日常信息处理与核对流转中，会严格遵循包括通用数据保护条例 (GDPR) 以及加州消费者隐私法案 (CCPA) 在内的国际主流网络隐私保护法规，切实保障每一位会员的线上合法权益。"
+                   data-ja="データ処理は、ユーザーの情報を保護するために、GDPRやCCPAなどの主要なデータ保護規則を厳密に遵守してサイトを運営しています。"
+                   data-ko="본 플랫폼의 데이터 처리 프로세스는 유럽 일반 데이터 보호 규정(GDPR) 및 미국 캘리포니아 소비자 개인정보 보호법(CCPA) 기준에 부합하도록 철저하게 관리됩니다."
+                   data-de="Die Datenverarbeitung steht in Übereinstimmung mit den Standards der Datenschutz-Grundverordnung (DSGVO) und des CCPA.">
+                    Data processing aligns strictly with popular data security laws including the General Data Protection Regulation (GDPR) and California Consumer Privacy Act (CCPA) terms to safeguard your digital address privacy.
+                </p>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600 gap-2">
+                <div>
+                    © 2026 DataPrism Research Network Platform. All Rights Reserved.
+                </div>
+                <div class="flex space-x-6 font-bold text-slate-500">
+                    <a href="terms.html" target="_blank" class="hover:text-white transition-colors duration-200 data-lang" data-en="Terms of Service & Privacy Protocol" data-zh="服务条款与隐私保障协议" data-ja="利用規約とプライバシーポリシー" data-ko="서비스 이용 약관 및 정책" data-de="Nutzungsbedingungen & Datenschutz">Terms of Service & Privacy Protocol</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        let currentSectionIndex = 0;
-        const totalSections = 5; 
-        let isScrollingLocked = false;
-        const scenes = document.querySelectorAll('.panel-scene');
-
-        function navigateToSection(index) {
-            if (index < 0 || index >= totalSections) return;
-            
-            scenes.forEach((scene, sIdx) => {
-                scene.classList.remove('active', 'exit-to-bottom-right', 'exit-to-top-left');
-                if (sIdx === index) {
-                    scene.classList.add('active');
-                    const shape = scene.querySelector('.geometric-shape');
-                    if(shape) {
-                        if(index % 2 === 0) {
-                            shape.style.transform = 'translate(0, 0)';
-                        } else {
-                            shape.style.transform = 'translate(0, 0)';
-                        }
-                    }
-                } else if (sIdx < index) {
-                    scene.classList.add('exit-to-top-left');
-                    const shape = scene.querySelector('.geometric-shape');
-                    if(shape) shape.style.transform = 'translate(-30px, -30px)';
-                } else {
-                    scene.classList.add('exit-to-bottom-right');
-                    const shape = scene.querySelector('.geometric-shape');
-                    if(shape) shape.style.transform = 'translate(30px, 30px)';
-                }
-            });
-            
-            currentSectionIndex = index;
-        }
-
-        function handleWheelEvent(e) {
-            e.preventDefault(); 
-            if (isScrollingLocked) return;
-
-            isScrollingLocked = true;
-            
-            if (e.deltaY > 0) {
-                if (currentSectionIndex < totalSections - 1) {
-                    currentSectionIndex++;
-                }
-            } else {
-                if (currentSectionIndex > 0) {
-                    currentSectionIndex--;
-                }
-            }
-            
-            navigateToSection(currentSectionIndex);
-
-            setTimeout(() => {
-                isScrollingLocked = false;
-            }, 800);
-        }
-
-        window.addEventListener('wheel', handleWheelEvent, { passive: false });
-
-        let touchStartY = 0;
-        window.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;
-        }, { passive: true });
-
-        window.addEventListener('touchend', (e) => {
-            const touchEndY = e.changedTouches[0].clientY;
-            const diffY = touchStartY - touchEndY;
-
-            if (Math.abs(diffY) > 50) { 
-                if (diffY > 0) {
-                    if (currentSectionIndex < totalSections - 1) navigateToSection(++currentSectionIndex);
-                } else {
-                    if (currentSectionIndex > 0) navigateToSection(--currentSectionIndex);
-                }
-            }
-        }, { passive: true });
-
         const langBtn = document.getElementById('lang-btn');
         const langDropdown = document.getElementById('lang-dropdown');
         const currentFlagImg = document.getElementById('current-flag-img');
