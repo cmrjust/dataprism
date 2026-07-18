@@ -398,6 +398,10 @@
                 }, 300);
             }, 650); 
         }
+        // 别管是什么页面，只要后缀带 .html，直接强行擦掉
+if (location.pathname.endsWith('.html')) {
+    window.history.replaceState(null, '', location.pathname.replace(/\.html$/, '') + location.search);
+}
     </script>
 </body>
 </html>
