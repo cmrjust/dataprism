@@ -1,162 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="./common.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Authentication | DataPrism</title>
+    <title>DataPrism - Portal Access</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- 引入你的全局自动化脚本 -->
+    <script src="./common.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0F172A',
+                            panel: '#1E293B',
+                            accent: '#38BDF8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="antialiased text-slate-700 bg-slate-50 min-h-screen flex flex-col justify-between">
+<body class="bg-brand-dark text-slate-200 min-h-screen flex flex-col font-sans antialiased selection:bg-brand-accent/30 selection:text-white">
 
-    <!-- 顶部导航 -->
-    <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-6 h-16 flex justify-between items-center">
-            <div class="flex items-center space-x-2.5 cursor-pointer" onclick="window.location.href='./index.html'">
-                <div class="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center font-bold text-white shadow-sm">D</div>
-                <span class="text-xl font-bold tracking-tight text-slate-900">DataPrism</span>
+    <!-- Header Navigation -->
+    <header class="border-b border-slate-800/80 bg-brand-dark/50 backdrop-blur-md sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
+        <!-- 左上角 Logo 目标区域：严格保留 "D" 字符供 common.js 识别替换 -->
+        <div onclick="location.href='index.html'" class="flex items-center space-x-3 cursor-pointer group select-none">
+            <div class="w-9 h-9 bg-slate-800 rounded-lg flex items-center justify-center font-bold text-slate-400 border border-slate-700/50 group-hover:border-slate-600 transition-all duration-300">
+                D
             </div>
-            <a href="./index.html" class="text-xs font-semibold text-slate-500 hover:text-indigo-600 transition-colors">Home</a>
+            <span class="font-semibold text-lg tracking-wider text-slate-300 group-hover:text-white transition-colors duration-300">DataPrism</span>
+        </div>
+        
+        <div>
+            <a href="terms.html" class="text-xs tracking-wide text-slate-400 hover:text-brand-accent transition-colors duration-200">System Terms</a>
         </div>
     </header>
 
-    <!-- 主体认证卡片 -->
-    <main class="flex-grow flex flex-col items-center justify-center px-4 py-12">
-        
-        <!-- 【核心改动 1】自定义错误 Banner（默认隐藏 hidden） -->
-        <div id="error-banner" class="max-w-md w-full mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm hidden flex items-start space-x-2 shadow-sm transition-all animate-fade-in">
-            <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-            </svg>
-            <span id="error-message">User does not exist.</span>
-        </div>
+    <!-- Main Content Container -->
+    <main class="flex-1 flex items-center justify-center px-4 py-12 relative overflow-hidden">
+        <!-- 背景微弱科技感极光隐喻 -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-accent/5 rounded-full blur-[120px] pointer-events-none"></div>
 
-        <div class="max-w-md w-full bg-white border border-slate-200 rounded-2xl p-8 shadow-xl space-y-6">
-            
-            <!-- 【核心改动 2】极其简单的选项卡切换 -->
-            <div class="flex border-b border-slate-100 pb-2">
-                <button id="tab-login" onclick="switchTab('login')" class="flex-1 pb-2 text-center text-sm font-bold border-b-2 border-indigo-600 text-indigo-600 transition-all">
-                    Sign In
-                </button>
-                <button id="tab-register" onclick="switchTab('register')" class="flex-1 pb-2 text-center text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all">
-                    Sign Up
-                </button>
+        <div class="w-full max-w-md bg-brand-panel/40 backdrop-blur-xl border border-slate-800/80 rounded-2xl p-8 shadow-2xl relative z-10">
+            <!-- 标题区域 -->
+            <div class="mb-8 text-center">
+                <h1 class="text-2xl font-bold tracking-tight text-white mb-2">Internal Authentication</h1>
+                <p class="text-sm text-slate-400">Authorized research personnel node access only</p>
             </div>
 
-            <!-- 登录表单 -->
-            <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
-                <div class="space-y-1">
-                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Email</label>
-                    <input type="email" required placeholder="your@email.com" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
-                </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Password</label>
-                    <input type="password" required placeholder="••••••••" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+            <!-- 动态全局错误 Banner (默认隐藏) -->
+            <div id="errorBanner" class="hidden mb-6 p-3 bg-red-950/40 border border-red-800/60 rounded-xl flex items-start space-x-3">
+                <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <span id="errorMessage" class="text-xs text-red-200/90 leading-relaxed"></span>
+            </div>
+
+            <!-- 认证表单 -->
+            <form id="authForm" onsubmit="handleAuth(event)" class="space-y-5">
+                <!-- 核心改动：Account ID 输入框 -->
+                <div>
+                    <label for="accountId" class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-2">Account ID</label>
+                    <div class="relative">
+                        <input type="text" id="accountId" required autocomplete="username" placeholder="e.g., DP-98352-X"
+                            class="w-full bg-slate-900/60 border border-slate-700/60 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-accent/70 focus:ring-1 focus:ring-brand-accent/30 transition-all duration-200">
+                    </div>
                 </div>
 
-                <div class="py-2">
-                    <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="light"></div>
+                <!-- 密码输入框 -->
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label for="password" class="block text-xs font-medium uppercase tracking-wider text-slate-400">Security Password</label>
+                    </div>
+                    <input type="password" id="password" required autocomplete="current-password" placeholder="••••••••"
+                        class="w-full bg-slate-900/60 border border-slate-700/60 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-accent/70 focus:ring-1 focus:ring-brand-accent/30 transition-all duration-200">
                 </div>
 
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl text-sm shadow-md shadow-indigo-200 transition-all transform active:scale-[0.98]">
-                    Sign In
+                <!-- 邀请令牌区域 (保留安全防线) -->
+                <div>
+                    <label for="invitationToken" class="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-2">Invitation Token</label>
+                    <input type="text" id="invitationToken" required placeholder="PRISM-XXXX-XXXX"
+                        class="w-full bg-slate-900/60 border border-slate-700/60 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-accent/70 focus:ring-1 focus:ring-brand-accent/30 transition-all duration-200 font-mono tracking-wider">
+                </div>
+
+                <!-- 提交按钮 -->
+                <button type="submit" class="w-full bg-slate-100 hover:bg-white text-slate-900 font-medium text-sm py-3 px-4 rounded-xl transition-all duration-200 active:scale-[0.99] shadow-lg shadow-white/5">
+                    Verify & Establish Session
                 </button>
             </form>
-
-            <!-- 注册表单 -->
-            <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4 hidden">
-                <div class="space-y-1">
-                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Invitation Code</label>
-                    <input type="text" id="reg-token" required placeholder="Enter code" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
-                </div>
-
-                <div class="space-y-1">
-                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Email</label>
-                    <input type="email" required placeholder="your@email.com" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
-                </div>
-
-                <div class="space-y-1">
-                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Password</label>
-                    <input type="password" required placeholder="At least 8 characters" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
-                </div>
-
-                <!-- 条款同意勾选 -->
-                <div class="flex items-start space-x-2 pt-1">
-                    <input type="checkbox" required id="reg-agree" class="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
-                    <label for="reg-agree" class="text-xs text-slate-400 leading-tight">
-                        I agree to the <a href="./terms.html" target="_blank" class="text-indigo-500 hover:underline font-semibold">Terms of Service</a>.
-                    </label>
-                </div>
-
-                <div class="py-2">
-                    <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="light"></div>
-                </div>
-
-                <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-xl text-sm shadow-md transition-all transform active:scale-[0.98]">
-                    Sign Up
-                </button>
-            </form>
-
         </div>
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
-        <p>© 2026 DataPrism Network. All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="border-t border-slate-900/60 py-4 px-6 text-center text-[10px] tracking-wider text-slate-600 select-none">
+        &copy; 2026 DATAPRISM NETWORK. ALL RIGHTS RESERVED. INTERNAL AUDIT MODE.
     </footer>
 
+    <!-- 交互与临时拦截逻辑 -->
     <script>
-        // 显式弹窗 Banner 控制函数
-        function showBanner(message) {
-            const banner = document.getElementById('error-banner');
-            const msgSpan = document.getElementById('error-message');
-            msgSpan.textContent = message;
+        function showError(msg) {
+            const banner = document.getElementById('errorBanner');
+            const message = document.getElementById('errorMessage');
+            message.textContent = msg;
             banner.classList.remove('hidden');
         }
 
-        function hideBanner() {
-            document.getElementById('error-banner').classList.add('hidden');
-        }
+        function handleAuth(e) {
+            e.preventDefault();
+            
+            const accountId = document.getElementById('accountId').value.trim();
+            const password = document.getElementById('password').value;
+            const token = document.getElementById('invitationToken').value.trim();
 
-        // 选项卡切换逻辑
-        function switchTab(type) {
-            hideBanner(); // 切换时顺手把上一页的报错清掉
-            const btnLogin = document.getElementById('tab-login');
-            const btnRegister = document.getElementById('tab-register');
-            const formLogin = document.getElementById('form-login');
-            const formRegister = document.getElementById('form-register');
-
-            if (type === 'login') {
-                btnLogin.className = "flex-1 pb-2 text-center text-sm font-bold border-b-2 border-indigo-600 text-indigo-600 transition-all";
-                btnRegister.className = "flex-1 pb-2 text-center text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all";
-                formLogin.classList.remove('hidden');
-                formRegister.classList.add('hidden');
+            // 当前阶段的静态前台简单截断提示，后续方便直接接入 Supabase .select() 匹配 accountId
+            if (accountId === "admin" && password === "admin123") {
+                alert("Static test match successful! Next stage: Connect to Supabase RPC.");
             } else {
-                btnRegister.className = "flex-1 pb-2 text-center text-sm font-bold border-b-2 border-slate-900 text-slate-900 transition-all";
-                btnLogin.className = "flex-1 pb-2 text-center text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all";
-                formRegister.classList.remove('hidden');
-                formLogin.classList.add('hidden');
+                showError("Authentication rejected. Node ID not registered in current session tier or invalid invitation token.");
             }
-        }
-
-        // 【核心改动 1】处理登录拦截
-        function handleLogin(e) {
-            e.preventDefault();
-            hideBanner();
-            
-            // 这里以后会接 Supabase 的 auth.signInWithPassword 逻辑
-            // 如果接口返回找不到用户，直接调用下面的函数：
-            showBanner("Invalid login credentials. User does not exist.");
-        }
-
-        // 【核心改动 3】处理注册强行拦截
-        function handleRegister(e) {
-            e.preventDefault();
-            hideBanner();
-            
-            // 甭管里面填了啥，只要想点注册，直接大红 Banner 送客
-            showBanner("Invalid or expired invitation code. Registration denied.");
         }
     </script>
 </body>
