@@ -83,7 +83,7 @@
                             <p class="text-xs text-slate-400 leading-relaxed max-w-xl">Global leader in paid surveys. Highly optimized for mobile and desktop screens with instant credits.</p>
                         </div>
                     </div>
-                    <button onclick="openOfferwall('cpx')" class="w-full sm:w-28 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-xl text-xs transition-all transform active:scale-[0.98] tracking-wider shrink-0">
+                    <button onclick="redirectToCpx()" class="w-full sm:w-28 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-xl text-xs transition-all transform active:scale-[0.98] tracking-wider shrink-0">
                         Earn
                     </button>
                 </div>
@@ -204,6 +204,25 @@
             localStorage.removeItem('current_user_balance');
             window.location.href = 'auth.html';
         }
+        function redirectToCpx() {
+    // ① 自动获取当前登录的系统用户 ID
+    const currentUserId = localStorage.getItem('current_user_id');
+    
+    // 安全拦截：防止没登录的游客误触
+    if (!currentUserId) {
+        alert('登录状态已失效，请重新登录！');
+        window.location.href = 'auth.html';
+        return;
+    }
+
+    // ② 自动拼接：你的固定商户号 + 动态编码后的用户 ID
+    const cpxAppId = "34571";
+    const encodedUid = encodeURIComponent(currentUserId);
+    const finalUrl = `https://offers.cpx-research.com/index.php?app_id=${cpxAppId}&ext_user_id=${encodedUid}`;
+
+    // ③ 自动跳转：在新标签页打开拼接好的 CPX 界面
+    window.open(finalUrl, '_blank');
+}
     </script>
 </body>
 </html>
