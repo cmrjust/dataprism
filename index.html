@@ -3,49 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataPrism Insights | Global Behavioral Data & Panel Solutions</title>
+    <title>DataPrism Insights | Premium Global Consumer Panel & Research Network</title>
+    <!-- 引入 Tailwind CSS 让页面瞬间高级 -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --primary: #0f172a; --accent: #2563eb; --text: #334155; --bg: #f8fafc; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text); line-height: 1.6; }
-        header { background: var(--primary); color: white; padding: 2rem 1rem; text-align: center; }
-        header h1 { margin: 0; font-size: 2.5rem; letter-spacing: -1px; }
-        header p { margin: 0.5rem 0 0; color: #94a3b8; font-size: 1.1rem; }
-        .container { max-width: 800px; margin: 3rem auto; padding: 0 1.5rem; }
-        section { background: white; padding: 2.5rem; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 2rem; }
-        h2 { color: var(--primary); border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin-top: 0; }
-        .footer { text-align: center; padding: 3rem 1rem; color: #64748b; font-size: 0.9rem; border-top: 1px solid #e2e8f0; }
-        .badge { background: #dbeafe; color: var(--accent); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-bottom: 1rem; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #2e1042 100%);
+        }
+        /* 确保动态画布完全铺满背景并且不遮挡文字点击 */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        /* 让内容图层浮在特效之上 */
+        .content-layer {
+            position: relative;
+            z-index: 10;
+        }
     </style>
 </head>
-<body>
+<body class="gradient-bg text-gray-100 min-h-screen font-sans flex flex-col justify-between overflow-x-hidden">
 
-    <header>
-        <h1>DataPrism Insights</h1>
-        <p>Next-Generation Programmatic Consumer Panels & Data Routing</p>
-    </header>
+    <!-- 动态粒子画布背景 -->
+    <canvas id="particle-canvas"></canvas>
 
-    <div class="container">
-        <section>
-            <span class="badge">WHO WE ARE</span>
-            <h2>About Our Publisher Platform</h2>
-            <p>DataPrism Insights operates a high-quality, verified consumer reward and loyalty ecosystem. We bridge the gap between global market research entities and real, highly-engaged respondents. By leveraging advanced device fingerprinting and real-time proxy filtering, we provide our supply partners with clean, fraud-free, first-party behavioral data.</p>
-        </section>
+    <div class="content-layer flex flex-col justify-between min-h-screen">
+        <!-- 导航栏 -->
+        <header class="border-b border-gray-800/80 backdrop-blur-md sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-purple-500/30">D</div>
+                    <span class="text-xl font-bold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-300">DataPrism <span class="text-white font-medium text-sm tracking-normal px-2 py-0.5 bg-gray-800 rounded border border-gray-700 ml-1">Insights</span></span>
+                </div>
+                <nav class="hidden md:flex space-x-8 text-sm font-medium text-gray-400">
+                    <a href="#about" class="hover:text-white transition">About Us</a>
+                    <a href="#compliance" class="hover:text-white transition">Compliance</a>
+                    <a href="#quality" class="hover:text-white transition">Data Quality</a>
+                    <a href="#contact" class="hover:text-white transition">Partnership</a>
+                </nav>
+            </div>
+        </header>
 
-        <section>
-            <span class="badge">COMPLIANCE</span>
-            <h2>GDPR & CCPA Privacy Policy</h2>
-            <p>We take data privacy with utmost seriousness. In compliance with the General Data Protection Regulation (GDPR) and CCPA, our platform strictly enforces explicit consent protocols for all data verification processes. We do not store personally identifiable information (PII) without transparent consumer authorization. All outbound sample routing is encrypted, anonymized, and hash-protected to ensure absolute integrity within the programmatic sampling lifecycle.</p>
-        </section>
+        <!-- 主视觉区 (Hero Section) -->
+        <main class="max-w-7xl mx-auto px-6 py-16 md:py-24 flex-grow w-full">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6 text-center md:text-left">
+                    <div class="inline-flex items-center space-x-2 bg-purple-950/50 border border-purple-800/50 px-3 py-1.5 rounded-full text-xs text-purple-300 font-medium">
+                        <span>⚡</span> <span>Exclusive Supply Partner Candidate</span>
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-none text-white">
+                        Powering Market Research with <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">High-Fidelity</span> Audience Data.
+                    </h1>
+                    <p class="text-gray-400 text-lg max-w-xl mx-auto md:mx-0">
+                        DataPrism Insights bridges the gap between global leading survey routers and deeply profiled, highly motivated consumers across premium regions.
+                    </p>
+                    <div class="pt-4 flex flex-col sm:flex-row justify-center md:justify-start gap-4">
+                        <a href="#contact" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-8 py-3.5 rounded-xl transition shadow-lg shadow-purple-600/20 text-center">Enterprise Integration</a>
+                        <a href="#compliance" class="bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 font-semibold px-8 py-3.5 rounded-xl transition text-center">View Quality Framework</a>
+                    </div>
+                </div>
 
-        <section>
-            <h2>Terms of Service</h2>
-            <p>Our traffic acquisition network operates under a zero-tolerance policy against automated scripts, data centers, and VPN manipulation. Every unique respondent session undergoes rigorous pre-screening via algorithmic profiling before being redirected to our programmatic routers (including Cint and partner networks).</p>
-        </section>
+                <!-- 数据面板卡片 -->
+                <div class="bg-gray-900/70 border border-gray-800 rounded-2xl p-6 shadow-2xl backdrop-blur-md space-y-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-gray-400 border-b border-gray-800 pb-3">Network Architecture & Status</h3>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-950/50 p-4 rounded-xl border border-gray-800/50">
+                            <div class="text-xs text-gray-500">Active Global Panelists</div>
+                            <div class="text-2xl font-bold text-white mt-1">54,200+</div>
+                            <div class="text-[10px] text-emerald-400 mt-1">● Live & Verified</div>
+                        </div>
+                        <div class="bg-gray-950/50 p-4 rounded-xl border border-gray-800/50">
+                            <div class="text-xs text-gray-500">Target Geographies</div>
+                            <div class="text-2xl font-bold text-white mt-1">Tier-1 Market</div>
+                            <div class="text-[10px] text-purple-400 mt-1">US / UK / CA / DE</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-gray-400">API Endpoint Handshake</span>
+                            <span class="text-emerald-400 font-mono">200 OK (Static Feed)</span>
+                        </div>
+                        <div class="w-full bg-gray-950 rounded-full h-1.5 border border-gray-800">
+                            <div class="bg-purple-500 h-1.5 rounded-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-950/30 border border-purple-900/50 p-4 rounded-xl text-xs text-purple-300 leading-relaxed">
+                        <strong>Notice to Network Auditors:</strong> Our callback receptor endpoint is currently set to live verification mode. Full direct-link synchronization is fully compatible with restful GET postback infrastructure.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 核心板块：关于我们 & 风控合规 -->
+            <section id="about" class="mt-24 pt-12 border-t border-gray-800 grid md:grid-cols-3 gap-8">
+                <div class="space-y-2">
+                    <h4 class="text-lg font-bold text-white">1. Strategic Audience</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed">Our proprietary panel network consists of thoroughly profiled demographics, ensuring targeted fill rates and minimizing industry drop-outs during complex router routing.</p>
+                </div>
+                <div id="quality" class="space-y-2">
+                    <h4 class="text-lg font-bold text-white">2. Anti-Fraud Ecosystem</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed">We employ enterprise-grade digital fingerprinting, residential proxy detection filters, and behavioral consistency logic to ensure every survey response is authentic.</p>
+                </div>
+                <div id="compliance" class="space-y-2">
+                    <h4 class="text-lg font-bold text-white">3. Compliance Commitment</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed">Strict adherence to ESOMAR standards, GDPR data practices, and CCPA privacy frameworks ensures full safety and long-term brand integrity for market research buyers.</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- 页脚与合规条款链接 -->
+        <footer class="border-t border-gray-800 bg-gray-950/80 backdrop-blur-md py-8 text-xs text-gray-500">
+            <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    © 2026 DataPrism Insights Network. All rights reserved. Proprietary Reward Panel Architecture.
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#privacy" class="hover:underline hover:text-gray-400 cursor-pointer" onclick="alert('DataPrism Insights Privacy Policy Statement:\nWe collect and process panelist data strictly under GDPR and CCPA frameworks. Personal data is never disclosed to unauthorized third parties without explicit programmatic consent.')">Privacy Policy</a>
+                    <a href="#terms" class="hover:underline hover:text-gray-400 cursor-pointer" onclick="alert('DataPrism Insights Terms of Service:\nPanel access is restricted to verified unique users. Systematic duplicate creation, automated responses, or masking proxies are strictly prohibited and result in immediate ban.')">Terms of Service</a>
+                    <a href="#contact" class="hover:underline hover:text-gray-400">Corporate Supply</a>
+                </div>
+            </div>
+        </footer>
     </div>
 
-    <div class="footer">
-        <p>&copy; 2026 DataPrism Insights Inc. All Rights Reserved. | Contact: partner@dataprism.xyz</p>
-    </div>
+    <!-- 粒子网络核心动画脚本 -->
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
 
+        let particles = [];
+        const particleCount = 60; // 粒子密度，既好看又兼顾老旧电脑性能
+        const connectionDistance = 120; // 连线触发的像素距离
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                // 飘动速度控制，微弱缓慢的移动显得更高档
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.radius = Math.random() * 2 + 1;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // 碰壁反弹
+                if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
+                if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(147, 51, 234, 0.4)'; // 浅紫色粒子
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                // 粒子与粒子之间连线逻辑
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < connectionDistance) {
+                        // 距离越近，线条越明显
+                        const opacity = (1 - distance / connectionDistance) * 0.15;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${opacity})`; // 科技蓝渐变连线
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+    </script>
 </body>
 </html>
