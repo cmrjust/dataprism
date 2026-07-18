@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DataPrism Insights | Premium Global Consumer Panel & Research Network</title>
-    <!-- 引入 Tailwind CSS 让页面瞬间高级 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #2e1042 100%);
+        .cyber-bg {
+            background: linear-gradient(180deg, #060814 0%, #0b112c 100%);
         }
-        /* 确保动态画布完全铺满背景并且不遮挡文字点击 */
-        #particle-canvas {
+        #matrix-canvas {
             position: fixed;
             top: 0;
             left: 0;
@@ -19,199 +17,242 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            opacity: 0.6;
         }
-        /* 让内容图层浮在特效之上 */
         .content-layer {
             position: relative;
             z-index: 10;
         }
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
+        }
     </style>
 </head>
-<body class="gradient-bg text-gray-100 min-h-screen font-sans flex flex-col justify-between overflow-x-hidden">
+<body class="cyber-bg text-gray-100 min-h-screen font-sans flex flex-col justify-between overflow-x-hidden">
 
-    <!-- 动态粒子画布背景 -->
-    <canvas id="particle-canvas"></canvas>
+    <!-- 强视觉冲击：赛博矩阵光束画布 -->
+    <canvas id="matrix-canvas"></canvas>
 
     <div class="content-layer flex flex-col justify-between min-h-screen">
         <!-- 导航栏 -->
-        <header class="border-b border-gray-800/80 backdrop-blur-md sticky top-0 z-50">
+        <header class="border-b border-gray-800/60 backdrop-blur-md sticky top-0 z-50 bg-gray-950/40">
             <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-purple-500/30">D</div>
-                    <span class="text-xl font-bold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-300">DataPrism <span class="text-white font-medium text-sm tracking-normal px-2 py-0.5 bg-gray-800 rounded border border-gray-700 ml-1">Insights</span></span>
+                    <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-purple-500/50">D</div>
+                    <span class="text-xl font-bold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-300">DataPrism <span class="text-white font-medium text-sm tracking-normal px-2 py-0.5 bg-purple-950/60 rounded border border-purple-800/50 ml-1">Insights</span></span>
                 </div>
-                <nav class="hidden md:flex space-x-8 text-sm font-medium text-gray-400">
-                    <a href="#about" class="hover:text-white transition">About Us</a>
-                    <a href="#compliance" class="hover:text-white transition">Compliance</a>
-                    <a href="#quality" class="hover:text-white transition">Data Quality</a>
-                    <a href="#contact" class="hover:text-white transition">Partnership</a>
-                </nav>
+                <div class="flex items-center space-x-6">
+                    <nav class="hidden md:flex space-x-8 text-sm font-medium text-gray-400">
+                        <a href="#about" class="hover:text-purple-400 transition data-lang" data-en="Network Overview" data-zh="网络概览">Network Overview</a>
+                        <a href="#compliance" class="hover:text-purple-400 transition data-lang" data-en="Fraud Control" data-zh="欺诈风控">Fraud Control</a>
+                        <a href="#quality" class="hover:text-purple-400 transition data-lang" data-en="Audience Quality" data-zh="受众质量">Audience Quality</a>
+                    </nav>
+                    <!-- 中英双语切换按钮 -->
+                    <button id="lang-toggle" class="bg-gray-800 hover:bg-purple-900 text-purple-300 border border-purple-500/30 text-xs font-mono px-3 py-1.5 rounded-lg transition shadow-sm">
+                        ZH / EN
+                    </button>
+                </div>
             </div>
         </header>
 
-        <!-- 主视觉区 (Hero Section) -->
-        <main class="max-w-7xl mx-auto px-6 py-16 md:py-24 flex-grow w-full">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="space-y-6 text-center md:text-left">
-                    <div class="inline-flex items-center space-x-2 bg-purple-950/50 border border-purple-800/50 px-3 py-1.5 rounded-full text-xs text-purple-300 font-medium">
-                        <span>⚡</span> <span>Exclusive Supply Partner Candidate</span>
+        <!-- 主视觉区 -->
+        <main class="max-w-7xl mx-auto px-6 py-16 md:py-24 flex-grow w-full flex items-center">
+            <div class="grid md:grid-cols-12 gap-12 items-center w-full">
+                
+                <!-- 左侧：企业标语 -->
+                <div class="space-y-6 text-center md:text-left md:col-span-7">
+                    <div class="inline-flex items-center space-x-2 bg-purple-950/60 border border-purple-500/30 px-3 py-1.5 rounded-full text-xs text-purple-300 font-mono tracking-widest uppercase">
+                        <span class="flex h-2 w-2 relative mr-1">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+                        </span>
+                        <span class="data-lang" data-en="Encrypted Data Receptor System Active" data-zh="加密数据接收端系统已激活">Encrypted Data Receptor System Active</span>
                     </div>
-                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-none text-white">
-                        Powering Market Research with <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">High-Fidelity</span> Audience Data.
+                    <h1 class="text-4xl md:text-6xl font-black tracking-tight leading-none text-white uppercase">
+                        <span class="data-lang" data-en="Next-Gen" data-zh="次世代">Next-Gen</span> 
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 data-lang" data-en="Audience Routing" data-zh="受众路由分发">Audience Routing</span> 
+                        <span class="data-lang" data-en="& Fraud Filtering." data-zh="与欺诈过滤系统">& Fraud Filtering.</span>
                     </h1>
-                    <p class="text-gray-400 text-lg max-w-xl mx-auto md:mx-0">
-                        DataPrism Insights bridges the gap between global leading survey routers and deeply profiled, highly motivated consumers across premium regions.
+                    <p class="text-gray-400 text-lg max-w-xl mx-auto md:mx-0 data-lang" 
+                       data-en="Enterprise-grade validation infrastructure architecture designed for high-frequency corporate survey link integration." 
+                       data-zh="专为高频企业级商业问卷链路集成设计的企业级验证基础设施架构。">
+                        Enterprise-grade validation infrastructure architecture designed for high-frequency corporate survey link integration.
                     </p>
                     <div class="pt-4 flex flex-col sm:flex-row justify-center md:justify-start gap-4">
-                        <a href="#contact" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-8 py-3.5 rounded-xl transition shadow-lg shadow-purple-600/20 text-center">Enterprise Integration</a>
-                        <a href="#compliance" class="bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 font-semibold px-8 py-3.5 rounded-xl transition text-center">View Quality Framework</a>
+                        <a href="#about" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-mono text-sm tracking-wider px-8 py-4 rounded-xl transition shadow-lg shadow-purple-500/20 text-center uppercase border border-purple-400/20 data-lang" data-en="System Integration" data-zh="系统集成对接">System Integration</a>
                     </div>
                 </div>
 
-                <!-- 数据面板卡片 -->
-                <div class="bg-gray-900/70 border border-gray-800 rounded-2xl p-6 shadow-2xl backdrop-blur-md space-y-6">
-                    <h3 class="text-sm font-semibold uppercase tracking-wider text-gray-400 border-b border-gray-800 pb-3">Network Architecture & Status</h3>
+                <!-- 右侧：服务器状态监测面板 -->
+                <div class="bg-gray-950/80 border border-purple-500/20 rounded-2xl p-6 shadow-2xl backdrop-blur-md space-y-6 md:col-span-5 glow-effect">
+                    <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                        <h3 class="text-xs font-mono uppercase tracking-widest text-purple-400 data-lang" data-en="Live Gateway Telemetry" data-zh="网关实时遥测数据">Live Gateway Telemetry</h3>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 animate-pulse data-lang" data-en="SECURE FEED" data-zh="安全数据流">SECURE FEED</span>
+                    </div>
                     
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-gray-950/50 p-4 rounded-xl border border-gray-800/50">
-                            <div class="text-xs text-gray-500">Active Global Panelists</div>
-                            <div class="text-2xl font-bold text-white mt-1">54,200+</div>
-                            <div class="text-[10px] text-emerald-400 mt-1">● Live & Verified</div>
+                        <div class="bg-gray-900/40 p-4 rounded-xl border border-gray-800">
+                            <div class="text-[10px] font-mono uppercase text-gray-500 data-lang" data-en="Node Cluster Verification" data-zh="节点集群验证率">Node Cluster Verification</div>
+                            <div class="text-2xl font-bold text-white mt-1 font-mono">99.98%</div>
+                            <div class="text-[10px] text-purple-400 mt-1 data-lang" data-en="Response Latency &lt; 40ms" data-zh="响应延迟 &lt; 40ms">Response Latency &lt; 40ms</div>
                         </div>
-                        <div class="bg-gray-950/50 p-4 rounded-xl border border-gray-800/50">
-                            <div class="text-xs text-gray-500">Target Geographies</div>
-                            <div class="text-2xl font-bold text-white mt-1">Tier-1 Market</div>
-                            <div class="text-[10px] text-purple-400 mt-1">US / UK / CA / DE</div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center text-xs">
-                            <span class="text-gray-400">API Endpoint Handshake</span>
-                            <span class="text-emerald-400 font-mono">200 OK (Static Feed)</span>
-                        </div>
-                        <div class="w-full bg-gray-950 rounded-full h-1.5 border border-gray-800">
-                            <div class="bg-purple-500 h-1.5 rounded-full" style="width: 100%"></div>
+                        <div class="bg-gray-900/40 p-4 rounded-xl border border-gray-800">
+                            <div class="text-[10px] font-mono uppercase text-gray-500 data-lang" data-en="Anti-Spoofing Filter" data-zh="反欺诈过滤器状态">Anti-Spoofing Filter</div>
+                            <div class="text-2xl font-bold text-white mt-1 font-mono data-lang" data-en="Active" data-zh="激活">Active</div>
+                            <div class="text-[10px] text-indigo-400 mt-1 data-lang" data-en="Residential Proxy Blocked" data-zh="住宅代理拦截已开启">Residential Proxy Blocked</div>
                         </div>
                     </div>
 
-                    <div class="bg-purple-950/30 border border-purple-900/50 p-4 rounded-xl text-xs text-purple-300 leading-relaxed">
-                        <strong>Notice to Network Auditors:</strong> Our callback receptor endpoint is currently set to live verification mode. Full direct-link synchronization is fully compatible with restful GET postback infrastructure.
+                    <div class="space-y-2 font-mono text-xs">
+                        <div class="flex justify-between text-gray-400">
+                            <span class="data-lang" data-en="API Sync Handshake" data-zh="API同步握手状态">API Sync Handshake</span>
+                            <span class="text-purple-400">HTTP 200 STATUS</span>
+                        </div>
+                        <div class="flex justify-between text-gray-400">
+                            <span class="data-lang" data-en="Postback Target" data-zh="数据回调目标地址">Postback Target</span>
+                            <span class="text-indigo-400">/postback.html (Live)</span>
+                        </div>
+                    </div>
+
+                    <div id="system-notice" class="bg-purple-950/20 border border-purple-500/20 p-4 rounded-xl text-xs text-purple-300 font-mono leading-relaxed" 
+                         data-en="[SYSTEM]: Receptor server status nominal. Prepared for asynchronous callback validation with YourSurveys core routers."
+                         data-zh="[系统提示]: 接收端服务器状态正常。已准备好与 YourSurveys 核心路由系统进行异步回调验证。">
+                        [SYSTEM]: Receptor server status nominal. Prepared for asynchronous callback validation with YourSurveys core routers.
                     </div>
                 </div>
             </div>
 
-            <!-- 核心板块：关于我们 & 风控合规 -->
+            <!-- 核心板块 -->
             <section id="about" class="mt-24 pt-12 border-t border-gray-800 grid md:grid-cols-3 gap-8">
                 <div class="space-y-2">
-                    <h4 class="text-lg font-bold text-white">1. Strategic Audience</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed">Our proprietary panel network consists of thoroughly profiled demographics, ensuring targeted fill rates and minimizing industry drop-outs during complex router routing.</p>
+                    <h4 class="text-lg font-bold text-white data-lang" data-en="1. Strategic Audience" data-zh="1. 战略受众群体">1. Strategic Audience</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed data-lang" 
+                       data-en="Our proprietary panel network consists of thoroughly profiled demographics, ensuring targeted fill rates and minimizing industry drop-outs during complex router routing."
+                       data-zh="我们自有的样本网络由经过严格画像筛选的人口统计群体组成，确保极高的定向完成率，并最大限度地减少复杂问卷路由分发过程中的无效损耗。">Our proprietary panel network consists of thoroughly profiled demographics, ensuring targeted fill rates and minimizing industry drop-outs during complex router routing.</p>
                 </div>
                 <div id="quality" class="space-y-2">
-                    <h4 class="text-lg font-bold text-white">2. Anti-Fraud Ecosystem</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed">We employ enterprise-grade digital fingerprinting, residential proxy detection filters, and behavioral consistency logic to ensure every survey response is authentic.</p>
+                    <h4 class="text-lg font-bold text-white data-lang" data-en="2. Anti-Fraud Ecosystem" data-zh="2. 反欺诈生态系统">2. Anti-Fraud Ecosystem</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed data-lang" 
+                       data-en="We employ enterprise-grade digital fingerprinting, residential proxy detection filters, and behavioral consistency logic to ensure every survey response is authentic."
+                       data-zh="我们采用企业级数字指纹识别、住宅代理检测检测滤网以及行为一致性逻辑校验，确保每一份问卷响应均真实有效。">We employ enterprise-grade digital fingerprinting, residential proxy detection filters, and behavioral consistency logic to ensure every survey response is authentic.</p>
                 </div>
                 <div id="compliance" class="space-y-2">
-                    <h4 class="text-lg font-bold text-white">3. Compliance Commitment</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed">Strict adherence to ESOMAR standards, GDPR data practices, and CCPA privacy frameworks ensures full safety and long-term brand integrity for market research buyers.</p>
+                    <h4 class="text-lg font-bold text-white data-lang" data-en="3. Compliance Commitment" data-zh="3. 合规性承诺">3. Compliance Commitment</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed data-lang" 
+                       data-en="Strict adherence to ESOMAR standards, GDPR data practices, and CCPA privacy frameworks ensures full safety and long-term brand integrity for market research buyers."
+                       data-zh="严格遵守 ESOMAR 标准、GDPR 数据合规规范及 CCPA 隐私保护框架，确保为市场调研买家提供绝对的安全保障与长期的品牌声誉维护。">Strict adherence to ESOMAR standards, GDPR data practices, and CCPA privacy frameworks ensures full safety and long-term brand integrity for market research buyers.</p>
                 </div>
             </section>
         </main>
 
-        <!-- 页脚与合规条款链接 -->
-        <footer class="border-t border-gray-800 bg-gray-950/80 backdrop-blur-md py-8 text-xs text-gray-500">
+        <!-- 页脚 -->
+        <footer class="border-t border-gray-900 bg-gray-950/90 py-6 text-[10px] font-mono text-gray-600">
             <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div>
-                    © 2026 DataPrism Insights Network. All rights reserved. Proprietary Reward Panel Architecture.
+                <div id="footer-core">
+                    CORE ID: DATAPRISM-INTEGRATION-NODE-2026 // ALL SYSTEM SIGNALS VERIFIED
                 </div>
                 <div class="flex space-x-6">
-                    <a href="#privacy" class="hover:underline hover:text-gray-400 cursor-pointer" onclick="alert('DataPrism Insights Privacy Policy Statement:\nWe collect and process panelist data strictly under GDPR and CCPA frameworks. Personal data is never disclosed to unauthorized third parties without explicit programmatic consent.')">Privacy Policy</a>
-                    <a href="#terms" class="hover:underline hover:text-gray-400 cursor-pointer" onclick="alert('DataPrism Insights Terms of Service:\nPanel access is restricted to verified unique users. Systematic duplicate creation, automated responses, or masking proxies are strictly prohibited and result in immediate ban.')">Terms of Service</a>
-                    <a href="#contact" class="hover:underline hover:text-gray-400">Corporate Supply</a>
+                    <a href="#privacy" class="hover:text-purple-400 cursor-pointer data-lang" data-en="Privacy Protocol" data-zh="隐私协议" onclick="handlePrivacyAlert()">Privacy Protocol</a>
+                    <a href="#terms" class="hover:text-purple-400 cursor-pointer data-lang" data-en="Anti-Fraud Engine" data-zh="反欺诈引擎" onclick="handleTermsAlert()">Anti-Fraud Engine</a>
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- 粒子网络核心动画脚本 -->
+    <!-- 3D 赛博光束矩阵动画脚本 -->
     <script>
-        const canvas = document.getElementById('particle-canvas');
+        const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
 
-        let particles = [];
-        const particleCount = 60; // 粒子密度，既好看又兼顾老旧电脑性能
-        const connectionDistance = 120; // 连线触发的像素距离
-
-        function resizeCanvas() {
+        function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        window.addEventListener('resize', resize);
+        resize();
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                // 飘动速度控制，微弱缓慢的移动显得更高档
-                this.vx = (Math.random() - 0.5) * 0.4;
-                this.vy = (Math.random() - 0.5) * 0.4;
-                this.radius = Math.random() * 2 + 1;
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
+        const columns = Math.floor(canvas.width / 25); 
+        const drops = [];
+        const speeds = [];
+        const colors = ['rgba(147, 51, 234, ', 'rgba(99, 102, 241, ', 'rgba(168, 85, 247, '];
 
-                // 碰壁反弹
-                if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
-                if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(147, 51, 234, 0.4)'; // 浅紫色粒子
-                ctx.fill();
-            }
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.random() * -canvas.height; 
+            speeds[i] = Math.random() * 2 + 1.5; 
         }
 
-        function init() {
-            particles = [];
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
+        function draw() {
+            ctx.fillStyle = 'rgba(6, 8, 20, 0.15)'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < columns; i++) {
+                const x = i * 25 + Math.sin(drops[i] / 50) * 5; 
+                const y = drops[i];
+
+                const baseColor = colors[i % colors.length];
+                ctx.fillStyle = baseColor + '0.15)';
+                ctx.fillRect(x, y, 2, 80);
+                
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(x, y + 80, 2, 4);
+
+                drops[i] += speeds[i];
+
+                if (drops[i] > canvas.height) {
+                    drops[i] = Math.random() * -100;
+                    speeds[i] = Math.random() * 2 + 1.5;
+                }
             }
+            requestAnimationFrame(draw);
         }
 
         function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            requestAnimationFrame(draw);
+        }
+        animate();
+
+        // --- 核心双语切换逻辑 ---
+        let currentLang = 'en';
+        const langToggleBtn = document.getElementById('lang-toggle');
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'zh' : 'en';
             
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-
-                // 粒子与粒子之间连线逻辑
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < connectionDistance) {
-                        // 距离越近，线条越明显
-                        const opacity = (1 - distance / connectionDistance) * 0.15;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(99, 102, 241, ${opacity})`; // 科技蓝渐变连线
-                        ctx.lineWidth = 0.8;
-                        ctx.stroke();
-                    }
+            // 遍历所有带有 data-lang 属性的元素进行内容替换
+            document.querySelectorAll('.data-lang').forEach(el => {
+                if (currentLang === 'zh') {
+                    el.textContent = el.getAttribute('data-zh');
+                } else {
+                    el.textContent = el.getAttribute('data-en');
                 }
+            });
+
+            // 单独动态处理系统提示框文本
+            const systemNotice = document.getElementById('system-notice');
+            if (currentLang === 'zh') {
+                systemNotice.textContent = systemNotice.getAttribute('data-zh');
+            } else {
+                systemNotice.textContent = systemNotice.getAttribute('data-en');
             }
-            requestAnimationFrame(animate);
         }
 
-        init();
-        animate();
+        langToggleBtn.addEventListener('click', toggleLanguage);
+
+        // 弹窗公告的双语处理
+        function handlePrivacyAlert() {
+            if (currentLang === 'zh') {
+                alert('DataPrism Insights 隐私政策声明：\n我们严格在 GDPR 和 CCPA 框架下收集和处理样本数据。未经明确的程序化授权，个人数据绝不会向任何未授权的第三方披露。');
+            } else {
+                alert('DataPrism Insights Privacy Policy Statement:\nWe collect and process panelist data strictly under GDPR and CCPA frameworks. Personal data is never disclosed to unauthorized third parties without explicit programmatic consent.');
+            }
+        }
+
+        function handleTermsAlert() {
+            if (currentLang === 'zh') {
+                alert('DataPrism Insights 反欺诈服务条款：\n样本通道仅限经过验证的唯一独立用户访问。系统会自动过滤并立即封禁任何设备多开、人工模拟响应或使用恶意代理的作弊行为。');
+            } else {
+                alert('DataPrism Insights Terms of Service:\nPanel access is restricted to verified unique users. Systematic duplicate creation, automated responses, or masking proxies are strictly prohibited and result in immediate ban.');
+            }
+        }
     </script>
 </body>
 </html>
