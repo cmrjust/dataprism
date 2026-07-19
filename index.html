@@ -405,3 +405,30 @@ if (location.pathname.endsWith('.html')) {
     </script>
 </body>
 </html>
+<!-- HTML 部分：放在页面最底部 -->
+<div class="site-footer-contact">
+    <p>Contact Us: <a href="mailto:cs@dataprism.eu.cc" class="footer-email">cs@dataprism.eu.cc</a></p>
+</div>
+
+<!-- CSS 样式部分：放入你的 <style> 标签中 -->
+<style>
+.site-footer-contact {
+    text-align: center;
+    padding: 20px 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    color: #666666; /* 经典的低调灰色 */
+}
+
+.footer-email {
+    color: #007bff; /* 蓝色下划线链接，方便用户一眼认出可以点击 */
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.footer-email:hover {
+    color: #0056b3; /* 鼠标悬停时颜色加深 */
+    text-decoration: underline; /* 悬停时显示下划线 */
+}
+</style>
