@@ -82,11 +82,11 @@
                     <input type="password" required placeholder="At least 8 characters" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 transition-colors">
                 </div>
 
-                <!-- 条款与隐私政策联合同意勾选框 -->
+                <!-- 条款同意勾选（已修改为符合 TimeWall 规范的复合链接，并采用绝对根路径） -->
                 <div class="flex items-start space-x-2 pt-1">
                     <input type="checkbox" required id="reg-agree" class="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
                     <label for="reg-agree" class="text-xs text-slate-400 leading-tight">
-                        I agree to the <a href="./terms.html" target="_blank" class="text-indigo-500 hover:underline font-semibold">Terms of Service</a> and <a href="./privacy.html" target="_blank" class="text-indigo-500 hover:underline font-semibold">Privacy Policy</a>.
+                        I agree to the <a href="/terms.html" target="_blank" class="text-indigo-500 hover:underline font-semibold">Terms of Service</a> and <a href="/privacy.html" target="_blank" class="text-indigo-500 hover:underline font-semibold">Privacy Policy</a>.
                     </label>
                 </div>
 
@@ -124,7 +124,7 @@
             document.getElementById('error-banner').classList.add('hidden');
         }
 
-        // 选项卡切换 logic
+        // 选项卡切换逻辑
         function switchTab(type) {
             hideBanner(); // 切换时顺手把上一页的报错清掉
             const btnLogin = document.getElementById('tab-login');
@@ -180,7 +180,7 @@
 
                 // 第三步：验证并跳转
                 if (data) {
-                    // 保存登录状态和数据
+                    // 保存登录状态 and 数据
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('current_user_id', data.account_id);
                     localStorage.setItem('current_user_balance', data.balance);
